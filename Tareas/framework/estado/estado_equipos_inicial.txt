@@ -1,0 +1,23 @@
+Última actualización: Thu May  5 17:44:13 CEST 2022
+Equipo lt01:	OFF	 --- 	 --- 	No disponible: apagado o sin conexión
+Equipo lt05:	ON	 --- 	 --- 	No disponible	Sin conexión SSH (Problema de acceso)
+Equipo lt06:	ON	 --- 	 --- 	No disponible	Sin conexión SSH (Servicio SSH cerrado)
+Equipo lt07:	ON	 --- 	 --- 	No disponible	Sin conexión SSH (Problema de acceso)
+Equipo lt09:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt10:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt11:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt12:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt13:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt14:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt15:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt16:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt17:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt18:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt19:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt20:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt21:	ON	Linux	lmoviles	No disponible: Versión SO incompatible	SSH certificado
+Equipo lt25:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt26:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt27:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt28:	ON	Linux	linux1	No disponible	SSH certificado	[Carpeta Tarea ESPACIO insuficiente: 1194 MB < 10000 MB]
+Equipos analizados [21]	Equipos Disponibles [15]	Equipos NO disponibles [6]

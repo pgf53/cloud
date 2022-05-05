@@ -1,0 +1,2 @@
+Última actualización: Sun May  1 19:51:19 CEST 2022
+Equipo lt09:	ON	Linux	linux1	Disponible	SSH certificado

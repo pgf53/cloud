@@ -1,0 +1,33 @@
+Percent Encoding
+
+* "Aplicar_URL_Percent_Encoding.sh": Aplica Percent Encoding (Encode URL) de los caracter prohibidos en una URL
+
+* "Deshacer_Percent_Encoding.sh": deshace Percent encoding (Decode URL) completo (NO decodifica el caracter "+")
+    + NOTA: La entrada NO debe contener caracteres prohibidos en la URI como espacios!!!
+	    Puede usarse antes "Aplicar_Percent_Espacios.sh"
+    + ADVERTENCIA!: Si se encuentra "%0a" lo traduce en un cambio de linea =>
+	=> Una URI la separa en varias lineas (URIs)!!!! (ERROR en el tratamiento de ficheros de URIs)
+
+* "Deshacer_Percent_Encoding_Plus.sh": deshace Percent encoding (Decode URL) completo, INCLUYENDO el caracter "+"
+    (lo decodifica a un espacio " ")
+    + NOTA: La entrada NO debe contener caracteres prohibidos en la URI como espacios!!!
+
+* "Aplicar_Percent_Espacios.sh": aplicar Percent Encoding del caracter espacio:
+    * Espacios		' ' -> %20
+
+* "Aplicar_Percent_caracteres_especiales_URI.sh": aplica Percent eencoding a los caracteres
+    + Espacio		%20
+    + !			%21
+    + #			%23
+    + $			%24
+    + &			%26
+    + '			%27
+    + (			%28
+    + )			%29
+    + @			%40
+
+    NO se aplica a:
+    /
+    ;
+    ?
+    =

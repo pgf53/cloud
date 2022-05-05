@@ -1,0 +1,25 @@
+Última actualización: Thu May  5 17:46:54 CEST 2022
+#########Instrucciones#######
+Primera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero.
+
+
+0days_cortado_10.uri	si	si	lt13
+0days_cortado_11.uri	si	si	lt12
+0days_cortado_12.uri	si	si	lt11
+0days_cortado_13.uri	si	si	lt10
+0days_cortado_14.uri	si	si	lt09
+0days_cortado_15.uri	si	si	lt09
+0days_cortado_16.uri	si	si	lt10
+0days_cortado_17.uri	si	si	lt11
+0days_cortado_18.uri	si	si	lt12
+0days_cortado_19.uri	si	si	lt13
+0days_cortado_1.uri	si	si	lt14
+0days_cortado_20.uri	si	si	lt15
+0days_cortado_2.uri	si	si	lt16
+0days_cortado_3.uri	si	si	lt17
+0days_cortado_4.uri	si	si	lt18
+0days_cortado_5.uri	si	si	lt19
+0days_cortado_6.uri	si	si	lt20
+0days_cortado_7.uri	si	si	lt25
+0days_cortado_8.uri	si	si	lt26
+0days_cortado_9.uri	si	si	lt27
