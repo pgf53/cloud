@@ -146,8 +146,6 @@ estado()
 				export i
 				export INVOCACION="CONSULTA_ESTADO_TAREA"
 				. "${SCRIPT_ESTADO_EQUIPOS}"
-			else
-				
 			fi
 		actualizacion="$(date)"
 		#sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" ${FILE_ESTADO}
