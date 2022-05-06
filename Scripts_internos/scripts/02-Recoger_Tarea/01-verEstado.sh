@@ -123,33 +123,32 @@ estado()
 	elif [ "${TIPO_ESTADO}" = "consulta" ];  then
 		#Comprobamos estado de la tarea en aquellos equipos no finalizados
 		equipo="${PREFIJO_NOMBRE_EQUIPO}${i}"
-		progreso_actual=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $7 }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f1)
-		progreso_total=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $7 }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f2)
-		if [ "${progreso_actual}" -lt "${progreso_total}" ]; then
+		LINEA_ESTADO=$(awk -v pat="${equipo}:" -F"\t" '$0 ~ pat { print $0 }' "${FILE_ESTADO}")
+		ESTADO_ACTUAL=$(printf awk -v pat="$equipo" -F"\t" '{ print $NF }')
+		#progreso_actual=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $(NF-1) }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f1)
+		#progreso_total=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $(NF-1) }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f2)
+		#if [ "${progreso_actual}" -lt "${progreso_total}" ]; then
+		if [ "${ESTADO_ACTUAL}" != "${FINALIZADA}" ]; then
 			CMD_REMOTO_CONSULTA_FICHEROS="ls -1 ${DIR_REMOTO_ENTRADAS_FINALIZADAS}"
 			procesados=$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${CMD_REMOTO_CONSULTA_FICHEROS}")
-			#Actualizamos a 'si' la columna 'terminados' de aquellos ficheros presentes en el directorio 'entradas_finalizadas'
-			#del equipo remoto
-			for j in ${procesados}
-			do
-				nueva_linea=$(awk -v pat="$j" -v OFS='\t' '$0 ~ pat {$2="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
-				sed -i "s/^$j\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
-			done
+			if [ $? -eq 0 ]; then
+				#Actualizamos a 'si' la columna 'terminados' de aquellos ficheros presentes en el directorio 'entradas_finalizadas'
+				#del equipo remoto
+				for j in ${procesados}
+				do
+					nueva_linea=$(awk -v pat="$j" -v OFS='\t' '$0 ~ pat {$2="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
+					sed -i "s/^$j\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
+				done
 
 
-			#Pasamos a verificar el estado
-			export equipo_consultado="${PREFIJO_NOMBRE_EQUIPO}${i}"
-			export i
-			export INVOCACION="CONSULTA_ESTADO_TAREA"
-			. "${SCRIPT_ESTADO_EQUIPOS}"
-
-			#CMD_REMOTO_CONSULTA_ESTADO="byobu ls | grep "${NOMBRE_TAREA}:""
-			#existe_proceso=$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${CMD_REMOTO_CONSULTA_ESTADO}")
-			#Dado que no está terminada la tarea y el proceso no existe, Estado: Interrumpida
-			#if [ "${existe_proceso}" = "failed to connect to server" -o "${existe_proceso}" = "" ]; then
-			#	equipo_interrumpido=$(awk -v pat="$equipo" -F"\t" 'BEGIN{OFS="\t";} $0 ~ pat { print $1, $2, $3, $4;}' "${FILE_ESTADO}")
-			#	sed -i "s#^$equipo_interrumpido.*#$equipo_interrumpido\tInterrumpida#g" "${FILE_ESTADO}"
-			#fi
+				#Pasamos a verificar el estado
+				export equipo_consultado="${PREFIJO_NOMBRE_EQUIPO}${i}"
+				export i
+				export INVOCACION="CONSULTA_ESTADO_TAREA"
+				. "${SCRIPT_ESTADO_EQUIPOS}"
+			else
+				
+			fi
 		actualizacion="$(date)"
 		#sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" ${FILE_ESTADO}
 		sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" "${FILE_ESTADO_LISTADO_FICHEROS}"

