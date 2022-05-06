@@ -1,2 +1,7 @@
 ----------------------Resumen del reparto------------------------
 
+Equipo lt05:
+0days_cortado_1.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+

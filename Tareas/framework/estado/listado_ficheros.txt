@@ -1,6 +1,6 @@
-Última actualización: Fri May  6 12:42:22 CEST 2022
+Última actualización: Fri May  6 13:21:45 CEST 2022
 #########Instrucciones#######
 Primera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero.
 
 
-0days_cortado_1.uri	no	no
+0days_cortado_1.uri	no	no	lt05

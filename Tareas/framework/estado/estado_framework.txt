@@ -1,0 +1,2 @@
+Última actualización: Fri May  6 13:21:45 CEST 2022
+Equipo lt05:	ON	Linux	linux1	Disponible	Sin Certificado SSH. Disponible clave	[Carpeta Tarea con poco espacio: 2685 MB < 10000 MB]	(0/1)	Ejecutándose

@@ -1,0 +1,6 @@
+#Ignora directorio de equipos clonados
+Scripts_internos/scripts/01-Enviar_Tarea/02-Estructura_Clonada/
+
+#Ignora directorio de reparto de ficheros
+Scripts_internos/scripts/01-Enviar_Tarea/02-Estructura_Clonada/03-Ficheros_Desplegados/
+
