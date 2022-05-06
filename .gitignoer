@@ -1,5 +1,0 @@
-# Ignore everything in this directory
-Scripts_internos/scripts/01-Enviar_Tarea/02-Estructura_Clonada/*
-Scripts_internos/scripts/01-Enviar_Tarea/03-Ficheros_Desplegados/*
-# Except this file
-#!.gitignore
