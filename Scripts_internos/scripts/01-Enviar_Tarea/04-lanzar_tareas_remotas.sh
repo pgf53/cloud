@@ -21,7 +21,6 @@ else
 	printf "Proceso de escucha en ejecución\n"
 fi
 
-
 printf "\nEjecutando Scripts de Estado...\n"
 export TIPO_ESTADO="lanzamiento"
 eval "${SCRIPT_ESTADO} \"${EQUIPOS_LT}\""

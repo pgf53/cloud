@@ -185,9 +185,8 @@ crea_estado_tarea()
 {
 	while IFS= read -r line
 	do
-		indisponible=$(printf "%s" "${line}" | grep "${NO_DISPONIBLE}")
-		disponible=$(printf "%s" "${line}" | grep "${DISPONIBLE}")
-		if [ "${indisponible}" = "" -a "${disponible}" != "" ]; then
+		disponible=$(printf "%s" "${line}" | sed "s#.*\t${DISPONIBLE}\t.*#equipo_disponible#g")
+		if [ "${disponible}" = "equipo_disponible" ]; then
 			equipo=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'2')
 			#Disponible OK. ¿Tiene ficheros asignados? (caso num_ficheros < num_equipos)
 			if [ "$(ls ${DIR_ESTRUCTURA_CLONADA}${equipo}/${SUBDIR_TAREA_ENTRADA})" ]; then
@@ -217,9 +216,9 @@ resumen_equipos_iniciales()
 #Genera el resumen del progreso de los equipos
 resumen_estado_equipos()
 {
+	contador=0
 	while IFS= read -r line
 	do
-		contador=0
 		en_equipo=$(printf "%s" "${line}" | grep "Equipo")
 		[ "${en_equipo}" != "" ] && contador=$((contador+1))
 	done < "${FILE_ESTADO}"
@@ -301,6 +300,7 @@ elif [ "${INVOCACION}" = "CREA_ESTADO_TAREA" ]; then
 #3.2 Invocación debida a recogida
 elif [ "${INVOCACION}" = "ACTUALIZA_ESTADO_TAREA_RECOGIDA" ]; then
 	#Actualizamos estado por recogida
+	FIN=0
 	busqueda="Equipo ${equipo_recogido}:"
 	linea_equipo=$(awk -v busqueda="${busqueda}" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ busqueda {print $0}' "${FILE_ESTADO}")
 	progreso_total=$(printf "%s" "${linea_equipo}" | awk  -F"\t" 'BEGIN{FS=OFS="\t"} {print $(NF-1)}' | cut -d'/' -f'2' | cut -d')' -f'1')
@@ -309,12 +309,17 @@ elif [ "${INVOCACION}" = "ACTUALIZA_ESTADO_TAREA_RECOGIDA" ]; then
 		linea_actualizada=$(printf "%s" "${linea_equipo}" | awk -v update_progress="${update_progress}" -F"\t" 'BEGIN{FS=OFS="\t"} {$(NF-1)=update_progress; print}')
 	else
 		linea_actualizada=$(printf "%s" "${linea_equipo}" | awk -v update_progress="${update_progress}" -v estado="${FINALIZADA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$(NF-1)=update_progress;$NF=estado;print}')
-		sed  -i "s#"
+		FIN=1
 	fi
 	#para que 'sed' no interprete []
 	linea_equipo=$(printf "%s" "${linea_equipo}" | sed -e "s#\[#\\\[#g" -e "s#\]#\\\]#g")
 	linea_actualizada=$(printf "%s" "${linea_actualizada}" | sed -e "s#\[#\\\[#g" -e "s#\]#\\\]#g")
 	sed -i "s#${linea_equipo}#${linea_actualizada}#g" "${FILE_ESTADO}"
+	if [ "${FIN}" -eq 1 ]; then
+		finalizados=$(awk -v estado_finalizado="${FINALIZADA}" 'BEGIN{FS=OFS="\t"} $0 ~ estado_finalizado {print $NF}' "${FILE_ESTADO}" | wc -l)
+		num_total_equipos=$(grep "PROGRESO:" estado/estado_framework.txt | cut -d'/' -f'2' | cut -d')' -f1)
+		sed -i "s#PROGRESO:.*#PROGRESO: (${finalizados}/${num_total_equipos}) EQUIPOS FINALIZADOS#g" "${FILE_ESTADO}"
+	fi
 	add_last_update "${FILE_ESTADO}"
 fi
 
