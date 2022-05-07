@@ -13,24 +13,6 @@ estado()
 
   for i in ${EQUIPOS_LT}; do
 
-    #printf "%s:" "LT${i}"
-
-    # ON/OFF
-	#Atención!! Eliminar la interfaz (-I eth1) cuando se despliegue en el laboratorio
-    #arping -c 1 "${PREFIJO_NOMBRE_EQUIPO}$i" 1>/dev/null 2>&1
-	#arping -I eth1 -c 1 "${PREFIJO_NOMBRE_EQUIPO}$i" 1>/dev/null 2>&1
-    #[ "$?" = "0" ] && POWER="ON" || POWER="OFF"
-
-    # SO:
-    #[ "${POWER}" = "ON" ] && SO="$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${CMD_SO_REMOTO}" 2>/dev/null)" || SO=" --- "
-
-    # ESTADO TAREA:
-    #ESTADO_TAREA="$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${CMD_ESTADO_TAREA}" 2>/dev/null)"
-    #[ -z "${ESTADO_TAREA}" ] && ESTADO_TAREA="TERMINADA!"
-
-	#printf "\t%s\t(%s)\tTarea... %s\n" "${POWER}" "${SO}" "${ESTADO_TAREA}" 
-	
-
 	###############LANZAMIENTO####################
 	#Se ejecuta en el lanzamiento de una tarea
 	#Solo se entra una vez independientemente del número de equipos
@@ -56,10 +38,10 @@ estado()
 		done < "${FILE_ESTADO_LISTADO_FICHEROS}"
 
 		#Imprimimos Instrucciones
-		instrucciones="#########Instrucciones#######\nPrimera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero.\n\n" 
+		instrucciones="#########Instrucciones#######\nPrimera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero.\n" 
 		actualizacion=$(printf "Última actualización: %s" "$(date)")
 		sed -i "1i$instrucciones" "${FILE_ESTADO_LISTADO_FICHEROS}"
-		sed -i "1i$actualizacion" "${FILE_ESTADO_LISTADO_FICHEROS}"
+		sed -i "1i${actualizacion}\n" "${FILE_ESTADO_LISTADO_FICHEROS}"
 
 		#Invocamos a SCRIPT_ESTADO_EQUIPOS para creación de estado_tarea:
 		 export INVOCACION="CREA_ESTADO_TAREA"
@@ -100,6 +82,7 @@ estado()
 		export INVOCACION="ACTUALIZA_ESTADO_TAREA_RECOGIDA"
 		. "${SCRIPT_ESTADO_EQUIPOS}"
 
+	fi
 
 		#num_ficheros_asignados=$(ls "${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}${i}/${SUBDIR_TAREA_ENTRADA}" | wc -l)
 		#num_ficheros_asignados=$(num_ficheros)
@@ -120,39 +103,39 @@ estado()
 		#fi
 
 	################CONSULTA######################
-	elif [ "${TIPO_ESTADO}" = "consulta" ];  then
+	#elif [ "${TIPO_ESTADO}" = "consulta" ];  then
 		#Comprobamos estado de la tarea en aquellos equipos no finalizados
-		equipo="${PREFIJO_NOMBRE_EQUIPO}${i}"
-		LINEA_ESTADO=$(awk -v pat="${equipo}:" -F"\t" '$0 ~ pat { print $0 }' "${FILE_ESTADO}")
-		ESTADO_ACTUAL=$(printf awk -v pat="$equipo" -F"\t" '{ print $NF }')
+	#	equipo="${PREFIJO_NOMBRE_EQUIPO}${i}"
+	#	LINEA_ESTADO=$(awk -v pat="${equipo}:" -F"\t" '$0 ~ pat { print $0 }' "${FILE_ESTADO}")
+	#	ESTADO_ACTUAL=$(printf awk -v pat="$equipo" -F"\t" '{ print $NF }')
 		#progreso_actual=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $(NF-1) }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f1)
 		#progreso_total=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $(NF-1) }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f2)
 		#if [ "${progreso_actual}" -lt "${progreso_total}" ]; then
-		if [ "${ESTADO_ACTUAL}" != "${FINALIZADA}" ]; then
-			CMD_REMOTO_CONSULTA_FICHEROS="ls -1 ${DIR_REMOTO_ENTRADAS_FINALIZADAS}"
-			procesados=$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${CMD_REMOTO_CONSULTA_FICHEROS}")
-			if [ $? -eq 0 ]; then
+	#	if [ "${ESTADO_ACTUAL}" != "${FINALIZADA}" ]; then
+	#		CMD_REMOTO_CONSULTA_FICHEROS="ls -1 ${DIR_REMOTO_ENTRADAS_FINALIZADAS}"
+	#		procesados=$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${CMD_REMOTO_CONSULTA_FICHEROS}")
+	#		if [ $? -eq 0 ]; then
 				#Actualizamos a 'si' la columna 'terminados' de aquellos ficheros presentes en el directorio 'entradas_finalizadas'
 				#del equipo remoto
-				for j in ${procesados}
-				do
-					nueva_linea=$(awk -v pat="$j" -v OFS='\t' '$0 ~ pat {$2="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
-					sed -i "s/^$j\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
-				done
+	#			for j in ${procesados}
+	#			do
+	#				nueva_linea=$(awk -v pat="$j" -v OFS='\t' '$0 ~ pat {$2="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
+	#				sed -i "s/^$j\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
+	#			done
 
 
 				#Pasamos a verificar el estado
-				export equipo_consultado="${PREFIJO_NOMBRE_EQUIPO}${i}"
-				export i
-				export INVOCACION="CONSULTA_ESTADO_TAREA"
-				. "${SCRIPT_ESTADO_EQUIPOS}"
-			fi
-		actualizacion="$(date)"
+	#			export equipo_consultado="${PREFIJO_NOMBRE_EQUIPO}${i}"
+	#			export i
+	#			export INVOCACION="CONSULTA_ESTADO_TAREA"
+	#			. "${SCRIPT_ESTADO_EQUIPOS}"
+	#		fi
+	#	actualizacion="$(date)"
 		#sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" ${FILE_ESTADO}
-		sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
-		fi
+	#	sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
+	#	fi
 
-	fi 
+	#fi 
 
   done
 

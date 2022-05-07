@@ -7,7 +7,7 @@ ACTUAL="$(pwd)"
 
 clear
 printf "\n\n%s\n\n%s\n" "¿Seguro que desea ENVIAR los ficheros de la Tarea \"${NOMBRE_TAREA}\" a los equipos \"${EQUIPOS_LT}\"?." "Pulse una tecla para continuar... (Ctrl-C para Salir)"
-read tecla
+[ "${FAST_MODE}" -eq 0 ] && read tecla
 
 for i in ${EQUIPOS_LT}; do
 

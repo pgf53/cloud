@@ -46,7 +46,7 @@ rm -Rf    "${DIR_ESTRUCTURA_CLONADA}"                           1>/dev/null 2>&1
 # Crear copia para cada equipo
 clear
 printf "\n\n%s\n\n%s\n" "¿Seguro que desea clonar los ficheros de la Tarea \"${NOMBRE_TAREA}\" para los equipos \"${EQUIPOS_LT}\"?." "Pulse una tecla para continuar... (Ctrl-C para Salir)"
-read
+[ "${FAST_MODE}" -eq 0 ] && read
 for i in ${EQUIPOS_LT}; do
     printf "\n\n###### Creando copia para Equipo LT$i (Tarea \"${NOMBRE_TAREA}\") ###########\n"
 

@@ -123,7 +123,7 @@ add_last_update()
 	OUTPUT_FILE="$1"
 	actualizacion=$(printf "Última actualización: %s" "$(date)")
 	fecha=$(grep "Última actualización:" ${OUTPUT_FILE})
-	[ "${fecha}" != "" ] && sed -i "s/^Última actualización.*/${actualizacion}/g" "${OUTPUT_FILE}" ||  sed -i "1i$actualizacion" "${OUTPUT_FILE}"
+	[ "${fecha}" != "" ] && sed -i "s/^Última actualización.*/${actualizacion}/g" "${OUTPUT_FILE}" || sed -i "1i${actualizacion}\n" "${OUTPUT_FILE}"
 }
 
 
@@ -183,24 +183,20 @@ comprueba_existe_tarea()
 #del estado inicial de los equipos
 crea_estado_tarea()
 {
-	contador=1	#Usada para evitar leer la primera y la última línea
 	while IFS= read -r line
 	do
-		if [ "${contador}" -gt 1 ]; then
-			indisponible=$(printf "%s" "${line}" | grep "${NO_DISPONIBLE}")
-			disponible=$(printf "%s" "${line}" | grep "${DISPONIBLE}")
-			if [ "${indisponible}" = "" -a "${disponible}" != "" ]; then
-				equipo=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'2')
-				#Disponible OK. ¿Tiene ficheros asignados? (caso num_ficheros < num_equipos)
-				if [ "$(ls ${DIR_ESTRUCTURA_CLONADA}${equipo}/${SUBDIR_TAREA_ENTRADA})" ]; then
-					num_ficheros_asignados=$(ls "${DIR_ESTRUCTURA_CLONADA}${equipo}/${SUBDIR_TAREA_ENTRADA}" | wc -l)
-					#info_tarea="(0/${num_ficheros_asignados})\t${EJECUTANDOSE}"
-					#linea_estado_tarea="${line}\t${info_tarea}"
-			 		printf "%s\t(0/%s)\t%s\n" "${line}" "${num_ficheros_asignados}" "${EJECUTANDOSE}" >> "${FILE_ESTADO}"
-				fi
+		indisponible=$(printf "%s" "${line}" | grep "${NO_DISPONIBLE}")
+		disponible=$(printf "%s" "${line}" | grep "${DISPONIBLE}")
+		if [ "${indisponible}" = "" -a "${disponible}" != "" ]; then
+			equipo=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'2')
+			#Disponible OK. ¿Tiene ficheros asignados? (caso num_ficheros < num_equipos)
+			if [ "$(ls ${DIR_ESTRUCTURA_CLONADA}${equipo}/${SUBDIR_TAREA_ENTRADA})" ]; then
+				num_ficheros_asignados=$(ls "${DIR_ESTRUCTURA_CLONADA}${equipo}/${SUBDIR_TAREA_ENTRADA}" | wc -l)
+				#info_tarea="(0/${num_ficheros_asignados})\t${EJECUTANDOSE}"
+				#linea_estado_tarea="${line}\t${info_tarea}"
+		 		printf "%s\t(0/%s)\t%s\n" "${line}" "${num_ficheros_asignados}" "${EJECUTANDOSE}" >> "${FILE_ESTADO}"
 			fi
 		fi
-		contador=$((contador+1))
 	done < "${FILE_ESTADO_EQUIPOS_INICIAL}"
 }
 
@@ -214,10 +210,24 @@ resumen_equipos_iniciales()
 	EQUIPOS_ANALIZADOS=$((num_lineas_estado))
 	EQUIPOS_DISPONIBLES=$(grep "${DISPONIBLE}" "${FICHERO_RESUMEN}" | wc -l)
 	EQUIPOS_NO_DISPONIBLES=$(grep "${NO_DISPONIBLE}" "${FICHERO_RESUMEN}" | wc -l)
-	printf "Equipos analizados [%s]\tEquipos Disponibles [%s]\tEquipos NO disponibles [%s]" "${EQUIPOS_ANALIZADOS}" "${EQUIPOS_DISPONIBLES}" "${EQUIPOS_NO_DISPONIBLES}" >> "${FICHERO_RESUMEN}"
-
+	RESUMEN=$(printf "Equipos analizados [%s]\tEquipos Disponibles [%s]\tEquipos NO disponibles [%s]" "${EQUIPOS_ANALIZADOS}" "${EQUIPOS_DISPONIBLES}" "${EQUIPOS_NO_DISPONIBLES}")
+	sed -i "1i${RESUMEN}\n" "${FICHERO_RESUMEN}"
 }
 
+#Genera el resumen del progreso de los equipos
+resumen_estado_equipos()
+{
+	while IFS= read -r line
+	do
+		contador=0
+		en_equipo=$(printf "%s" "${line}" | grep "Equipo")
+		[ "${en_equipo}" != "" ] && contador=$((contador+1))
+	done < "${FILE_ESTADO}"
+
+	TOTAL_EQUIPOS="${contador}"
+	RESUMEN_PROGRESO="PROGRESO: (0/${TOTAL_EQUIPOS}) EQUIPOS FINALIZADOS"
+	sed -i "1i${RESUMEN_PROGRESO}\n" "${FILE_ESTADO}"
+}
 
 #############MAIN###############
 #Distinguimos invocaciones desde tres puntos: 
@@ -283,7 +293,10 @@ elif [ "${INVOCACION}" = "CREA_ESTADO_TAREA" ]; then
 	#Crearemos fichero 'estado_tarea.txt' a partir de 'estado_equipos_inicial.txt'
 	#Omitiendo equipos no disponibles.
 	crea_estado_tarea
-	[ -f "${FILE_ESTADO}" ] && add_last_update "${FILE_ESTADO}"
+	if [ -f "${FILE_ESTADO}" ]; then 
+		resumen_estado_equipos
+		add_last_update "${FILE_ESTADO}"
+	fi
 
 #3.2 Invocación debida a recogida
 elif [ "${INVOCACION}" = "ACTUALIZA_ESTADO_TAREA_RECOGIDA" ]; then
@@ -296,25 +309,27 @@ elif [ "${INVOCACION}" = "ACTUALIZA_ESTADO_TAREA_RECOGIDA" ]; then
 		linea_actualizada=$(printf "%s" "${linea_equipo}" | awk -v update_progress="${update_progress}" -F"\t" 'BEGIN{FS=OFS="\t"} {$(NF-1)=update_progress; print}')
 	else
 		linea_actualizada=$(printf "%s" "${linea_equipo}" | awk -v update_progress="${update_progress}" -v estado="${FINALIZADA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$(NF-1)=update_progress;$NF=estado;print}')
+		sed  -i "s#"
 	fi
 	#para que 'sed' no interprete []
 	linea_equipo=$(printf "%s" "${linea_equipo}" | sed -e "s#\[#\\\[#g" -e "s#\]#\\\]#g")
 	linea_actualizada=$(printf "%s" "${linea_actualizada}" | sed -e "s#\[#\\\[#g" -e "s#\]#\\\]#g")
 	sed -i "s#${linea_equipo}#${linea_actualizada}#g" "${FILE_ESTADO}"
 	add_last_update "${FILE_ESTADO}"
+fi
 
 #3.3 Invocación debida a consulta
-elif [ "${INVOCACION}" = "CONSULTA_ESTADO_TAREA" ]; then
+#elif [ "${INVOCACION}" = "CONSULTA_ESTADO_TAREA" ]; then
 
 	#Determinamos el tipo de acceso SSH
-	. "${SCRIPT_CHECK_SSH}" "${i}"
+#	. "${SCRIPT_CHECK_SSH}" "${i}"
 
-	busqueda="Equipo ${equipo_consultado}:"
-	linea_equipo=$(awk -v busqueda="${busqueda}" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ busqueda {print $0}' "${FILE_ESTADO}")
-	proceso=$(${SSH_COMANDO} "${USER_REMOTO}"@${equipo_consultado} "${CMD_ESTADO_TAREA}")
-	if [ "${proceso}" = "" ]; then
-		linea_actualizada=$(printf "%s" "${linea_equipo}" | awk -v estado="${INTERRUMPIDA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$NF=estado;print}')
-		sed -i "s#${linea_equipo}#${linea_actualizada}#g" "${FILE_ESTADO}"
-		add_last_update "${FILE_ESTADO}"
-	fi
-fi
+#	busqueda="Equipo ${equipo_consultado}:"
+#	linea_equipo=$(awk -v busqueda="${busqueda}" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ busqueda {print $0}' "${FILE_ESTADO}")
+#	proceso=$(${SSH_COMANDO} "${USER_REMOTO}"@${equipo_consultado} "${CMD_ESTADO_TAREA}")
+#	if [ "${proceso}" = "" ]; then
+#		linea_actualizada=$(printf "%s" "${linea_equipo}" | awk -v estado="${INTERRUMPIDA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$NF=estado;print}')
+#		sed -i "s#${linea_equipo}#${linea_actualizada}#g" "${FILE_ESTADO}"
+#		add_last_update "${FILE_ESTADO}"
+#	fi
+

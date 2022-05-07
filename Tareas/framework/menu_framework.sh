@@ -215,7 +215,7 @@ if [ "$#" -eq 0 ]; then
 			fi
 		;;
 		6)
-			. "${SCRIPT_ESTADO}"
+			. "${SCRIPT_ESTADO_CONSULTA}"
 		;;
 		7)
 			respuesta=$(dialog --title "Extraer Resultados" \

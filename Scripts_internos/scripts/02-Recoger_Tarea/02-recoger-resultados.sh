@@ -15,7 +15,7 @@ printf "\nPREVIAMENTE a la recogida, se guardara el ESTADO de los equipos remoto
 printf "\n%s\n\n" "Pulse una tecla para continuar... (Ctrl-C para Salir)"
 
 
-read tecla
+[ "${FAST_MODE}" -eq 0 ] && read tecla
 
 #eval "export TIPO_ESTADO=${ESTADO_CON_LISTA_FICHEROS}; ${SCRIPT_ESTADO} \"${EQUIPOS_LT}\""
 

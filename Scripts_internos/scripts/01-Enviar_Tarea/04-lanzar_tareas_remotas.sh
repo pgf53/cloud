@@ -8,7 +8,7 @@ pwd
 
 clear
 printf "\n\n%s\n\n%s\n" "¿Seguro que desea EJECUTAR la Tarea \"${NOMBRE_TAREA}\" en los equipos \"${EQUIPOS_LT}\"?." "Pulse una tecla para continuar... (Ctrl-C para Salir)"
-read tecla
+[ "${FAST_MODE}" -eq 0 ] && read tecla
 
 #Antes de proceder con el envío de la tarea comrobamos si se está ejecutando el script
 #de recogida automática.
