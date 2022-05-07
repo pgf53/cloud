@@ -37,10 +37,16 @@ estado()
 			fi
 		done < "${FILE_ESTADO_LISTADO_FICHEROS}"
 
+		#Imprimimos progreso inicial
+		ficheros_total=$(ls "${DIR_FICHEROS_REPARTIR}" | wc -l)
+		PROGRESO=$(printf "PROGRESO: (0/%s) FICHEROS FINALIZADOS\n" "${ficheros_total}")
+		sed -i "1i$PROGRESO\n" "${FILE_ESTADO_LISTADO_FICHEROS}"
+
 		#Imprimimos Instrucciones
 		instrucciones="#########Instrucciones#######\nPrimera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero.\n" 
 		actualizacion=$(printf "Última actualización: %s" "$(date)")
 		sed -i "1i$instrucciones" "${FILE_ESTADO_LISTADO_FICHEROS}"
+		#Imprimimos fecha y hora de creación
 		sed -i "1i${actualizacion}\n" "${FILE_ESTADO_LISTADO_FICHEROS}"
 
 		#Invocamos a SCRIPT_ESTADO_EQUIPOS para creación de estado_tarea:
@@ -72,6 +78,9 @@ estado()
 			#Si hemos llegado aquí es que el fichero se ha descargado correctamente.
 			nueva_linea=$(awk -v pat="$fichero_entrada" -v OFS='\t' '$0 ~ pat {$2="si"; $3="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
 			sed -i "s/^$fichero_entrada\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
+			ficheros_terminados=$(grep "PROGRESO:" "${FILE_ESTADO_LISTADO_FICHEROS}" | cut -d'/' -f'1' | cut -d'(' -f'2')
+			ficheros_terminados=$((ficheros_terminados+1))
+			sed -i "s# (.*/# (${ficheros_terminados}/#g" "${FILE_ESTADO_LISTADO_FICHEROS}"
 		done
 		actualizacion="$(date)"
 		sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
