@@ -74,7 +74,7 @@ comprueba_lanzamiento()
 		for equipo in ${equipos_no_disponibles}; do
 			equipos_no_disponibles="${equipos_no_disponibles} ${equipo}"
 		done
-		equipos_no_disponibles="printf %s ${equipos_no_disponibles} | sed \"s/^ //g\""
+		equipos_no_disponibles=$(printf "%s" "${equipos_no_disponibles}" | sed "s/^ //g")
 		dialog --title "Equipos NO disponibles" \
 				--stdout \
 				--backtitle "¡Atención!: los equipos \"${equipos_no_disponibles}\" no se encuentran disponibles" \
