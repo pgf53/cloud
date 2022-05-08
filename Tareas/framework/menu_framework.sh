@@ -71,14 +71,17 @@ comprueba_lanzamiento()
 
 	#mostramos resultados al usuario
 	if [ "${equipos_no_disponibles}" != "" -a "${equipos_disponibles}" != "" ]; then
-	dialog --title "Equipos NO disponibles" \
-			--stdout \
-			--backtitle "¡Atención!: los equipos \"${equipos_no_disponibles}\" no se encuentran disponibles" \
-			--yesno "¿Desea continuar con la ejecución omitiendo los equipos no disponibles?." 0 0
-	respuesta="$?" #0 afirmativa, 1 negativa
-	#Eliminamos equipos no disponibles de cloud_tarea.conf
+		for equipo in ${equipos_no_disponibles}; do
+			equipos_no_disponibles="${equipos_no_disponibles} ${equipo}"
+		done
+		equipos_no_disponibles="printf %s ${equipos_no_disponibles} | sed \"s/^ //g\""
+		dialog --title "Equipos NO disponibles" \
+				--stdout \
+				--backtitle "¡Atención!: los equipos \"${equipos_no_disponibles}\" no se encuentran disponibles" \
+				--yesno "¿Desea continuar con la ejecución omitiendo los equipos no disponibles?." 0 0
+		respuesta="$?" #0 afirmativa, 1 negativa
+		#Eliminamos equipos no disponibles de cloud_tarea.conf
 		if [ "${respuesta}" -eq 0 ]; then
-			echo "ESTOS SON LOS EQUIPOS DISPONIBLES: ${equipos_disponibles}"
 			for equipo in ${equipos_disponibles}; do
 				equipo_sin_prefijo=$(printf "%s" "$equipo" | sed "s/${PREFIJO_NOMBRE_EQUIPO}//g")
 				equipos_a_ejecutar="${equipos_a_ejecutar} ${equipo_sin_prefijo}"
