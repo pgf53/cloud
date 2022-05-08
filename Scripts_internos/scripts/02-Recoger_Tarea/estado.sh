@@ -73,12 +73,10 @@ crea_estado()
 
 	# Probar si: Windows
 	else
-		echo "ENTRA EN WINDOWS"
 		COMANDO='if exist c:\Windows\ echo '"${SEPARADOR}${WINDOWS}${SEPARADOR}"
 		# Ver caracteres no imprimibles:    cat -vfile
 		# dos2unix para quitarlos (el ^M)
 		[ "$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${COMANDO}" 2>/dev/null | dos2unix)" = "${SEPARADOR}${WINDOWS}${SEPARADOR}" ] && SO="${WINDOWS}"
-		echo "este es el SO: $SO"
 	fi
 
 	if [ -z "${SO}" ]; then 
