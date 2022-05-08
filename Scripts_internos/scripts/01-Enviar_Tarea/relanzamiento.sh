@@ -8,11 +8,13 @@ en_ejecucion=$(awk -v estado_tarea="${EJECUTANDOSE}" 'BEGIN{FS=OFS="\t"} $0 ~ es
 if [ "${en_ejecucion}" != "" ]; then
 	dialog --title "Tarea En ejecución" \
 			--stdout \
-			--backtitle "¡Atención!: se ha detectado que la tare sigue en ejecución." \
-			--yesno "¿Desea detenerla de todos los equipos y proseguir con el lanzamiento?." 0 0
+			--backtitle "¡Atención!: se ha detectado que la tarea sigue en ejecución." \
+			--yesno "¿Desea detenerla de todos los equipos y proseguir con un nuevo lanzamiento?." 0 0
 	respuesta="$?" #0 afirmativa, 1 negativa
 	if [ "${respuesta}" -eq 0 ]; then
 		. "${SCRIPT_MATAR}"
+		export RELANZAMIENTO="OK"
+		return
 	else
 		dialog --title "Relanzamiento cancelado" \
 				--msgbox "Para poder realizar el relanzamiento es necesario que la tarea no se encuentre en ejecución.\n\nSe sale..." 0 0
