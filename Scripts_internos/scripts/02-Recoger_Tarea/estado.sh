@@ -205,7 +205,7 @@ resumen_equipos_iniciales()
 	FICHERO_RESUMEN="$1"
 	num_lineas_estado=$(wc -l "${FICHERO_RESUMEN}" | cut -d' ' -f'1')
 	EQUIPOS_ANALIZADOS=$((num_lineas_estado))
-	EQUIPOS_DISPONIBLES=$(grep "${DISPONIBLE}" "${FICHERO_RESUMEN}" | wc -l)
+	EQUIPOS_DISPONIBLES=$(awk -v equipo_disponible="${DISPONIBLE}" 'BEGIN{FS=OFS="\t"} $5==equipo_disponible {print $1}' ${FICHERO_RESUMEN} | wc -l)
 	EQUIPOS_NO_DISPONIBLES=$(grep "${NO_DISPONIBLE}" "${FICHERO_RESUMEN}" | wc -l)
 	RESUMEN=$(printf "Equipos analizados [%s]\tEquipos Disponibles [%s]\tEquipos NO disponibles [%s]" "${EQUIPOS_ANALIZADOS}" "${EQUIPOS_DISPONIBLES}" "${EQUIPOS_NO_DISPONIBLES}")
 	sed -i "1i${RESUMEN}\n" "${FICHERO_RESUMEN}"
