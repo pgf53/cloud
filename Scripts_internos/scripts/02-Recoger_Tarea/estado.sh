@@ -299,7 +299,7 @@ elif [ "${INVOCACION}" = "CREA_ESTADO_TAREA" ]; then
 elif [ "${INVOCACION}" = "ACTUALIZA_ESTADO_TAREA_RECOGIDA" ]; then
 	#Actualizamos estado por recogida
 	FIN=0
-	busqueda="Equipo ${equipo_recogido}:"
+	busqueda="Equipo ${equipo}:"
 	linea_equipo=$(awk -v busqueda="${busqueda}" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ busqueda {print $0}' "${FILE_ESTADO}")
 	progreso_total=$(printf "%s" "${linea_equipo}" | awk  -F"\t" 'BEGIN{FS=OFS="\t"} {print $(NF-1)}' | cut -d'/' -f'2' | cut -d')' -f'1')
 	update_progress="(${progreso}/${progreso_total})"

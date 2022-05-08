@@ -1,0 +1,7 @@
+1, apple, 1
+2, orange, 0
+3, pear, 1
+4, apple, 0
+5, peach, 0
+6, apple, 1
+

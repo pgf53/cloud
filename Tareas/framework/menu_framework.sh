@@ -96,7 +96,7 @@ comprueba_lanzamiento()
 				--msgbox "Configure los equipos para que estén disponibles o modifique la selección para reintentar. " 0 0
 			exit 1
 		fi
-	elif [ "${lista_equipos_disponibles}" = "" ]; then
+	elif [ "${equipos_disponibles}" = "" ]; then
 		dialog --title "Indisponibilidad de Equipos" \
 				--msgbox "Ningún equipo se encuentra disponible para la ejecución de la tarea.\n\nSe sale..." 0 0
 		exit 1

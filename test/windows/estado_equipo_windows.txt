@@ -1,0 +1,5 @@
+Última actualización: Sun May  8 18:21:56 CEST 2022
+
+Equipos analizados [1]	Equipos Disponibles [0]	Equipos NO disponibles [1]
+
+Equipo lt07:	ON	Windows		No disponible: SO incompatible	Sin Certificado SSH. Disponible clave

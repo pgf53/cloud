@@ -79,6 +79,7 @@ for i in ${EQUIPOS_LT}; do
 	export procesados=$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}${i} "${CMD_REMOTO_CONSULTA}")
 	echo "ESTOS SON LOS FICHEROS DETECTADOS COMO FINALIZADOS en equipo ${PREFIJO_NOMBRE_EQUIPO}${i}: ${procesados}"
 	export TIPO_ESTADO="recogida"
+	export equipo="${PREFIJO_NOMBRE_EQUIPO}${i}"
 	# Actualizamos estado
 	#eval "${SCRIPT_ESTADO} \"${EQUIPOS_LT}\""
 	${SCRIPT_ESTADO} "${i}"

