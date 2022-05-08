@@ -34,7 +34,7 @@ if [ "${equipos}" != "" ]; then
 		equipo_sin_prefijo=$(printf "%s" "$equipo" | sed "s/${PREFIJO_NOMBRE_EQUIPO}//g")
 		equipos_a_recoger="${equipos_a_recoger} ${equipo_sin_prefijo}"
 	done
-	equipos_a_recoger="printf %s ${equipos_a_recoger} | sed \"s/^ //g\""
+	equipos_a_recoger=$(printf "%s" "${equipos_a_recoger}" | sed "s/^ //g")
 
 	#Recogemos de los equipos 'DISPONIBLE-INTERRUMPIDA'
 	"${SCRIPT_RECOGER}" "${equipos_a_recoger}"
