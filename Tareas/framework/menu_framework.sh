@@ -131,6 +131,23 @@ equipos_usados_tarea()
 	printf "%s" "${EQUIPOS_LT}"
 }
 
+#Realiza el lanzamiento completo de una tarea
+lanzamiento()
+{
+	#1 Verificiamos la disponibilidad de los equipos seleccionados
+	export INVOCACION="MENU_TAREA_LANZAMIENTO"
+	. "${SCRIPT_ESTADO_EQUIPOS}"
+	comprueba_lanzamiento
+	#2 Clonamos Tarea para cada equipo
+	. "${SCRIPT_CLONAR_ESTRUCTURA}"
+	#3 Establecemos el reparto de los ficheros
+	. "${SCRIPT_REPARTIR_MANUAL}"
+	#4 Enviamos a equipos remotos
+	. "${SCRIPT_ENVIO}"
+	#5 Iniciamos lanzamiento/relanzamiento según proceda
+	. "${SCRIPT_LANZAR}"
+}
+
 #Obtenemos el directorio de la tarea y lo exportamos
 ACTUAL="$(pwd)" && cd "$(dirname $0)" && export DIR_TAREA="$(pwd)/"
 #Obtenemos el nombre de la tarea y lo exportamos
@@ -167,32 +184,30 @@ if [ "$#" -eq 0 ]; then
 
 	case ${respuesta} in
 		1)
-			#if [ -f "${FILE_ESTADO}" ]; then
-			#	num_lineas_estado=$(wc -l "${FILE_ESTADO}" | cut -d' ' -f'1')
-			#	inacabadas=$(tail -$((num_lineas_estado-1)) estado/estado_framework.txt | awk -F'\t' -v estado="${FINALIZADA}" '{if ($8!=estado) {print $1}}')
-			#	[ "${inacabadas}" != "" ] && . "${SCRIP_RELANZAMIENTO}"	#DEBE CONTEMPLAR LA DISPONIBILIDAD DE LOS EQUIPOS. REVISAR!!!!!
-			#else
-			#	. "${SCRIPT_LANZAR}"
-			#fi
-			#QUITAR!
-			. "${SCRIPT_LIMPIAR_TAREA}"
-			#1 Verificiamos la disponibilidad de los equipos seleccionados
-			export INVOCACION="MENU_TAREA_LANZAMIENTO"
-			. "${SCRIPT_ESTADO_EQUIPOS}"
-			comprueba_lanzamiento
-			#2 Clonamos Tarea para cada equipo
-			. "${SCRIPT_CLONAR_ESTRUCTURA}"
-			#3 Establecemos el reparto de los ficheros
-			. "${SCRIPT_REPARTIR_MANUAL}"
-			#4 Enviamos a equipos remotos
-			. "${SCRIPT_ENVIO}"
-			#5 Iniciamos lanzamiento/relanzamiento según proceda
 			if [ -f "${FILE_ESTADO}" ]; then
-				num_lineas_estado=$(wc -l "${FILE_ESTADO}" | cut -d' ' -f'1')
-				tail -3 estado/estado_framework.txt | awk -F'\t' '{if ($8!="Finalizad") {print $8}}';  echo $?
-				. "${SCRIP_RELANZAMIENTO}"	#DEBE CONTEMPLAR LA DISPONIBILIDAD DE LOS EQUIPOS. REVISAR!!!!!
+				equipos_no_finalizados=$(awk -v tarea_ejecutandose="${EJECUTANDOSE}" -v tarea_interrumpida="${INTERRUMPIDA}" 'BEGIN{FS=OFS="\t"} $NF==tarea_ejecutandose || $NF==tarea_interrumpida {print $1}' ${FILE_ESTADO})
+				if [ "${equipos_no_finalizados}" = "" ]; then
+					dialog --title "Tarea Completada" \
+							--stdout \
+							--backtitle "¡Atención!: la tarea se detecta como completada." \
+							--yesno "¿Desea eliminar los datos de la tarea, e iniciar un relanzamiento?." 0 0
+					respuesta="$?" #0 afirmativa, 1 negativa
+	#Eliminamos equipos no disponibles de cloud_tarea.conf
+					if [ "${respuesta}" -eq 0 ]; then
+						#Limpiamos datos de la tarea
+						. "${SCRIPT_LIMPIAR_TAREA}"
+						#Iniciamos el lanzamiento
+						lanzamiento
+					fi
+				else
+					#Actualizamos estado de la tarea
+					. "${SCRIPT_ESTADO_CONSULTA}"
+					#Invocamos Script de relanzamiento
+					. "${SCRIP_RELANZAMIENTO}"
+					[ "${RELANZAMIENTO}" = "OK" ] && lanzamiento
+				fi
 			else
-				. "${SCRIPT_LANZAR}"
+				lanzamiento
 			fi
 		;;
 		2)	#Ejecutamos la tarea en equipo remoto
