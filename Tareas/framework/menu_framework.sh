@@ -66,41 +66,28 @@ preparar_lista_equipos()
 #los equipos disponibles y ejecutar el análisis sobre estos.
 comprueba_lanzamiento()
 {
-	contador=0
-	while IFS= read -r line
-	do
-		if [ "${contador}" -gt 0 ]; then
-			equipo_indisponible=$(printf "%s" "${line}" | awk -v disponibilidad="${NO_DISPONIBLE}" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ disponibilidad { print $1 }' | cut -d':' -f'1' | cut -d' ' -f'2')
-			if [ "${equipo_indisponible}" != "" ]; then
-				lista_equipos_indisponibles="${lista_equipos_indisponibles} ${equipo_indisponible}"
-			else 
-				equipo_disponible=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'2')
-				lista_equipos_disponibles="${lista_equipos_disponibles} ${equipo_disponible}"
-			fi
-		fi
-		contador=$((contador+1))
-	done < "${FILE_ESTADO_EQUIPOS_INICIAL}"
-
-	#eliminamos espacios iniciales
-	lista_equipos_indisponibles=$(printf "%s" "${lista_equipos_indisponibles}" | sed 's/^ //g')
-	lista_equipos_disponibles=$(printf "%s" "${lista_equipos_disponibles}" | sed 's/^ //g')
+	equipos_disponibles=$(awk -v disponible="${DISPONIBLE}" 'BEGIN{FS=OFS="\t"} $5==disponible {print $1}' ${FILE_ESTADO_EQUIPOS_INICIAL} | cut -d':' -f'1' | cut -d' ' -f'2')
+	equipos_no_disponibles=$(awk -v disponible="${DISPONIBLE}" 'BEGIN{FS=OFS="\t"} $5!="" && $5!=disponible {print $1}' ${FILE_ESTADO_EQUIPOS_INICIAL} | cut -d':' -f'1' | cut -d' ' -f'2')
 
 	#mostramos resultados al usuario
-	if [ "${lista_equipos_indisponibles}" != "" -a "${lista_equipos_disponibles}" != "" ]; then
+	if [ "${equipos_no_disponibles}" != "" -a "${equipos_disponibles}" != "" ]; then
 	dialog --title "Equipos NO disponibles" \
 			--stdout \
-			--backtitle "¡Atención!: los equipos \"${lista_equipos_indisponibles}\" no se encuentran disponibles" \
+			--backtitle "¡Atención!: los equipos \"${equipos_no_disponibles}\" no se encuentran disponibles" \
 			--yesno "¿Desea continuar con la ejecución omitiendo los equipos no disponibles?." 0 0
 	respuesta="$?" #0 afirmativa, 1 negativa
 	#Eliminamos equipos no disponibles de cloud_tarea.conf
 		if [ "${respuesta}" -eq 0 ]; then
-			echo "ESTOS SON LOS EQUIPOS DISPONIBLES: ${lista_equipos_disponibles}"
-			lista_equipos_disponibles_sin_prefijo=$(printf "%s" "${lista_equipos_disponibles}" | sed "s/${PREFIJO_NOMBRE_EQUIPO}//g")
+			echo "ESTOS SON LOS EQUIPOS DISPONIBLES: ${equipos_disponibles}"
+			for equipo in ${equipos_disponibles}; do
+				equipo_sin_prefijo=$(printf "%s" "$equipo" | sed "s/${PREFIJO_NOMBRE_EQUIPO}//g")
+				equipos_a_ejecutar="${equipos_a_ejecutar} ${equipo_sin_prefijo}"
+			done
+			equipos_a_ejecutar="printf %s ${equipos_a_ejecutar} | sed \"s/^ //g\""
 			var_equipos=$(cat "${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf" | grep -m 1 "EQUIPOS_LT=")
-			sed -i "s/${var_equipos}/EQUIPOS_LT=\"${lista_equipos_disponibles_sin_prefijo}\"/g" "${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf"
+			sed -i "s/${var_equipos}/EQUIPOS_LT=\"${equipos_a_ejecutar}\"/g" "${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf"
 			#recargamos la configuración con los nuevos equipos.
 			. ${CLOUD_CONFIG_INTERNA}
-			echo "${EQUIPOS_LT}"
 		else
 			dialog --title "Información" \
 				--msgbox "Configure los equipos para que estén disponibles o modifique la selección para reintentar. " 0 0
