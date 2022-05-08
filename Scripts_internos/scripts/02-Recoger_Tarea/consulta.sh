@@ -37,7 +37,7 @@ do
 			TIPO_SSH=$(printf "$line" | awk -F"\t" '{print $6}')
 			[ "${TIPO_SSH}" = "${SSH_KEY}" ] && SSH_COMANDO="${SSH_COMANDO_KEY}" || SSH_COMANDO="${SSH_COMANDO_CERTIFICADO}"
 			COMANDO_PRUEBA="echo ''"
-			${SSH_COMANDO} "${USER_REMOTO}"@${EQUIPO} "${COMANDO_PRUEBA}" 2>/dev/null
+			${SSH_COMANDO} "${USER_REMOTO}"@${EQUIPO} "${COMANDO_PRUEBA}" < /dev/null
 				if [ $? -eq 0 ]; then
 					existe_proceso=$(ps ax | pgrep "${PROCESO_PARA_ESTADO}")
 					if [ "${existe_proceso}" = "" ]; then
