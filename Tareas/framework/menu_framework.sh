@@ -72,12 +72,12 @@ comprueba_lanzamiento()
 	#mostramos resultados al usuario
 	if [ "${equipos_no_disponibles}" != "" -a "${equipos_disponibles}" != "" ]; then
 		for equipo in ${equipos_no_disponibles}; do
-			equipos_no_disponibles="${equipos_no_disponibles} ${equipo}"
+			lista_equipos_no_disponibles="${lista_equipos_no_disponibles} ${equipo}"
 		done
-		equipos_no_disponibles=$(printf "%s" "${equipos_no_disponibles}" | sed "s/^ //g")
+		lista_equipos_no_disponibles=$(printf "%s" "${lista_equipos_no_disponibles}" | sed "s/^ //g")
 		dialog --title "Equipos NO disponibles" \
 				--stdout \
-				--backtitle "¡Atención!: los equipos \"${equipos_no_disponibles}\" no se encuentran disponibles" \
+				--backtitle "¡Atención!: los equipos \"${lista_equipos_no_disponibles}\" no se encuentran disponibles" \
 				--yesno "¿Desea continuar con la ejecución omitiendo los equipos no disponibles?." 0 0
 		respuesta="$?" #0 afirmativa, 1 negativa
 		#Eliminamos equipos no disponibles de cloud_tarea.conf
@@ -86,7 +86,7 @@ comprueba_lanzamiento()
 				equipo_sin_prefijo=$(printf "%s" "$equipo" | sed "s/${PREFIJO_NOMBRE_EQUIPO}//g")
 				equipos_a_ejecutar="${equipos_a_ejecutar} ${equipo_sin_prefijo}"
 			done
-			equipos_a_ejecutar="printf %s ${equipos_a_ejecutar} | sed \"s/^ //g\""
+			equipos_a_ejecutar=$(printf "%s" "${equipos_a_ejecutar}" | sed "s/^ //g")
 			var_equipos=$(cat "${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf" | grep -m 1 "EQUIPOS_LT=")
 			sed -i "s/${var_equipos}/EQUIPOS_LT=\"${equipos_a_ejecutar}\"/g" "${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf"
 			#recargamos la configuración con los nuevos equipos.
