@@ -1,0 +1,19 @@
+Última actualización: Sun May  8 23:00:21 CEST 2022
+
+Equipos analizados [15]	Equipos Disponibles [15]	Equipos NO disponibles [0]
+
+Equipo lt09:	ON	Linux	linux1	Disponible	SSH certificado
+Equipo lt10:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt11:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt12:	ON	Linux	linux1	Disponible	SSH certificado
+Equipo lt13:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt14:	ON	Linux	linux1	Disponible	SSH certificado
+Equipo lt15:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt16:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt17:	ON	Linux	linux1	Disponible	SSH certificado
+Equipo lt18:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt19:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt20:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt25:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt26:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]
+Equipo lt27:	ON	Linux	linux1	Disponible	SSH certificado	[Carpeta Tarea, Se vacía]

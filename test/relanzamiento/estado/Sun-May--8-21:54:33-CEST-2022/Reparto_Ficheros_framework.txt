@@ -1,0 +1,82 @@
+----------------------Resumen del reparto------------------------
+
+Equipo lt09:
+0days_cortado_14.uri
+0days_cortado_15.uri
+Número de líneas totales asignadas: 20
+Número de Ficheros asignados: 2
+
+Equipo lt10:
+0days_cortado_13.uri
+0days_cortado_16.uri
+Número de líneas totales asignadas: 20
+Número de Ficheros asignados: 2
+
+Equipo lt11:
+0days_cortado_12.uri
+0days_cortado_17.uri
+Número de líneas totales asignadas: 20
+Número de Ficheros asignados: 2
+
+Equipo lt12:
+0days_cortado_11.uri
+0days_cortado_18.uri
+Número de líneas totales asignadas: 20
+Número de Ficheros asignados: 2
+
+Equipo lt13:
+0days_cortado_10.uri
+0days_cortado_19.uri
+Número de líneas totales asignadas: 20
+Número de Ficheros asignados: 2
+
+Equipo lt14:
+0days_cortado_1.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt15:
+0days_cortado_20.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt16:
+0days_cortado_2.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt17:
+0days_cortado_3.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt18:
+0days_cortado_4.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt19:
+0days_cortado_5.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt20:
+0days_cortado_6.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt25:
+0days_cortado_7.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt26:
+0days_cortado_8.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
+Equipo lt27:
+0days_cortado_9.uri
+Número de líneas totales asignadas: 10
+Número de Ficheros asignados: 1
+
