@@ -60,13 +60,89 @@ preparar_lista_equipos()
 	[ -z "${EQUIPOS_LT}" ] && { printf "\n\nNo se ha establecido ningun equipo (EQUIPOS_LT) de trabajo. Se sale...\n\n"; exit 1; }
 }
 
+#Comprueba la disponibilidad de
+#los equipos en los instantes previos
+#al lanzamiendo. Permite determinar automáticamente
+#los equipos disponibles y ejecutar el análisis sobre estos.
+comprueba_lanzamiento()
+{
+	equipos_disponibles=$(awk -v disponible="${DISPONIBLE}" 'BEGIN{FS=OFS="\t"} $5==disponible {print $1}' ${FILE_ESTADO_EQUIPOS_INICIAL} | cut -d':' -f'1' | cut -d' ' -f'2')
+	equipos_no_disponibles=$(awk -v disponible="${DISPONIBLE}" 'BEGIN{FS=OFS="\t"} $5!="" && $5!=disponible {print $1}' ${FILE_ESTADO_EQUIPOS_INICIAL} | cut -d':' -f'1' | cut -d' ' -f'2')
+
+	#mostramos resultados al usuario
+	if [ "${equipos_no_disponibles}" != "" -a "${equipos_disponibles}" != "" ]; then
+		for equipo in ${equipos_no_disponibles}; do
+			lista_equipos_no_disponibles="${lista_equipos_no_disponibles} ${equipo}"
+		done
+		lista_equipos_no_disponibles=$(printf "%s" "${lista_equipos_no_disponibles}" | sed "s/^ //g")
+		dialog --title "Equipos NO disponibles" \
+				--stdout \
+				--backtitle "¡Atención!: los equipos \"${lista_equipos_no_disponibles}\" no se encuentran disponibles" \
+				--yesno "¿Desea continuar con la ejecución omitiendo los equipos no disponibles?." 0 0
+		respuesta="$?" #0 afirmativa, 1 negativa
+		#Eliminamos equipos no disponibles de cloud_tarea.conf
+		if [ "${respuesta}" -eq 0 ]; then
+			for equipo in ${equipos_disponibles}; do
+				equipo_sin_prefijo=$(printf "%s" "$equipo" | sed "s/${PREFIJO_NOMBRE_EQUIPO}//g")
+				equipos_a_ejecutar="${equipos_a_ejecutar} ${equipo_sin_prefijo}"
+			done
+			equipos_a_ejecutar=$(printf "%s" "${equipos_a_ejecutar}" | sed "s/^ //g")
+			var_equipos=$(cat "${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf" | grep -m 1 "EQUIPOS_LT=")
+			sed -i "s/${var_equipos}/EQUIPOS_LT=\"${equipos_a_ejecutar}\"/g" "${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf"
+			#recargamos la configuración con los nuevos equipos.
+			. ${CLOUD_CONFIG_INTERNA}
+		else
+			dialog --title "Información" \
+				--msgbox "Configure los equipos para que estén disponibles o modifique la selección para reintentar. " 0 0
+			exit 1
+		fi
+	elif [ "${equipos_disponibles}" = "" ]; then
+		dialog --title "Indisponibilidad de Equipos" \
+				--msgbox "Ningún equipo se encuentra disponible para la ejecución de la tarea.\n\nSe sale..." 0 0
+		exit 1
+	else
+		dialog --title "Disponibilidad de Equipos" \
+				--msgbox "¡Todos los equipos seleccionados se encuentran disponibles!.\n\nPreparando Ejecución..." 0 0
+	fi
+
+}
+
+#Devuelve lista con equipos que han sido enviados
+#a equipo remoto
+equipos_usados_tarea()
+{
+	#Verificamos si el equipo se envió (tenía contenido)
+	for equipo in ${EQUIPOS_LT}; do
+		contenido=$(grep "${PREFIJO_NOMBRE_EQUIPO}${equipo}:" ${FILE_ESTADO})
+		if [ "${contenido}" = "" ]; then
+			EQUIPOS_LT=$(printf "%s" "${EQUIPOS_LT}" | sed -e "s/${equipo}//g" -e "s/  / /g")
+		fi
+	done
+	printf "%s" "${EQUIPOS_LT}"
+}
+
+#Realiza el lanzamiento completo de una tarea
+lanzamiento()
+{
+	#1 Verificiamos la disponibilidad de los equipos seleccionados
+	export INVOCACION="MENU_TAREA_LANZAMIENTO"
+	. "${SCRIPT_ESTADO_EQUIPOS}"
+	comprueba_lanzamiento
+	#2 Clonamos Tarea para cada equipo
+	. "${SCRIPT_CLONAR_ESTRUCTURA}"
+	#3 Establecemos el reparto de los ficheros
+	. "${SCRIPT_REPARTIR_MANUAL}"
+	#4 Enviamos a equipos remotos
+	. "${SCRIPT_ENVIO}"
+	#5 Iniciamos lanzamiento/relanzamiento según proceda
+	. "${SCRIPT_LANZAR}"
+}
+
 #Obtenemos el directorio de la tarea y lo exportamos
 ACTUAL="$(pwd)" && cd "$(dirname $0)" && export DIR_TAREA="$(pwd)/"
 #Obtenemos el nombre de la tarea y lo exportamos
 NOMBRE_TAREA=$(basename "${DIR_TAREA}")
 #Exportamos la ruta del fichero de configuración de la tarea
-#CLOUD_CONFIG_TAREA="${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf"
-#exportamos el directorio de 'cloud_config_interna.conf' y lo cargamos
 export CLOUD_CONFIG_INTERNA="./../../Scripts_internos/scripts/cloud_config_interna.conf"
 
 #Cuando se invoca el estado desde el menú es de tipo 'consulta'
@@ -82,50 +158,81 @@ if [ "$#" -eq 0 ]; then
 	respuesta=$(dialog --title "Menú ${NOMBRE_TAREA}" \
 					--stdout \
 					--menu "Selecciona una opción:" 0 0 0 \
-					1 "Clonar directorios" \
-					2 "Repartir ficheros" \
-					3 "Enviar" \
-					4 "Ejecutar" \
-					5 "Consultar estado" \
-					6 "Recoger resultados" \
-					7 "Limpiar estado" \
-					8 "Limpiar tarea")
+					1 "Lanzamiento Completo" \
+					2 "Consultar estado" \
+					3 "Recoger resultados" \
+					4 "Matar tarea" \
+					5 "Limpiar Directorios en equipos remotos" \
+					6 "Limpiar tarea")
 
 	case ${respuesta} in
-		1)	#Ejecutamos la tarea en equipo remoto
-			. "${SCRIPT_CLONAR_ESTRUCTURA}"
-			#cd ${DIR_SCRIPT_ENVIO}
-			#. ${SCRIPT_EJECUCION} ${DIRCLOUD}cloud_tarea_${tarea}.conf
-			#cd "${ACTUAL}"
-		;;
-		2)
-			. "${SCRIPT_REPARTIR_MANUAL}"
-		;;
-		3)
-			. "${SCRIPT_ENVIO}"
-		;;
-		4)
-			if [ -f "${FILE_ESTADO_LISTADO_FICHEROS}" -o -f "${FILE_ESTADO}" ]; then 
-				. "${SCRIP_RELANZAMIENTO}"
+		1)
+			if [ -f "${FILE_ESTADO}" ]; then
+				equipos_no_finalizados=$(awk -v tarea_ejecutandose="${EJECUTANDOSE}" -v tarea_interrumpida="${INTERRUMPIDA}" 'BEGIN{FS=OFS="\t"} $NF==tarea_ejecutandose || $NF==tarea_interrumpida {print $1}' ${FILE_ESTADO})
+				if [ "${equipos_no_finalizados}" = "" ]; then
+					dialog --title "Tarea Completada" \
+							--stdout \
+							--backtitle "¡Atención!: la tarea se detecta como completada." \
+							--yesno "¿Desea eliminar los datos de la tarea, e iniciar un relanzamiento?." 0 0
+					respuesta="$?" #0 afirmativa, 1 negativa
+	#Eliminamos equipos no disponibles de cloud_tarea.conf
+					if [ "${respuesta}" -eq 0 ]; then
+						#Limpiamos datos de la tarea
+						. "${SCRIPT_LIMPIAR_TAREA}"
+						#Iniciamos el lanzamiento
+						lanzamiento
+					fi
+				else
+					#Actualizamos estado de la tarea
+					. "${SCRIPT_ESTADO_CONSULTA}"
+					#Invocamos Script de relanzamiento
+					. "${SCRIP_RELANZAMIENTO}"
+					[ "${RELANZAMIENTO}" = "OK" ] && lanzamiento
+				fi
 			else
-				. "${SCRIPT_LANZAR}"
+				lanzamiento
 			fi
 		;;
-		5)
-			. "${SCRIPT_ESTADO}"
+		2)
+			. "${SCRIPT_ESTADO_CONSULTA}"
 		;;
-		6)
-			respuesta=$(dialog --title "Equipos de recogida" \
+		3)
+			respuesta=$(dialog --title "Extraer Resultados" \
 						--stdout \
-						--inputbox "Seleccione los equipos de los que recoger los resultados:" 0 0)
-			preparar_lista_equipos "$respuesta"
+						--inputbox "Introduzca los equipos en los que desee realizar la recogida.\n\nDejar en blanco para recoger los datos de todos los equipos.\n\nPara realizar la recogida de todos los equipos exceptuando uno, usar el prefijo \"-\" seguido del equipo a evitar (e.g. \"-03\").\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
+			#Descartamos equipo en el que no queremos realizar la recogida
+			guion=$(printf "%s" "${respuesta}" | grep '^-')
+			if [ "${guion}" != "" ]; then
+				equipo_descartado=$(printf "%s" "${respuesta}" | cut -d'-' -f'2')
+				EQUIPOS_LT=$(printf "%s" "${EQUIPOS_LT}" | sed -e "s/${equipo_descartado}//g" -e "s/  / /g")
+				preparar_lista_equipos
+			else
+				preparar_lista_equipos "$respuesta"
+			fi
+			#Verificamos si el equipo se envió (tenía contenido)
+			EQUIPOS_LT=$(equipos_usados_tarea)
 			. "${SCRIPT_RECOGER}" "${EQUIPOS_LT}"
 			#. "${SCRIPT_RECOGER}" "05"	#Usado para no dar fallos en menú global. Parámetro sin uso.
 		;;
-		7)
-			. "${SCRIPT_LIMPIAR_ESTADO}"
+		4)
+			respuesta=$(dialog --title "Detener Tarea" \
+						--stdout \
+						--inputbox "Introduzca los equipos en los que desee eliminar la tarea.\n\nDejar en blanco para eliminar la tarea de todos los equipos\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
+			[ "${respuesta}" != "" ] && preparar_lista_equipos "${respuesta}"
+			#Verificamos si el equipo se envió (tenía contenido)
+			EQUIPOS_LT=$(equipos_usados_tarea)
+			. "${SCRIPT_MATAR}" "${EQUIPOS_LT}"
 		;;
-		8)
+		5)
+			respuesta=$(dialog --title "Limpiar Tarea Remota" \
+						--stdout \
+						--inputbox "Introduzca los equipos en los que desee limpiar la tarea.\n\nDejar en blanco para limpiar la tarea de todos los equipos\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
+			[ "${respuesta}" != "" ] && preparar_lista_equipos "${respuesta}"
+			#Verificamos si el equipo se envió (tenía contenido)
+			EQUIPOS_LT=$(equipos_usados_tarea)
+			. "${SCRIPT_LIMPIAR}" "${EQUIPOS_LT}"
+		;;
+		6)
 			. "${SCRIPT_LIMPIAR_TAREA}"
 		;;
 	esac
@@ -136,4 +243,3 @@ fi
 
 # Restaurar la carpeta de invocación
 cd "${ACTUAL}"
-

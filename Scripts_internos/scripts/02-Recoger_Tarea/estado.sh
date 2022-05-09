@@ -14,9 +14,6 @@ evalua_equipos()
 			printf "Equipo %s%s:\t" "${PREFIJO_NOMBRE_EQUIPO}${i}"
 
 			#####  I) Identificacion ON/OFF #####
-			#Atención!! Eliminar la interfaz (-I eth1) cuando se despliegue en el laboratorio
-			#arping -c 1 "${PREFIJO_NOMBRE_EQUIPO}$i" 1>/dev/null 2>&1
-			#arping -I eth0 -c 1 "${PREFIJO_NOMBRE_EQUIPO}$i" 1>/dev/null 2>&1
 			ping -c 1 "${PREFIJO_NOMBRE_EQUIPO}$i" 1>/dev/null 2>&1
 			[ "$?" = "0" ] && POWER="ON" || POWER="OFF"
 			
@@ -320,19 +317,3 @@ elif [ "${INVOCACION}" = "ACTUALIZA_ESTADO_TAREA_RECOGIDA" ]; then
 	fi
 	add_last_update "${FILE_ESTADO}"
 fi
-
-#3.3 Invocación debida a consulta
-#elif [ "${INVOCACION}" = "CONSULTA_ESTADO_TAREA" ]; then
-
-	#Determinamos el tipo de acceso SSH
-#	. "${SCRIPT_CHECK_SSH}" "${i}"
-
-#	busqueda="Equipo ${equipo_consultado}:"
-#	linea_equipo=$(awk -v busqueda="${busqueda}" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ busqueda {print $0}' "${FILE_ESTADO}")
-#	proceso=$(${SSH_COMANDO} "${USER_REMOTO}"@${equipo_consultado} "${CMD_ESTADO_TAREA}")
-#	if [ "${proceso}" = "" ]; then
-#		linea_actualizada=$(printf "%s" "${linea_equipo}" | awk -v estado="${INTERRUMPIDA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$NF=estado;print}')
-#		sed -i "s#${linea_equipo}#${linea_actualizada}#g" "${FILE_ESTADO}"
-#		add_last_update "${FILE_ESTADO}"
-#	fi
-

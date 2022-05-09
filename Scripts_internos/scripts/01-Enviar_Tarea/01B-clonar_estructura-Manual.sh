@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#Las invocaciones deben realizarse desde el menú interno de cada tarea
-
-#Exportamos directorio de tarea
-#export ${DIR_TAREA}
 # Cargar variables de configuracion
 . ${CLOUD_CONFIG_INTERNA}
 

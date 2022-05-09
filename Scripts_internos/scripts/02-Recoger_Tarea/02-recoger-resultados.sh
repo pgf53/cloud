@@ -17,7 +17,6 @@ printf "\n%s\n\n" "Pulse una tecla para continuar... (Ctrl-C para Salir)"
 
 [ "${FAST_MODE}" -eq 0 ] && read tecla
 
-#eval "export TIPO_ESTADO=${ESTADO_CON_LISTA_FICHEROS}; ${SCRIPT_ESTADO} \"${EQUIPOS_LT}\""
 
 # Se indica en fichero de estado, que posteriormente se pasa a recoger los ficheros
 printf "\n\n\n###########################\n\nSe procede a recoger los Resultados remotos...\n" #| tee -a "${FILE_ESTADO_LISTA_FICHEROS}"
@@ -27,18 +26,6 @@ for i in ${EQUIPOS_LT}; do
 	#Determinamos el tipo de acceso SSH
 	. "${SCRIPT_CHECK_SSH}" "${i}"
 
-	#MODO_SSH=$(. "${SCRIPT_CHECK_SSH}" "${i}")
-	#if [ "${MODO_SSH}" = "${SSH_CERTIFICADO}" ]; then
-	#	SSH_COMANDO="${SSH_COMANDO_CERTIFICADO}"
-	#	SCP_COMANDO="${SCP_COMANDO_CERTIFICADO}"
-	#elif [ "${MODO_SSH}" = "${SSH_KEY}" ]; then
-	#	SSH_COMANDO="${SSH_COMANDO_KEY}"
-	#	SCP_COMANDO="${SCP_COMANDO_KEY}"
-	#else
-	#	echo "Modo SSH no detectado. Se sale..."
-	#	exit 1
-	#fi
-
     printf "\n\n###### Equipo LT$i: ###########\n"
     # Construir nombre fichero local de recogida para este equipo
     FICHERO_RECOGIDA_NOMBRE="${PREFIJO_NOMBRE_EQUIPO}$i${FILE_RECOGIDA_EXT}" #lt05-framework_Resultados.tar.gz
@@ -46,7 +33,6 @@ for i in ${EQUIPOS_LT}; do
 
     if [ -z "${SUBDIR_EXCLUIR_RECOGIDA}" ]; then
 	CMD_REMOTO_CONSULTA="ls -1 ${DIR_REMOTO_ENTRADAS_FINALIZADAS}"
-	#Nos situamos en /opt/cluster/framework/01-Enviar_Tarea/framework/ y comprimimos Resultados/ como /opt/cluster/framework/02-Recoger_Tarea/lt05-framework_Resultados.tar.gz
 	CMD_REMOTO="rm -Rf ${FICHERO_RECOGIDA_COMPLETO_REMOTO} 2>&1 1>/dev/null; cd ${DIR_REMOTO_ENVIO_DESCOMP}; tar cfvz  ${FICHERO_RECOGIDA_COMPLETO_REMOTO} ${SUBDIR_REMOTO_RECOGIDA}"
     else
 	CMD_REMOTO="rm -Rf ${FICHERO_RECOGIDA_COMPLETO_REMOTO} 2>&1 1>/dev/null; cd ${DIR_REMOTO_ENVIO_DESCOMP}; tar cfvz  ${FICHERO_RECOGIDA_COMPLETO_REMOTO} ${SUBDIR_REMOTO_RECOGIDA} --exclude=**${SUBDIR_EXCLUIR_RECOGIDA}*"
@@ -81,7 +67,6 @@ for i in ${EQUIPOS_LT}; do
 	export TIPO_ESTADO="recogida"
 	export equipo="${PREFIJO_NOMBRE_EQUIPO}${i}"
 	# Actualizamos estado
-	#eval "${SCRIPT_ESTADO} \"${EQUIPOS_LT}\""
 	${SCRIPT_ESTADO} "${i}"
     else
 	printf "\n\nEquipo ${PREFIJO_NOMBRE_EQUIPO}$i: Error al descargar el fichero ${SUBDIR_LOCAL_RESULTADOS_COMPRIMIDOS}${FICHERO_RECOGIDA_NOMBRE}\n\n"

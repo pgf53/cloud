@@ -37,15 +37,8 @@ for i in ${EQUIPOS_LT}; do
 		# Ejecutar script remoto
 		${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "cd ${DIR_REMOTO_ENVIO}; chmod +x ${FILE_SCRIPT_REMOTO} ${FILE_SCRIPT_ENVIA_UDP} ${FILE_SCRIPT_MONITORIZA_SALIDA}; ./${FILE_SCRIPT_REMOTO} $i"
 
-		# Comentado: byobu automatizado en script_remoto.sh"
-		# Acceso remoto para ejecutar "byobu" y script de la tarea
-		# ${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i
 		printf "\n\n\n### Tarea \"${NOMBRE_TAREA}\" lanzada en Equipo \"$i\"...\n\n"
 	fi
 done
-
-#printf "\nEjecutando Scripts de Estado...\n"
-#export TIPO_ESTADO="lanzamiento"
-#eval "${SCRIPT_ESTADO} \"${EQUIPOS_LT}\""
 
 rm -f "${VAR_MEMORIA_SALIR}"  1>/dev/null 2>&1

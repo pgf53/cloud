@@ -14,24 +14,12 @@ for i in ${EQUIPOS_LT}; do
 	#Determinamos el tipo de acceso SSH
 	. "${SCRIPT_CHECK_SSH}" "${i}"
 
-	#MODO_SSH=$(. "${SCRIPT_CHECK_SSH}" "${i}")
-	#if [ "${MODO_SSH}" = "${SSH_CERTIFICADO}" ]; then
-	#	SSH_COMANDO="${SSH_COMANDO_CERTIFICADO}"
-	#	SCP_COMANDO="${SCP_COMANDO_CERTIFICADO}"
-	#elif [ "${MODO_SSH}" = "${SSH_KEY}" ]; then
-	#	SSH_COMANDO="${SSH_COMANDO_KEY}"
-	#	SCP_COMANDO="${SCP_COMANDO_KEY}"
-	#else
-	#	echo "Modo SSH no detectado. Se sale..."
-	#	exit 1
-	#fi
-
     printf "\n\n###### Comprimiendo/Enviando ficheros a Equipo LT$i (Tarea \"${NOMBRE_TAREA}\") ###########\n"
 
 	if [ "$(ls ${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}${i}/${SUBDIR_TAREA_ENTRADA})" ]; then
 		# Crear fichero comprimido con la Tarea (Estructura+Ficheros de analisis) para este equipo
 		# en "DIR_FILE_ANALISIS" (03-Ficheros_Montados/)
-		FICHERO_ANALISIS_ENVIAR="${DIR_FILE_ANALISIS}${PREFIJO_NOMBRE_EQUIPO}$i${EXT_FILE_ANALISIS}" #/opt/nuevo_Cloud/Scripts_internos/scripts/01-Enviar_Tarea/03-Ficheros_Desplegados/lt05-${NOMBRE_TAREA}.tar.gz
+		FICHERO_ANALISIS_ENVIAR="${DIR_FILE_ANALISIS}${PREFIJO_NOMBRE_EQUIPO}$i${EXT_FILE_ANALISIS}"
 		cd "${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}$i/"
 		rm -Rf   "${FICHERO_ANALISIS_ENVIAR}" 1>/dev/null 2>&1
 		tar cfvz "${FICHERO_ANALISIS_ENVIAR}" "./"

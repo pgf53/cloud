@@ -11,17 +11,6 @@ for i in ${EQUIPOS_LT}; do
 	#Determinamos el tipo de acceso SSH
 	. "${SCRIPT_CHECK_SSH}" "${i}"
 
-	#MODO_SSH=$(. "${SCRIPT_CHECK_SSH}" "${i}")
-	#if [ "${MODO_SSH}" = "${SSH_CERTIFICADO}" ]; then
-	#	SSH_COMANDO="${SSH_COMANDO_CERTIFICADO}"
-	#	SCP_COMANDO="${SCP_COMANDO_CERTIFICADO}"
-	#elif [ "${MODO_SSH}" = "${SSH_KEY}" ]; then
-	#	SSH_COMANDO="${SSH_COMANDO_KEY}"
-	#	SCP_COMANDO="${SCP_COMANDO_KEY}"
-	#else
-	#	echo "Modo SSH no detectado. Se sale..."
-	#	exit 1
-	#fi
     printf "\n\n###### LIMPIANDO CARPETAS remotas ###########\n"
 
     # Lista de sesiones byobu:  byobu list-sessions

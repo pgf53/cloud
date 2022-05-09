@@ -8,15 +8,12 @@
 estado()
 {
   clear
-  #printf "\nEstado tarea \"${NOMBRE_TAREA}\" en los equipos \"${EQUIPOS_LT}\":\nHora actual: %s\n\n" "$(date)"
-  lanzamiento=0
 
 	###############LANZAMIENTO####################
 	#Se ejecuta en el lanzamiento de una tarea
 	#Solo se entra una vez independientemente del número de equipos
-	if [ "${TIPO_ESTADO}" = "lanzamiento" -a "${lanzamiento}" -eq 0 ]; then
+	if [ "${TIPO_ESTADO}" = "lanzamiento" ]; then
 
-		lanzamiento=1
 		#Creamos 'lista_ficheros.txt'
 		#Generamos columna de nombres
 		ls -1 "${DIR_FICHEROS_REPARTIR}" | awk 'BEGIN{OFS="\t";} {print $1, "no", "no";}' > "${FILE_ESTADO_LISTADO_FICHEROS}"
@@ -29,7 +26,6 @@ estado()
 			if [ "${equipo}" != ""  ]; then
 				#Creamos la nueva línea que incluye el equipo al que ha sido asignado el fichero
 				nueva_linea=$(awk -v equipo="$equipo" -v pat="$fichero" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ pat { print $0 OFS equipo}' "${FILE_ESTADO_LISTADO_FICHEROS}")
-				#linea_a_modificar=$(awk -v pat="$fichero" -F"\t" '$0 ~ pat { print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
 				#Sustituimos la línea antigua por la nueva que incluye el equipo.
 				sed -i "s/${fichero}.*/${nueva_linea}/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
 			fi
@@ -61,7 +57,6 @@ estado()
 		for fichero_entrada in ${procesados}
 		do
 			progreso=$((progreso+1))
-			#sed -i "s/^$j\t.*/$j\tsi\tsi/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
 			#Si hemos llegado aquí es que el fichero se ha descargado correctamente.
 			nueva_linea=$(awk -v pat="$fichero_entrada" -v OFS='\t' '$0 ~ pat {$2="si"; $3="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
 			sed -i "s/^$fichero_entrada\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
@@ -83,7 +78,6 @@ estado()
 }
 
 
-
 #Encuentra el equipo al que pertenece un fichero de entrada
 encuentra_equipos()
 {
@@ -94,7 +88,6 @@ encuentra_equipos()
 		patron=$(printf "%s" "${line}" | sed 's/^Equipo.*/Equipo/g')
 		if [ "${patron}" = "Equipo" ];then
 			equipo=$(printf "%s" "${line}" | cut -d' ' -f2 | sed 's/://g')
-			#echo "este es el equipo dentro de encuentra_equipos: ${equipo}"
 		fi
 		if [ "${line}" = "${fichero}" ];then
 			printf "%s" "${equipo}"
@@ -103,15 +96,7 @@ encuentra_equipos()
 	done < ${FICHERO_REPARTO}
 }
 
-#rm -f "${FICHERO_SALIDA_ESTADO_OLD}"  1>/dev/null 2>&1
-#mv "${FICHERO_SALIDA_ESTADO}" "${FICHERO_SALIDA_ESTADO_OLD}"  1>/dev/null 2>&1
-#estado | tee "${FICHERO_SALIDA_ESTADO}"
-# Borramos primera linea del fichero (caracteres extraños)
-#sed -i '1d' "${FICHERO_SALIDA_ESTADO}"
+
 estado
 
-#Última actualización: Mon Apr 18 12:52:59 CEST 2022
-#Equipo: lt05	(0/2)	Ejecutándose
-#Equipo: lt06	(9/9)	Finalizada
-
-printf "\n\nResultados de Estado guardados en el fichero:\n\n%s\n\n" "$(echo ${FICHERO_SALIDA_ESTADO} | rev | cut -d"/" -f1-2 | rev)"
+printf "\n\nResultados de Estado guardados en el directorio:\n\n%s\n\n" "$(echo ${SUBDIR_LOCAL_RESULTADOS_ESTADO})"
