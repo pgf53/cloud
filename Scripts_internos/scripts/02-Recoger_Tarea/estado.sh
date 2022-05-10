@@ -312,7 +312,7 @@ elif [ "${INVOCACION}" = "ACTUALIZA_ESTADO_TAREA_RECOGIDA" ]; then
 	sed -i "s#${linea_equipo}#${linea_actualizada}#g" "${FILE_ESTADO}"
 	if [ "${FIN}" -eq 1 ]; then
 		finalizados=$(awk -v estado_finalizado="${FINALIZADA}" 'BEGIN{FS=OFS="\t"} $0 ~ estado_finalizado {print $NF}' "${FILE_ESTADO}" | wc -l)
-		num_total_equipos=$(grep "PROGRESO:" estado/estado_framework.txt | cut -d'/' -f'2' | cut -d')' -f1)
+		num_total_equipos=$(grep "PROGRESO:"  "${FILE_ESTADO}" | cut -d'/' -f'2' | cut -d')' -f1)
 		sed -i "s#PROGRESO:.*#PROGRESO: (${finalizados}/${num_total_equipos}) EQUIPOS FINALIZADOS#g" "${FILE_ESTADO}"
 	fi
 	add_last_update "${FILE_ESTADO}"

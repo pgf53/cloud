@@ -1,14 +1,17 @@
-Última actualización: Sun May  1 19:51:33 CEST 2022
+Última actualización: Tue May 10 19:00:11 CEST 2022
+
 #########Instrucciones#######
 Primera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero.
 
+PROGRESO: (10/10) FICHEROS FINALIZADOS
 
-0days_cortado_2.uri	si	si	lt09
-0days_cortado_3.uri	si	si	lt09
-0days_cortado_4.uri	si	si	lt09
-0days_cortado_5.uri	si	si	lt09
-0days_cortado_6.uri	si	si	lt09
-0days_cortado_7.uri	si	si	lt09
-0days_cortado_8.uri	si	si	lt09
-0days_cortado_9.uri	si	si	lt09
-0days_cortado.uri	si	si	lt09
+0days_cortado_2.uri	si	si	lt05
+0days_cortado_3.uri	si	si	lt05
+0days_cortado_4.uri	si	si	lt05
+0days_cortado_5.uri	si	si	lt05
+0days_cortado_6.uri	si	si	lt05
+0days_cortado_7.uri	si	si	lt05
+0days_cortado_8.uri	si	si	lt05
+0days_cortado_9.uri	si	si	lt05
+0days_cortado.uri	si	si	lt05
+ataques_1100.uri	si	si	lt06

@@ -143,8 +143,6 @@ ACTUAL="$(pwd)" && cd "$(dirname $0)" && export DIR_TAREA="$(pwd)/"
 #Obtenemos el nombre de la tarea y lo exportamos
 NOMBRE_TAREA=$(basename "${DIR_TAREA}")
 #Exportamos la ruta del fichero de configuración de la tarea
-#CLOUD_CONFIG_TAREA="${DIR_TAREA}cloud_${NOMBRE_TAREA}.conf"
-#exportamos el directorio de 'cloud_config_interna.conf' y lo cargamos
 export CLOUD_CONFIG_INTERNA="./../../Scripts_internos/scripts/cloud_config_interna.conf"
 
 #Cuando se invoca el estado desde el menú es de tipo 'consulta'
@@ -161,16 +159,11 @@ if [ "$#" -eq 0 ]; then
 					--stdout \
 					--menu "Selecciona una opción:" 0 0 0 \
 					1 "Lanzamiento Completo" \
-					2 "Clonar directorios" \
-					3 "Repartir ficheros" \
-					4 "Enviar" \
-					5 "Ejecutar" \
-					6 "Consultar estado" \
-					7 "Recoger resultados" \
-					8 "Matar tarea" \
-					9  "Limpiar Directorios en equipos remotos" \
-					10 "Limpiar estado" \
-					11 "Limpiar tarea")
+					2 "Consultar estado" \
+					3 "Recoger resultados" \
+					4 "Matar tarea" \
+					5 "Limpiar Directorios en equipos remotos" \
+					6 "Limpiar tarea")
 
 	case ${respuesta} in
 		1)
@@ -200,29 +193,10 @@ if [ "$#" -eq 0 ]; then
 				lanzamiento
 			fi
 		;;
-		2)	#Ejecutamos la tarea en equipo remoto
-			. "${SCRIPT_CLONAR_ESTRUCTURA}"
-			#cd ${DIR_SCRIPT_ENVIO}
-			#. ${SCRIPT_EJECUCION} ${DIRCLOUD}cloud_tarea_${tarea}.conf
-			#cd "${ACTUAL}"
-		;;
-		3)
-			. "${SCRIPT_REPARTIR_MANUAL}"
-		;;
-		4)
-			. "${SCRIPT_ENVIO}"
-		;;
-		5)
-			if [ -f "${FILE_ESTADO}" ]; then 
-				. "${SCRIP_RELANZAMIENTO}"
-			else
-				. "${SCRIPT_LANZAR}"
-			fi
-		;;
-		6)
+		2)
 			. "${SCRIPT_ESTADO_CONSULTA}"
 		;;
-		7)
+		3)
 			respuesta=$(dialog --title "Extraer Resultados" \
 						--stdout \
 						--inputbox "Introduzca los equipos en los que desee realizar la recogida.\n\nDejar en blanco para recoger los datos de todos los equipos.\n\nPara realizar la recogida de todos los equipos exceptuando uno, usar el prefijo \"-\" seguido del equipo a evitar (e.g. \"-03\").\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
@@ -240,7 +214,7 @@ if [ "$#" -eq 0 ]; then
 			. "${SCRIPT_RECOGER}" "${EQUIPOS_LT}"
 			#. "${SCRIPT_RECOGER}" "05"	#Usado para no dar fallos en menú global. Parámetro sin uso.
 		;;
-		8)
+		4)
 			respuesta=$(dialog --title "Detener Tarea" \
 						--stdout \
 						--inputbox "Introduzca los equipos en los que desee eliminar la tarea.\n\nDejar en blanco para eliminar la tarea de todos los equipos\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
@@ -248,8 +222,9 @@ if [ "$#" -eq 0 ]; then
 			#Verificamos si el equipo se envió (tenía contenido)
 			EQUIPOS_LT=$(equipos_usados_tarea)
 			. "${SCRIPT_MATAR}" "${EQUIPOS_LT}"
+			. "${SCRIPT_ESTADO_CONSULTA}"
 		;;
-		9)
+		5)
 			respuesta=$(dialog --title "Limpiar Tarea Remota" \
 						--stdout \
 						--inputbox "Introduzca los equipos en los que desee limpiar la tarea.\n\nDejar en blanco para limpiar la tarea de todos los equipos\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
@@ -258,10 +233,7 @@ if [ "$#" -eq 0 ]; then
 			EQUIPOS_LT=$(equipos_usados_tarea)
 			. "${SCRIPT_LIMPIAR}" "${EQUIPOS_LT}"
 		;;
-		10)
-			. "${SCRIPT_LIMPIAR_ESTADO}"
-		;;
-		11)
+		6)
 			. "${SCRIPT_LIMPIAR_TAREA}"
 		;;
 	esac
@@ -272,4 +244,3 @@ fi
 
 # Restaurar la carpeta de invocación
 cd "${ACTUAL}"
-

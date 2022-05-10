@@ -1,6 +1,6 @@
 ----------------------Resumen del reparto------------------------
 
-Equipo lt09:
+Equipo lt05:
 0days_cortado_2.uri
 0days_cortado_3.uri
 0days_cortado_4.uri
@@ -12,4 +12,9 @@ Equipo lt09:
 0days_cortado.uri
 Número de líneas totales asignadas: 90
 Número de Ficheros asignados: 9
+
+Equipo lt06:
+ataques_1100.uri
+Número de líneas totales asignadas: 1177
+Número de Ficheros asignados: 1
 
