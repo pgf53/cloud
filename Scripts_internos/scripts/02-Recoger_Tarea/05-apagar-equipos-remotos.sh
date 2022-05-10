@@ -1,14 +1,17 @@
 #!/bin/sh
 
 # Cargar variables de configuracion
-. ../config_interna.sh
+. ${CLOUD_CONFIG_INTERNA}
+
+#Determinamos el tipo de acceso SSH
+. "${SCRIPT_CHECK_SSH}" "${i}"
 
 
 clear
-printf "\n\n%s\n\n%s\n" "¿Seguro que desea APAGAR los equipos \"${EQUIPOS_LT}\"?" "Pulse una tecla para continuar... (Ctrl-C para Salir)"
+printf "\n\n%s\n\n%s\n" "¿Seguro que desea APAGAR los equipos \"${EQUIPOS_APAGAR}\"?" "Pulse una tecla para continuar... (Ctrl-C para Salir)"
 read tecla
 
-for i in ${EQUIPOS_LT}; do
+for i in ${EQUIPOS_APAGAR}; do
     printf "\n\n###### APAGANDO EQUIPOS ###########\n"
 
     # Lista de sesiones byobu:  byobu list-sessions
