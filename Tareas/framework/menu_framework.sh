@@ -130,11 +130,13 @@ lanzamiento()
 	comprueba_lanzamiento
 	#2 Clonamos Tarea para cada equipo
 	. "${SCRIPT_CLONAR_ESTRUCTURA}"
-	#3 Establecemos el reparto de los ficheros
+	#3 Dividimos ficheros presentes en directorio de división
+	. "${SCRIPT_DIVIDIR_FICHERO}"
+	#4 Establecemos el reparto de los ficheros
 	. "${SCRIPT_REPARTIR_MANUAL}"
-	#4 Enviamos a equipos remotos
+	#5 Enviamos a equipos remotos
 	. "${SCRIPT_ENVIO}"
-	#5 Iniciamos lanzamiento/relanzamiento según proceda
+	#6 Iniciamos lanzamiento/relanzamiento según proceda
 	. "${SCRIPT_LANZAR}"
 }
 
@@ -158,6 +160,8 @@ if [ "$#" -eq 0 ]; then
 	respuesta=$(dialog --title "Menú ${NOMBRE_TAREA}" \
 					--stdout \
 					--menu "Selecciona una opción:" 0 0 0 \
+					7 "Dividir ficheros" \
+					8 "Fusionar ficheros" \
 					1 "Lanzamiento Completo" \
 					2 "Consultar estado" \
 					3 "Recoger resultados" \
@@ -235,6 +239,12 @@ if [ "$#" -eq 0 ]; then
 		;;
 		6)
 			. "${SCRIPT_LIMPIAR_TAREA}"
+		;;
+		7)
+			. "${SCRIPT_DIVIDIR_FICHERO}"
+		;;
+		8)
+			. "${SCRIPT_FUSIONAR_FICHERO}"
 		;;
 	esac
 else

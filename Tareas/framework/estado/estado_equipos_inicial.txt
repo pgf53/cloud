@@ -1,6 +1,6 @@
-Última actualización: Tue May 10 17:52:46 CEST 2022
+Última actualización: mar may 17 19:49:16 CEST 2022
 
 Equipos analizados [2]	Equipos Disponibles [2]	Equipos NO disponibles [0]
 
-Equipo lt05:	ON	Linux	linux1	Disponible	Sin Certificado SSH. Disponible clave	[Carpeta Tarea con poco espacio: 2689 MB < 10000 MB]
-Equipo lt06:	ON	Linux	linux1	Disponible	Sin Certificado SSH. Disponible clave	[Carpeta Tarea con poco espacio: 2728 MB < 10000 MB]
+Equipo lt05:	ON	Linux	linux1	Disponible	Sin Certificado SSH. Disponible clave	[Carpeta Tarea con poco espacio: 2697 MB < 10000 MB]
+Equipo lt06:	ON	Linux	linux1	Disponible	Sin Certificado SSH. Disponible clave	[Carpeta Tarea con poco espacio: 2732 MB < 10000 MB]

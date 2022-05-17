@@ -1,14 +1,20 @@
 ----------------------Resumen del reparto------------------------
 
 Equipo lt05:
-0days_800_1.uri
-0days_cortado_2.uri
-Número de líneas totales asignadas: 843
-Número de Ficheros asignados: 2
+ataques_800_01.uri
+ataques_800_03.uri
+ataques_800_05.uri
+ataques_800_07.uri
+ataques_800_08.uri
+Número de líneas totales asignadas: 415
+Número de Ficheros asignados: 5
 
 Equipo lt06:
-0days_800_2.uri
-0days_cortado_1.uri
-Número de líneas totales asignadas: 843
-Número de Ficheros asignados: 2
+ataques_800_00.uri
+ataques_800_02.uri
+ataques_800_04.uri
+ataques_800_06.uri
+ataques_800_09.uri
+Número de líneas totales asignadas: 418
+Número de Ficheros asignados: 5
 

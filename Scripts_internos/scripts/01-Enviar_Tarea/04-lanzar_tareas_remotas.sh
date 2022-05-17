@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "en el script de lanzamiento"
-pwd
 # Cargar variables de configuracion
 . ${CLOUD_CONFIG_INTERNA}
 

@@ -11,6 +11,6 @@ git submodule update
 yum install https://archives.fedoraproject.org/pub/archive/fedora/linux/updates/23/x86_64/b/bison-3.0.4-3.fc23.x86_64.rpm
 make
 make install
-yum install -y inotify-tools sshpass python36 byobu dialog bash git
+yum install -y inotify-tools sshpass python36 byobu dialog git
 mkdir -p /opt/modsecurity-debug/var/log/
 touch /opt/modsecurity-debug/var/log/debug.log 

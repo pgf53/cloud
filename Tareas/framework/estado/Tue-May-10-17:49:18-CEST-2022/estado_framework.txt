@@ -1,6 +1,0 @@
-Última actualización: Tue May 10 17:49:18 CEST 2022
-
-PROGRESO: (0/2) EQUIPOS FINALIZADOS
-
-Equipo lt05:	ON	Linux	linux1	Disponible	Sin Certificado SSH. Disponible clave	[Carpeta Tarea con poco espacio: 2688 MB < 10000 MB]	(0/3)	Interrumpida
-Equipo lt06:	ON	Linux	linux1	Disponible	Sin Certificado SSH. Disponible clave	[Carpeta Tarea con poco espacio: 2727 MB < 10000 MB]	(0/3)	Interrumpida

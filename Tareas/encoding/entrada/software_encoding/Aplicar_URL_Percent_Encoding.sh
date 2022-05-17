@@ -36,6 +36,9 @@ for file in "${DIRIN}"*; do
 
     mv "${TMP}" "${SALIDA}"
 
+	#IMPORTANTE!!: cada tarea debe escribir un fichero vacío con el nombre del fichero de entrada ya procesado.
+	#Necesario para desencadenar la recogida automática.
+
 	#Generamos salida de fichero procesado.
 	nombre_fichero=$(basename "${file}")
 	touch "entradas_finalizadas/${nombre_fichero}"
