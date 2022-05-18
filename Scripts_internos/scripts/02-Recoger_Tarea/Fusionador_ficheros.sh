@@ -29,8 +29,8 @@ imprimirCabecera ()
 	sed -i "1i$IMPRIMIR2"  "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_ATTACKS}"
 	sed -i "1i$IMPRIMIR1"  "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_ATTACKS}"
 
-	#Imprimimos cabecera en fichero "*-info_hide.attacks" si existe
-	if [ -f "${OUT_ATTACKS_INFO_HIDE}" ]; then
+	#Imprimimos cabecera en fichero "*-info-hide.attacks" si existe
+	if [ -f "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_HIDE_ATTACKS}" ]; then
 		sed -i "1i$IMPRIMIR3"  "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_HIDE_ATTACKS}"
 		sed -i "1i$IMPRIMIR2"  "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_HIDE_ATTACKS}"
 		sed -i "1i$IMPRIMIR1"  "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_HIDE_ATTACKS}"
@@ -81,7 +81,6 @@ for i in "${DIR_FICHEROS_DIVIDIR}"* ; do
 		for fichero in ${FICHEROS_PRESENTES}; do
 			#Comprobamos el formato
 			FORMATO_BASICO=$(sed "s/^Packet.*/fichero de tipo basico/g" "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | grep "fichero de tipo basico")
-			#FORMATO_BASICO="patata"
 			if [ "${FORMATO_BASICO}" != "" ]; then
 				#Tenemos que establecer el número de paquete correctamente
 				numero_fichero=$(printf "%s" ${fichero} | sed "s/.*_//g" | sed "s/\..*//g" | sed "s/^0//g")
@@ -93,6 +92,11 @@ for i in "${DIR_FICHEROS_DIVIDIR}"* ; do
 		#Fusionamos Clean
 		FICHEROS_PRESENTES=$(ls "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04B-Clean/" | grep "${FICHERO_SIN_EXTENSION}_")
 		for fichero in ${FICHEROS_PRESENTES}; do
+			if [ "${FORMATO_BASICO}" != "" ]; then
+				#Tenemos que establecer el número de paquete correctamente
+				numero_fichero=$(printf "%s" ${fichero} | sed "s/.*_//g" | sed "s/\..*//g" | sed "s/^0//g")
+				[ ${numero_fichero} -gt 0 ] && ordena_paquetes "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04B-Clean/${fichero}" "${numero_fichero}"
+			fi
 			cat "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04B-Clean/${fichero}" >> "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04B-Clean/${FICHERO_SIN_EXTENSION}${EXTENSION_CLEAN}"
 			rm -f "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04B-Clean/${fichero}"
 		done
@@ -100,16 +104,31 @@ for i in "${DIR_FICHEROS_DIVIDIR}"* ; do
 		FICHEROS_PRESENTES=$(ls "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/" | grep "${FICHERO_SIN_EXTENSION}_.*${EXTENSION_INFO_ATTACKS}")
 		for fichero in ${FICHEROS_PRESENTES}; do
 			LINEAS_INFO_ATTACKS=$(wc -l "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | cut -d' ' -f'1')
-			tail -$((LINEAS_INFO_ATTACKS-3)) "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | tail -$((LINEAS_INFO_ATTACKS-3)) >> "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_ATTACKS}"
+			tail -$((LINEAS_INFO_ATTACKS-3)) "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | tail -$((LINEAS_INFO_ATTACKS-3)) > "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/sin_cabecera-info.attacks"
+			if [ "${FORMATO_BASICO}" != "" ]; then
+				#Tenemos que establecer el número de paquete correctamente
+				numero_fichero=$(printf "%s" ${fichero} | sed "s/.*_//g" | sed "s/\..*//g" | sed "s/^0//g" | cut -d'-' -f'1')
+				[ ${numero_fichero} -gt 0 ] && ordena_paquetes "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/sin_cabecera-info.attacks" "${numero_fichero}"
+			fi
+			cat "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/sin_cabecera-info.attacks" >> "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_ATTACKS}"
 			rm -f "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}"
+			rm -f "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/sin_cabecera-info.attacks"
 		done
 		#Fusionamos -info_hide.attacks si existe
 		FICHEROS_PRESENTES=$(ls "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/" | grep "${FICHERO_SIN_EXTENSION}_.*${EXTENSION_INFO_HIDE_ATTACKS}")
 		if [ "${FICHEROS_PRESENTES}" != "" ]; then
 			for fichero in ${FICHEROS_PRESENTES}; do
 				LINEAS_INFO_ATTACKS=$(wc -l "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | cut -d' ' -f'1')
-				tail -$((LINEAS_INFO_ATTACKS-3)) "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | tail -$((LINEAS_INFO_ATTACKS-3)) >> "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_HIDE_ATTACKS}"
+				#tail -$((LINEAS_INFO_ATTACKS-3)) "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | tail -$((LINEAS_INFO_ATTACKS-3)) >> "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_HIDE_ATTACKS}"
+				tail -$((LINEAS_INFO_ATTACKS-3)) "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | tail -$((LINEAS_INFO_ATTACKS-3)) > "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/sin_cabecera-info_hide.attacks"
+				if [ "${FORMATO_BASICO}" != "" ]; then
+					#Tenemos que establecer el número de paquete correctamente
+					numero_fichero=$(printf "%s" ${fichero} | sed "s/.*_//g" | sed "s/\..*//g" | sed "s/^0//g" | cut -d'-' -f'1')
+					[ ${numero_fichero} -gt 0 ] && ordena_paquetes "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/sin_cabecera-info_hide.attacks" "${numero_fichero}"
+				fi
+				cat "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/sin_cabecera-info_hide.attacks" >> "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${FICHERO_SIN_EXTENSION}${EXTENSION_INFO_HIDE_ATTACKS}"
 				rm -f "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}"
+				rm -f "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/sin_cabecera-info_hide.attacks"
 			done
 		fi
 		

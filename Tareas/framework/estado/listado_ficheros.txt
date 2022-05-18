@@ -1,4 +1,4 @@
-Última actualización: mar may 17 19:53:13 CEST 2022
+Última actualización: mié may 18 10:54:05 CEST 2022
 
 #########Instrucciones#######
 Primera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero.
