@@ -23,9 +23,11 @@ estado()
 		do
 			fichero=$(printf "%s" "${line}" | cut -d'	' -f'1')
 			equipo=$(encuentra_equipos)
-			if [ "${equipo}" != ""  ]; then
+			instancia=$(printf "%s" "${equipo}" | rev | cut -d'_' -f'1' | rev)
+			equipo=$(printf "%s" "${equipo}" | sed "s/_${instancia}//g")
+			if [ "${equipo}" != "" ]; then
 				#Creamos la nueva línea que incluye el equipo al que ha sido asignado el fichero
-				nueva_linea=$(awk -v equipo="$equipo" -v pat="$fichero" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ pat { print $0 OFS equipo}' "${FILE_ESTADO_LISTADO_FICHEROS}")
+				nueva_linea=$(awk -v equipo="$equipo" -v instancia="${instancia}" -v pat="$fichero" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ pat { print $0 OFS equipo FS instancia}' "${FILE_ESTADO_LISTADO_FICHEROS}")
 				#Sustituimos la línea antigua por la nueva que incluye el equipo.
 				sed -i "s/${fichero}.*/${nueva_linea}/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
 			fi
@@ -37,7 +39,7 @@ estado()
 		sed -i "1i$PROGRESO\n" "${FILE_ESTADO_LISTADO_FICHEROS}"
 
 		#Imprimimos Instrucciones
-		instrucciones="#########Instrucciones#######\nPrimera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero.\n" 
+		instrucciones="#########Instrucciones#######\nPrimera columna: nombre del fichero. Segunda columna: ¿Terminado en equipo remoto?. Tercera columna: ¿Recogido en el servidor?. Cuarta columna: equipo en el que se ha desplegado el fichero. Quinta columna: Instancia de despliegue del fichero\n" 
 		actualizacion=$(printf "Última actualización: %s" "$(date)")
 		sed -i "1i$instrucciones" "${FILE_ESTADO_LISTADO_FICHEROS}"
 		#Imprimimos fecha y hora de creación
@@ -69,6 +71,7 @@ estado()
 		#Actualizamos 'estado_nombretarea.txt'
 		export equipo
 		export progreso
+		export num_instances
 		export INVOCACION="ACTUALIZA_ESTADO_TAREA_RECOGIDA"
 		. "${SCRIPT_ESTADO_EQUIPOS}"
 

@@ -46,9 +46,12 @@ printf "\n\n%s\n\n%s\n" "¿Seguro que desea clonar los ficheros de la Tarea \"${
 for i in ${EQUIPOS_LT}; do
     printf "\n\n###### Creando copia para Equipo LT$i (Tarea \"${NOMBRE_TAREA}\") ###########\n"
 
-    # Crear carpeta
-    mkdir -p  "${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}$i" 1>/dev/null 2>&1
+	for num_instances in $(eval echo "{1..$N_INSTANCIA}"); do
+		echo "INSTANCIA: ${num_instances}"
+		# Crear carpeta
+		mkdir -p  "${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}${i}/${NOMBRE_TAREA}${num_instances}" 1>/dev/null 2>&1
 
-    # Copiar estructura
-    cp -Rf    "${DIR_ESTRUCTURA_TAREA}"* "${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}$i"
+		# Copiar estructura
+		cp -Rf    "${DIR_ESTRUCTURA_TAREA}"* "${DIR_ESTRUCTURA_CLONADA}${PREFIJO_NOMBRE_EQUIPO}${i}/${NOMBRE_TAREA}${num_instances}"
+	done
 done

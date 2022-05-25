@@ -14,6 +14,7 @@ tar xfvz "${PREFIJO_NOMBRE_EQUIPO}${EQUIPO}${EXT_FILE_ANALISIS}" -C "${DIR_REMOT
 # Creamos directorio de 'entradas_finalizadas' para recogida automática
 mkdir -p "${DIR_REMOTO_ENTRADAS_FINALIZADAS}" 1>/dev/null 2>&1
 
+
 # Ejecutar analisis
 printf "\nEjecutando tarea "${NOMBRE_TAREA}"...\n"
 printf "\nPara acceder a sesion: \"byobu\" (MonoTarea) o \"byobu attach-session -t ${NOMBRE_TAREA}\" (MultiTarea, \"byoby list-sessions\")\n"

@@ -155,7 +155,7 @@ comprueba_existe_tarea()
 	#Dicha informacin ha sido generada por 'comprueba_capacidad'.
 	linea_equipo=$(awk -v busqueda="${PREFIJO_NOMBRE_EQUIPO}${i}:" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ busqueda {print $0}' "${FICHERO_SALIDA}")
 
-	#Examinamos direcotorio remoto
+	#Examinamos directorio remoto
 	COMANDO_DIRECTORIO="[ -d ${DIR_REMOTO_ENVIO} ] && ls ${DIR_REMOTO_ENVIO}"
 	directorio_remoto=$(${SSH_COMANDO} "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i "${COMANDO_DIRECTORIO}" 2>/dev/null)
 
@@ -184,12 +184,15 @@ crea_estado_tarea()
 		if [ "${disponible}" = "equipo_disponible" ]; then
 			equipo=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'2')
 			#Disponible OK. ¿Tiene ficheros asignados? (caso num_ficheros < num_equipos)
-			if [ "$(ls ${DIR_ESTRUCTURA_CLONADA}${equipo}/${SUBDIR_TAREA_ENTRADA})" ]; then
-				num_ficheros_asignados=$(ls "${DIR_ESTRUCTURA_CLONADA}${equipo}/${SUBDIR_TAREA_ENTRADA}" | wc -l)
-				#info_tarea="(0/${num_ficheros_asignados})\t${EJECUTANDOSE}"
-				#linea_estado_tarea="${line}\t${info_tarea}"
-		 		printf "%s\t(0/%s)\t%s\n" "${line}" "${num_ficheros_asignados}" "${EJECUTANDOSE}" >> "${FILE_ESTADO}"
-			fi
+			for num_instances in $(eval echo "{1..$N_INSTANCIA}"); do
+				if [ "$(ls ${DIR_ESTRUCTURA_CLONADA}${equipo}/${NOMBRE_TAREA}${num_instances}/${SUBDIR_TAREA_ENTRADA})" ]; then
+					num_ficheros_asignados=$(ls "${DIR_ESTRUCTURA_CLONADA}${equipo}/${NOMBRE_TAREA}${num_instances}/${SUBDIR_TAREA_ENTRADA}" | wc -l)
+					#info_tarea="(0/${num_ficheros_asignados})\t${EJECUTANDOSE}"
+					#linea_estado_tarea="${line}\t${info_tarea}"
+					line_instancia=$(printf "%s" "${line}" | sed "s#${equipo}:#${equipo} ${NOMBRE_TAREA}${num_instances}:#g")
+			 		printf "%s\t(0/%s)\t%s\n" "${line_instancia}" "${num_ficheros_asignados}" "${EJECUTANDOSE}" >> "${FILE_ESTADO}"
+				fi
+			done
 		fi
 	done < "${FILE_ESTADO_EQUIPOS_INICIAL}"
 }
@@ -296,7 +299,7 @@ elif [ "${INVOCACION}" = "CREA_ESTADO_TAREA" ]; then
 elif [ "${INVOCACION}" = "ACTUALIZA_ESTADO_TAREA_RECOGIDA" ]; then
 	#Actualizamos estado por recogida
 	FIN=0
-	busqueda="Equipo ${equipo}:"
+	busqueda="Equipo ${equipo} ${NOMBRE_TAREA}${num_instances}:"
 	linea_equipo=$(awk -v busqueda="${busqueda}" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ busqueda {print $0}' "${FILE_ESTADO}")
 	progreso_total=$(printf "%s" "${linea_equipo}" | awk  -F"\t" 'BEGIN{FS=OFS="\t"} {print $(NF-1)}' | cut -d'/' -f'2' | cut -d')' -f'1')
 	update_progress="(${progreso}/${progreso_total})"

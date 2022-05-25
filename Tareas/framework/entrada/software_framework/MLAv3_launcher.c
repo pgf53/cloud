@@ -16,13 +16,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "modsecurity/modsecurity.h"
 #include "modsecurity/rules_set.h"
 
 
 //para que las rutas funcionen, debe evitarse que terminen en '/'
-char main_rule_uri[] = "etc/basic_rules.conf"; // fichero de configuración de ModSecurity V3
+char main_rule_uri[] = "detectores/ModSecurity/offline/basic_rules.conf"; // fichero de configuración de ModSecurity V3
+
+void cb(void *log, const void *data)
+{
+    // swallow it
+    return;
+}
 
 int main (int argc, char **argv)
 {
@@ -36,13 +43,28 @@ int main (int argc, char **argv)
 	}
 	
 
-	const char* uri = argv[1];
+	//const char* uri = argv[1];
+	const char* file_uri = argv[1];
+	FILE *in_file = fopen(file_uri, "r");
+		if (!in_file) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+
 
 	int ret;
     const char *error = NULL;
     ModSecurity *modsec;
     Transaction *transaction = NULL;
     RulesSet *rules;
+
+	struct stat sb;
+	if (stat(file_uri, &sb) == -1) {
+        perror("stat");
+        exit(EXIT_FAILURE);
+    }
+
+    char *file_contents = malloc(sb.st_size);
 
 	// Comenzamos el proceso de creación y envío de la transacción. 
 	// Puesto que no vamos a cambiar las reglas en tiempo de ejecución,
@@ -63,32 +85,44 @@ int main (int argc, char **argv)
     }
 
     msc_rules_dump(rules);
-    transaction = msc_new_transaction(modsec, rules, NULL);
+	msc_set_log_cb(modsec, cb);
+
+	while (fscanf(in_file, "%[^\n] ", file_contents) != EOF) {
+		transaction = msc_new_transaction(modsec, rules, NULL);
 
 // phase 0
     msc_process_connection(transaction, "127.0.0.1", 12345, "127.0.0.1", 80);
 // es necesario establecer la cabecera
+	//msc_add_request_header(transaction, (unsigned char *)"Host", (unsigned char *)"localhost");
+	//msc_add_request_header(transaction, (unsigned char *)"User-Agent", (unsigned char *)"msc_process_uri");
+	//msc_add_request_header(transaction, (unsigned char *)"Accept", (unsigned char *)"*/*");
 	msc_add_request_header(transaction, (unsigned char *)"Host", (unsigned char *)"localhost");
-	msc_add_request_header(transaction, (unsigned char *)"User-Agent", (unsigned char *)"msc_process_uri");
-	msc_add_request_header(transaction, (unsigned char *)"Accept", (unsigned char *)"*/*");
+	msc_add_request_header(transaction, (unsigned char *)"User-Agent", (unsigned char *)"Apache/2.2.15 (Red Hat) (internal dummy connection)");
+	msc_add_request_header(transaction, (unsigned char *)"Accept", (unsigned char *)"Yes");
+	msc_append_request_body(transaction, (unsigned char *)"", 0);
 //    msc_process_uri(transaction, uri,"GET", "1.1");
-	msc_process_uri(transaction, uri, "GET", "1.1");
+	msc_process_uri(transaction, file_contents, "GET", "1.1");
 // phase 1 
     msc_process_request_headers(transaction);
 // phase 2
     msc_process_request_body(transaction);
+/*
 // phase 3
     msc_process_response_headers(transaction, 200, "HTTP 1.3");
 // phase 4
     msc_process_response_body(transaction);
+*/
+
 // phase 5
     msc_process_logging(transaction);
 
-   																	
+  																	}
 end:
 	msc_rules_cleanup(rules);
 	msc_cleanup(modsec);
 
+	free(file_contents);
+    fclose(in_file);
     exit(EXIT_SUCCESS);
 
 

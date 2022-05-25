@@ -1,20 +1,30 @@
 ----------------------Resumen del reparto------------------------
 
-Equipo lt05:
-ataques_800_01.uri
-ataques_800_03.uri
-ataques_800_05.uri
-ataques_800_07.uri
-ataques_800_08.uri
-Número de líneas totales asignadas: 415
-Número de Ficheros asignados: 5
+Equipo lt05_framework1:
+0days_cortado_11.uri
+0days_cortado_13.uri
+0days_cortado_15.uri
+0days_cortado_17.uri
+0days_cortado_19.uri
+0days_cortado_20.uri
+0days_cortado_3.uri
+0days_cortado_5.uri
+0days_cortado_7.uri
+0days_cortado_8.uri
+Número de líneas totales asignadas: 100
+Número de Ficheros asignados: 10
 
-Equipo lt06:
-ataques_800_00.uri
-ataques_800_02.uri
-ataques_800_04.uri
-ataques_800_06.uri
-ataques_800_09.uri
-Número de líneas totales asignadas: 418
-Número de Ficheros asignados: 5
+Equipo lt06_framework1:
+0days_cortado_10.uri
+0days_cortado_12.uri
+0days_cortado_14.uri
+0days_cortado_16.uri
+0days_cortado_18.uri
+0days_cortado_1.uri
+0days_cortado_2.uri
+0days_cortado_4.uri
+0days_cortado_6.uri
+0days_cortado_9.uri
+Número de líneas totales asignadas: 100
+Número de Ficheros asignados: 10
 

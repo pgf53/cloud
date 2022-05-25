@@ -56,7 +56,7 @@ while read ARCHIVO; do
 	if [ "${FIN}" -eq 1 -o "${NUM_FICHEROS_A_RECOGER}" -eq 0 -a "${PERIODO_ENTRE_RECOGIDAS}" -eq 0 -o "${NUM_FICHEROS_A_RECOGER}" -eq "${FICHEROS_PROCESADOS}" -o "${PERIODO_ENTRE_RECOGIDAS}" -gt 0 ]; then
 		#Reseteamos el número de ficheros procesados para envío por número de ficheros
 		FICHEROS_PROCESADOS=0
-		./"${FILE_SCRIPT_ENVIA_UDP}" "${EQUIPO_CLIENTE}" "${PUERTO_ESCUCHA_CLIENTE}" "${EQUIPO_SERVIDOR}" "${PUERTO_ESCUCHA_SERVIDOR}" "${NOMBRE_TAREA}" "${FIN}" "${TIEMPO_ENTRE_REINTENTOS}" "${NUM_MAX_REINTENTOS}"
+		./"${FILE_SCRIPT_ENVIA_UDP}" "${EQUIPO_CLIENTE}" "${EQUIPO_SERVIDOR}" "${PUERTO_ESCUCHA_SERVIDOR}" "${NOMBRE_TAREA}" "${FIN}" "${TIEMPO_ENTRE_REINTENTOS}" "${NUM_MAX_REINTENTOS}"
 	fi
 	#num_ficheros_procesados=$(ls "${DIR_REMOTO_ENTRADAS_FINALIZADAS}" | wc -l)
 	#if [ "${num_ficheros_entrada}" -eq "${num_ficheros_procesados}" ]; then
