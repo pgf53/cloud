@@ -8,7 +8,7 @@
 . ${CLOUD_CONFIG_INTERNA}
 
 clear
-printf "\n\n%s\n" "¿Seguro que desea RECOGER los Resultados de la tarea \"${NOMBRE_TAREA}\" de los equipos \"${EQUIPOS_LT}\"?"
+printf "\n\n%s\n" "¿Seguro que desea RECOGER los Resultados de la tarea \"${NOMBRE_TAREA}\" de los equipos \"${EQUIPOS_LT}\" con instancias \"${instancia}\"?"
 
 printf "\nPREVIAMENTE a la recogida, se guardara el ESTADO de los equipos remotos (\"foto\" de la recogida a realizar).\n"
 

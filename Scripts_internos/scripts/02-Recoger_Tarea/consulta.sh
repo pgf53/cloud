@@ -32,6 +32,7 @@ do
 	LINEA_EQUIPO=$(printf "%s" "${line}" | sed "s/^Equipo ${PREFIJO_NOMBRE_EQUIPO}.*/linea_equipo/g")
 	if [ "${LINEA_EQUIPO}" = "linea_equipo" ]; then
 		EQUIPO=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'2')
+		INSTANCIA=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'3')
 		ESTADO_ACTUAL=$(printf "$line" | awk -F"\t" 'BEGIN{FS=OFS="\t"} {print $NF}')
 		if [ "${ESTADO_ACTUAL}" != "${FINALIZADA}" ]; then
 			TIPO_SSH=$(printf "$line" | awk -F"\t" '{print $6}')
@@ -39,7 +40,8 @@ do
 			COMANDO_PRUEBA="echo ''"
 			${SSH_COMANDO} "${USER_REMOTO}"@${EQUIPO} "${COMANDO_PRUEBA}" < /dev/null
 				if [ $? -eq 0 ]; then
-					existe_proceso=$(ps ax | pgrep "${PROCESO_PARA_ESTADO}")
+					#existe_proceso=$(ps ax | pgrep "${PROCESO_PARA_ESTADO}")
+					existe_proceso=$(byobu ls | grep "${INSTANCIA}:")
 					if [ "${existe_proceso}" = "" ]; then
 						NUEVA_LINEA=$(printf "$line" | awk -v interrumpida="${INTERRUMPIDA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$NF=interrumpida;print $0}')
 						LINEA_EQUIPO=$(printf "%s" "${line}" | sed -e "s#\[#\\\[#g" -e "s#\]#\\\]#g")
@@ -61,16 +63,20 @@ add_last_update "${FILE_ESTADO}"
 #Una vez hemos actualizado el fichero de estado, pasamos
 #a actualizar el fichero de listado a partir de este.
 
+DIR_REMOTO_ENTRADAS_FINALIZADAS_ORIGINAL="${DIR_REMOTO_ENTRADAS_FINALIZADAS}"
 while IFS= read -r line
 do
 	LINEA_EQUIPO=$(printf "%s" "${line}" | sed "s/^Equipo ${PREFIJO_NOMBRE_EQUIPO}.*/linea_equipo/g")
 	if [ "${LINEA_EQUIPO}" = "linea_equipo" ]; then
 		EQUIPO=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'2')
+		INSTANCIA=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'3')
 		ESTADO_ACTUAL=$(printf "$line" | awk -F"\t" 'BEGIN{FS=OFS="\t"} {print $NF}')
 		DISPONIBILIDAD=$(printf "$line" | awk -F"\t" 'BEGIN{FS=OFS="\t"} {print $NF}')
 		if [ "${ESTADO_ACTUAL}" != "${FINALIZADA}" -a "${ESTADO_ACTUAL}" = "${DISPONIBLE}" ]; then
 			TIPO_SSH=$(printf "$line" | awk -F"\t" '{print $6}')
 			[ "${TIPO_SSH}" = "${SSH_KEY}" ] && SSH_COMANDO="${SSH_COMANDO_KEY}" || SSH_COMANDO="${SSH_COMANDO_CERTIFICADO}"
+			DIR_REMOTO_ENTRADAS_FINALIZADAS="${DIR_REMOTO_ENTRADAS_FINALIZADAS_ORIGINAL}"
+			DIR_REMOTO_ENTRADAS_FINALIZADAS=$(printf "%s" ${DIR_REMOTO_ENTRADAS_FINALIZADAS} | sed "s/${NOMBRE_TAREA}/${INSTANCIA}/g")
 			CMD_REMOTO_CONSULTA_FICHEROS="ls -1 ${DIR_REMOTO_ENTRADAS_FINALIZADAS}"
 			PROCESADOS=$(${SSH_COMANDO} "${USER_REMOTO}"@${EQUIPO} "${CMD_REMOTO_CONSULTA_FICHEROS}") 2>/dev/null
 			if [ $? -eq 0 ]; then

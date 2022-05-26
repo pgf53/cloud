@@ -34,8 +34,9 @@ inotifywait -q -m -e create --format %f "${DIR_REMOTO_ENTRADAS_FINALIZADAS}" |
 while read ARCHIVO; do
 	fichero_procesado="${ARCHIVO}"
 
-	#Comprobamos estado de la tarea 
+	#Comprobamos estado de la tarea
 	existe_proceso=$(byobu ls | grep "${NOMBRE_TAREA}:")
+	printf "este es el proceso que en teoría sigue en ejecución: $existe_proceso"
 
 	if [ "${existe_proceso}" = "" ]; then
 		FIN=1
