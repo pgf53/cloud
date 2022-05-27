@@ -113,7 +113,7 @@ equipos_usados_tarea()
 {
 	#Verificamos si el equipo se envió (tenía contenido)
 	for equipo in ${EQUIPOS_LT}; do
-		contenido=$(grep "${PREFIJO_NOMBRE_EQUIPO}${equipo}:" ${FILE_ESTADO})
+		contenido=$(grep "${PREFIJO_NOMBRE_EQUIPO}${equipo} " ${FILE_ESTADO})
 		if [ "${contenido}" = "" ]; then
 			EQUIPOS_LT=$(printf "%s" "${EQUIPOS_LT}" | sed -e "s/${equipo}//g" -e "s/  / /g")
 		fi
@@ -127,11 +127,11 @@ lanzamiento()
 	#1 Verificiamos la disponibilidad de los equipos seleccionados
 	export INVOCACION="MENU_TAREA_LANZAMIENTO"
 	. "${SCRIPT_ESTADO_EQUIPOS}"
-	comprueba_lanzamiento
+	#comprueba_lanzamiento
 	#2 Clonamos Tarea para cada equipo
 	. "${SCRIPT_CLONAR_ESTRUCTURA}"
 	#3 Dividimos ficheros presentes en directorio de división
-	. "${SCRIPT_DIVIDIR_FICHERO}"
+	 [ -z "$(ls -A ${DIR_FICHEROS_DIVIDIR})" ] && . "${SCRIPT_DIVIDIR_FICHERO}"
 	#4 Establecemos el reparto de los ficheros
 	. "${SCRIPT_REPARTIR_MANUAL}"
 	#5 Enviamos a equipos remotos
@@ -212,6 +212,23 @@ if [ "$#" -eq 0 ]; then
 			else
 				preparar_lista_equipos "$respuesta"
 			fi
+
+			respuesta=$(dialog --title "Recoger Instancia" \
+						--stdout \
+						--inputbox "Introduzca las instancias de la que desee recoger los resultados.\n\nDejar en blanco para recoger de todas las instancias del equipo" 0 0)
+			if [ "${respuesta}" != "" ]; then
+				for num_instancia in ${respuesta}; do
+					num_instancia=$(printf "%s" "${num_instancia}" | sed "s/^0//g")
+					instancia="${instancia} ${num_instancia}"
+				done
+			else
+				for num_instancia in $(eval echo "{1..$N_INSTANCIA}"); do
+					num_instancia=$(printf "%s" "${num_instancia}" | sed "s/^0//g")
+					instancia="${instancia} ${num_instancia}"
+				done
+			fi
+
+			export instancia=$(printf "%s" "${instancia}" | sed "s/^ //g")
 			#Verificamos si el equipo se envió (tenía contenido)
 			EQUIPOS_LT=$(equipos_usados_tarea)
 			. "${SCRIPT_RECOGER}" "${EQUIPOS_LT}"
@@ -220,10 +237,27 @@ if [ "$#" -eq 0 ]; then
 		4)
 			respuesta=$(dialog --title "Detener Tarea" \
 						--stdout \
-						--inputbox "Introduzca los equipos en los que desee eliminar la tarea.\n\nDejar en blanco para eliminar la tarea de todos los equipos\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
+						--inputbox "Introduzca los equipos en los que desee detener la tarea.\n\nDejar en blanco para detener la tarea de todos los equipos\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
 			[ "${respuesta}" != "" ] && preparar_lista_equipos "${respuesta}"
-			#Verificamos si el equipo se envió (tenía contenido)
 			EQUIPOS_LT=$(equipos_usados_tarea)
+
+			respuesta=$(dialog --title "Detener Instancia" \
+						--stdout \
+						--inputbox "Introduzca las instancias en las que desee detener la tarea.\n\nDejar en blanco para detener todas las instancias del equipo\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
+			if [ "${respuesta}" != "" ]; then
+				for num_instancia in ${respuesta}; do
+					num_instancia=$(printf "%s" "${num_instancia}" | sed "s/^0//g")
+					instancia="${instancia} ${num_instancia}"
+				done
+			else
+				for num_instancia in $(eval echo "{1..$N_INSTANCIA}"); do
+					num_instancia=$(printf "%s" "${num_instancia}" | sed "s/^0//g")
+					instancia="${instancia} ${num_instancia}"
+				done
+			fi
+			export instancia=$(printf "%s" "${instancia}" | sed "s/^ //g")
+
+			#Verificamos si el equipo se envió (tenía contenido)
 			. "${SCRIPT_MATAR}" "${EQUIPOS_LT}"
 			. "${SCRIPT_ESTADO_CONSULTA}"
 		;;
@@ -232,6 +266,23 @@ if [ "$#" -eq 0 ]; then
 						--stdout \
 						--inputbox "Introduzca los equipos en los que desee limpiar la tarea.\n\nDejar en blanco para limpiar la tarea de todos los equipos\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
 			[ "${respuesta}" != "" ] && preparar_lista_equipos "${respuesta}"
+
+			respuesta=$(dialog --title "Limpiar Instancias" \
+						--stdout \
+						--inputbox "Introduzca las instancias en las que desee limpiar la tarea.\n\nDejar en blanco para limpiar todas las instancias del equipo\n\nNota: para más información sobre el estado de los equipos consulte:\n\"${FILE_ESTADO}\"" 0 0)
+			if [ "${respuesta}" != "" ]; then
+				for num_instancia in ${respuesta}; do
+					num_instancia=$(printf "%s" "${num_instancia}" | sed "s/^0//g")
+					instancia="${instancia} ${num_instancia}"
+				done
+			else
+				for num_instancia in $(eval echo "{1..$N_INSTANCIA}"); do
+					num_instancia=$(printf "%s" "${num_instancia}" | sed "s/^0//g")
+					instancia="${instancia} ${num_instancia}"
+				done
+			fi
+			export instancia=$(printf "%s" "${instancia}" | sed "s/^ //g")
+
 			#Verificamos si el equipo se envió (tenía contenido)
 			EQUIPOS_LT=$(equipos_usados_tarea)
 			. "${SCRIPT_LIMPIAR}" "${EQUIPOS_LT}"
@@ -244,6 +295,7 @@ if [ "$#" -eq 0 ]; then
 		;;
 	esac
 else
+	export instancia="${2}"
 	. "${SCRIPT_RECOGER}" "$1"
 fi
 
