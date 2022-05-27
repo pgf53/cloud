@@ -35,8 +35,9 @@ while read ARCHIVO; do
 	fichero_procesado="${ARCHIVO}"
 
 	#Comprobamos estado de la tarea
+	#Hacemos un ciclo de espera para detectar si la tarea ha finalizado (e.g detención del servidor)
+	sleep 0.2
 	existe_proceso=$(byobu ls | grep "${NOMBRE_TAREA}:")
-	printf "este es el proceso que en teoría sigue en ejecución: $existe_proceso"
 
 	if [ "${existe_proceso}" = "" ]; then
 		FIN=1
