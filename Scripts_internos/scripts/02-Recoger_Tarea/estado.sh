@@ -14,9 +14,11 @@ evalua_equipos()
 			printf "Equipo %s%s:\t" "${PREFIJO_NOMBRE_EQUIPO}${i}"
 
 			#####  I) Identificacion ON/OFF #####
-			ping -c 1 "${PREFIJO_NOMBRE_EQUIPO}$i" 1>/dev/null 2>&1
-			[ "$?" = "0" ] && POWER="ON" || POWER="OFF"
-			
+			#ping -c 1 "${PREFIJO_NOMBRE_EQUIPO}$i" 1>/dev/null 2>&1
+			#[ "$?" = "0" ] && POWER="ON" || POWER="OFF"
+			POWER=$(nmap -sP --max-retries=1 --host-timeout=100ms "${PREFIJO_NOMBRE_EQUIPO}$i" | grep "Host is up")
+			[ "${POWER}" = "" ] && POWER="OFF" || POWER="ON"
+
 			NO_IDENTIFICADO=" --- "
 			printf "%s\n" "${POWER}"
 			if [ "${POWER}" = "ON" ]; then
