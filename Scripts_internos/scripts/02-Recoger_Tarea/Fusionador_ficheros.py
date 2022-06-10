@@ -2,8 +2,8 @@
 
 import sys
 import os
-import linecache
-import subprocess
+#import linecache
+#import subprocess
 
 
 def ordena_attacks(lista_attacks, fichero_sin_extension):
@@ -99,7 +99,6 @@ def ordena_index(lista_index, fichero_sin_extension):
 
 ficheros_divididos = []
 posicion = 0
-analisis_completo = 0
 
 with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 	for fichero_a_dividir in ficheros_a_dividir:
@@ -117,7 +116,6 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 								if resultado_ataque.name.startswith(fichero_sin_extension + "_") and not resultado_ataque.name.endswith('-info.attacks') and not resultado_ataque.name.endswith('-info-hide.attacks'):
 									ficheros_divididos.append(resultado_ataque.name)
 							if len(ficheros_divididos) == int(os.environ["DIVISIONES"]):
-								analisis_completo = 1
 								ficheros_ataque_ordenados = ordena_attacks(ficheros_divididos, fichero_sin_extension)
 								for fichero_ataque_ordenado in ficheros_ataque_ordenados:
 									with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_ataque_ordenado) as f:
@@ -185,12 +183,11 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 									ficheros_divididos.append(resultado_log.name)
 							if len(ficheros_divididos) == int(os.environ["DIVISIONES"]):
 								ficheros_log_ordenados = ordena_log(ficheros_divididos, fichero_sin_extension)
+								fichero_fusionado = os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_LOG"]
 								for fichero_log_ordenado in ficheros_log_ordenados:
-									with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_log_ordenado) as f:
-										for linea in f:
-											fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_LOG"], "a")
-											fichero_fusionado.write("%s" %linea)
-											fichero_fusionado.close()
+									fichero_fragmentado = os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_log_ordenado
+									call_with_args = "cat '%s' >> '%s'" % (str(fichero_fragmentado), str(fichero_fusionado))
+									os.system(call_with_args)
 									os.remove(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_log_ordenado)
 					elif dir_resultado.name == "03-Index":
 						with os.scandir(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name) as resultados_index:
@@ -201,22 +198,21 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 									ficheros_divididos.append(resultado_index.name)
 							if len(ficheros_divididos) == int(os.environ["DIVISIONES"]):
 								ficheros_index_ordenados = ordena_index(ficheros_divididos, fichero_sin_extension)
+								fichero_fusionado = os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_INDEX"]
 								for fichero_index_ordenado in ficheros_index_ordenados:
-									with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_index_ordenado) as f:
-										for linea in f:
-											fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_INDEX"], "a")
-											fichero_fusionado.write("%s" %linea)
-											fichero_fusionado.close()
+									fichero_fragmentado = os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_index_ordenado
+									call_with_args = "cat '%s' >> '%s'" % (str(fichero_fragmentado), str(fichero_fusionado))
+									os.system(call_with_args)
 									os.remove(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_index_ordenado)
 
 
 
-			#Si se han recibido todos los fragmentos se reconstruye el info-attacks
-			if analisis_completo == 1:
-				with os.scandir(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks") as resultados_info_attacks:
-					for resultado_info_attacks in resultados_info_attacks:
-						if resultado_info_attacks.name.startswith(fichero_sin_extension + "_") and resultado_info_attacks.name.endswith('-info.attacks'):
-							ficheros_divididos.append(resultado_info_attacks.name)
+		#Si se han recibido todos los fragmentos se reconstruye el info-attacks
+			with os.scandir(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks") as resultados_info_attacks:
+				for resultado_info_attacks in resultados_info_attacks:
+					if resultado_info_attacks.name.startswith(fichero_sin_extension + "_") and resultado_info_attacks.name.endswith('-info.attacks'):
+						ficheros_divididos.append(resultado_info_attacks.name)
+				if len(ficheros_divididos) == int(os.environ["DIVISIONES"]):
 					ficheros_info_attacks_ordenados = ordena_info_attacks(ficheros_divididos, fichero_sin_extension)
 					for fichero_info_attacks_ordenado in ficheros_info_attacks_ordenados:
 						with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_info_attacks_ordenado) as f:
@@ -257,6 +253,9 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 				IMPRIMIR3 = "--------------------------- Analysis results -----------------------------\n"
 
 				fichero = os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"]
-				call_with_args = "/opt/nuevo_Cloud/Scripts_internos/scripts/02-Recoger_Tarea/anade_cabecera.sh '%s' '%s' '%s' '%s'" % (str(fichero), str(IMPRIMIR3), str(IMPRIMIR2), str(IMPRIMIR1))
+				call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR3), str(fichero))
 				os.system(call_with_args)
-
+				call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR2), str(fichero))
+				os.system(call_with_args)
+				call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR1), str(fichero))
+				os.system(call_with_args)
