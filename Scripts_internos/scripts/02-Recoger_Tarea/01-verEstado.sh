@@ -27,9 +27,9 @@ estado()
 			equipo=$(printf "%s" "${equipo}" | sed "s/_${instancia}//g")
 			if [ "${equipo}" != "" ]; then
 				#Creamos la nueva línea que incluye el equipo al que ha sido asignado el fichero
-				nueva_linea=$(awk -v equipo="$equipo" -v instancia="${instancia}" -v pat="$fichero" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ pat { print $0 OFS equipo FS instancia}' "${FILE_ESTADO_LISTADO_FICHEROS}")
+				nueva_linea=$(awk -v equipo="$equipo" -v instancia="${instancia}" -v pat="$fichero" -F"\t" 'BEGIN{FS=OFS="\t"} $0 ~ pat { print $0 OFS equipo FS instancia}' "${FILE_ESTADO_LISTADO_FICHEROS}" | head -1)
 				#Sustituimos la línea antigua por la nueva que incluye el equipo.
-				sed -i "s/${fichero}.*/${nueva_linea}/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
+				sed -i "s/^${fichero}.*/${nueva_linea}/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
 			fi
 		done < "${FILE_ESTADO_LISTADO_FICHEROS}"
 
@@ -60,7 +60,7 @@ estado()
 		do
 			progreso=$((progreso+1))
 			#Si hemos llegado aquí es que el fichero se ha descargado correctamente.
-			nueva_linea=$(awk -v pat="$fichero_entrada" -v OFS='\t' '$0 ~ pat {$2="si"; $3="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}")
+			nueva_linea=$(awk -v pat="$fichero_entrada" -v OFS='\t' '$0 ~ pat {$2="si"; $3="si"; print $0}' "${FILE_ESTADO_LISTADO_FICHEROS}" | head -1)
 			sed -i "s/^$fichero_entrada\t.*/$nueva_linea/g" "${FILE_ESTADO_LISTADO_FICHEROS}"
 			ficheros_terminados=$(awk 'BEGIN{FS=OFS="\t"} $2=="si" && $3=="si" {print $1}' ${FILE_ESTADO_LISTADO_FICHEROS} | wc -l)
 			sed -i "s# (.*/# (${ficheros_terminados}/#g" "${FILE_ESTADO_LISTADO_FICHEROS}"
