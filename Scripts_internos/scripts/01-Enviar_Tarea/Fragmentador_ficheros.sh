@@ -26,7 +26,7 @@ for i in "${DIR_FICHEROS_DIVIDIR}"* ; do
 	FICHERO_SIN_EXTENSION=$(basename "${i}" | sed "s/${EXTENSION_ENTRADA}//g")
 	LINEAS_FICHERO_SALIDA=$(expr ${LINEAS_FICHERO_ENTRADA} / ${DIVISIONES})
 	#Dividimos el fichero
-	split -d -l "${LINEAS_FICHERO_SALIDA}" "${i}" "${DIR_TMP}${FICHERO_SIN_EXTENSION}_"
+	split -d -a 3 -l "${LINEAS_FICHERO_SALIDA}" "${i}" "${DIR_TMP}${FICHERO_SIN_EXTENSION}_"
 	#Si la división no es exacta copiamos el contenido del último fichero dividido en el penúltimo
 	#y borramos el fichero. Se empieza por el '_00'
 	ULTIMO_FICHERO=$((${DIVISIONES}-1))
@@ -37,14 +37,14 @@ for i in "${DIR_FICHEROS_DIVIDIR}"* ; do
 			rm -f "${DIR_TMP}${FICHERO_SIN_EXTENSION}_${DIVISIONES}"
 		fi
 	elif [ "${DIVISIONES}" -eq 10 ]; then
-		if [ -f "${DIR_TMP}${FICHERO_SIN_EXTENSION}_${DIVISIONES}" ]; then
-			cat "${DIR_TMP}${FICHERO_SIN_EXTENSION}_${DIVISIONES}" >> "${DIR_TMP}${FICHERO_SIN_EXTENSION}_0${ULTIMO_FICHERO}"
-			rm -f "${DIR_TMP}${FICHERO_SIN_EXTENSION}_${DIVISIONES}"
-		fi
-	else
 		if [ -f "${DIR_TMP}${FICHERO_SIN_EXTENSION}_0${DIVISIONES}" ]; then
 			cat "${DIR_TMP}${FICHERO_SIN_EXTENSION}_0${DIVISIONES}" >> "${DIR_TMP}${FICHERO_SIN_EXTENSION}_0${ULTIMO_FICHERO}"
 			rm -f "${DIR_TMP}${FICHERO_SIN_EXTENSION}_0${DIVISIONES}"
+		fi
+	elif [ "${DIVISIONES}" -lt 10 ]; then
+		if [ -f "${DIR_TMP}${FICHERO_SIN_EXTENSION}_00${DIVISIONES}" ]; then
+			cat "${DIR_TMP}${FICHERO_SIN_EXTENSION}_00${DIVISIONES}" >> "${DIR_TMP}${FICHERO_SIN_EXTENSION}_0${ULTIMO_FICHERO}"
+			rm -f "${DIR_TMP}${FICHERO_SIN_EXTENSION}_00${DIVISIONES}"
 		fi
 	fi
 

@@ -12,11 +12,16 @@ def ordena_attacks(lista_attacks, fichero_sin_extension):
 	numero_ficheros_ataque = len(lista_attacks)
 	while contador < numero_ficheros_ataque:
 		if contador < 10:
-			siguiente_fichero = fichero_sin_extension + "_0" + str(contador) + ".attacks"
+			siguiente_fichero = fichero_sin_extension + "_00" + str(contador) + ".attacks"
 			index = lista_attacks.index(siguiente_fichero)
 			ficheros_ataque_ordenados.append(lista_attacks[index])
 			lista_attacks.pop(index)
-		elif contador >= 10:
+		elif contador >= 10 and contador < 100:
+			siguiente_fichero = fichero_sin_extension + "_0" + str(contador)  + ".attacks"
+			index = lista_attacks.index(siguiente_fichero)
+			ficheros_ataque_ordenados.append(lista_attacks[index])
+			lista_attacks.pop(index)
+		elif contador >= 100:
 			siguiente_fichero = fichero_sin_extension + "_" + str(contador)  + ".attacks"
 			index = lista_attacks.index(siguiente_fichero)
 			ficheros_ataque_ordenados.append(lista_attacks[index])
@@ -30,11 +35,16 @@ def ordena_cleans(lista_cleans, fichero_sin_extension):
 	numero_ficheros_clean = len(lista_cleans)
 	while contador < numero_ficheros_clean:
 		if contador < 10:
-			siguiente_fichero = fichero_sin_extension + "_0" + str(contador) + ".clean"
+			siguiente_fichero = fichero_sin_extension + "_00" + str(contador) + ".clean"
 			index = lista_cleans.index(siguiente_fichero)
 			ficheros_clean_ordenados.append(lista_cleans[index])
 			lista_cleans.pop(index)
-		elif contador >= 10:
+		elif contador >= 10  and contador < 100:
+			siguiente_fichero = fichero_sin_extension + "_0" + str(contador)  + ".clean"
+			index = lista_cleans.index(siguiente_fichero)
+			ficheros_clean_ordenados.append(lista_cleans[index])
+			lista_cleans.pop(index)
+		elif contador >= 100:
 			siguiente_fichero = fichero_sin_extension + "_" + str(contador)  + ".clean"
 			index = lista_cleans.index(siguiente_fichero)
 			ficheros_clean_ordenados.append(lista_cleans[index])
@@ -48,11 +58,16 @@ def ordena_info_attacks(lista_info_attacks, fichero_sin_extension):
 	numero_ficheros_info_attacks = len(lista_info_attacks)
 	while contador < numero_ficheros_info_attacks:
 		if contador < 10:
-			siguiente_fichero = fichero_sin_extension + "_0" + str(contador) + "-info.attacks"
+			siguiente_fichero = fichero_sin_extension + "_00" + str(contador) + "-info.attacks"
 			index = lista_info_attacks.index(siguiente_fichero)
 			ficheros_info_attacks_ordenados.append(lista_info_attacks[index])
 			lista_info_attacks.pop(index)
-		elif contador >= 10:
+		elif contador >= 10  and contador < 100:
+			siguiente_fichero = fichero_sin_extension + "_0" + str(contador)  + "-info.attacks"
+			index = lista_info_attacks.index(siguiente_fichero)
+			ficheros_info_attacks_ordenados.append(lista_info_attacks[index])
+			lista_info_attacks.pop(index)
+		elif contador >= 100:
 			siguiente_fichero = fichero_sin_extension + "_" + str(contador)  + "-info.attacks"
 			index = lista_info_attacks.index(siguiente_fichero)
 			ficheros_info_attacks_ordenados.append(lista_info_attacks[index])
@@ -66,14 +81,19 @@ def ordena_log(lista_log, fichero_sin_extension):
 	numero_ficheros_log = len(lista_log)
 	while contador < numero_ficheros_log:
 		if contador < 10:
-			siguiente_fichero = fichero_sin_extension + "_0" + str(contador) + ".log"
+			siguiente_fichero = fichero_sin_extension + "_00" + str(contador) + ".log"
 			index = lista_log.index(siguiente_fichero)
 			ficheros_log_ordenados.append(lista_log[index])
 			lista_log.pop(index)
-		elif contador >= 10:
+		elif contador >= 10  and contador < 100:
+			siguiente_fichero = fichero_sin_extension + "_0" + str(contador)  + ".log"
+			index = lista_log.index(siguiente_fichero)
+			ficheros_log_ordenados.append(lista_log[index])
+			lista_log.pop(index)
+		elif contador >= 100:
 			siguiente_fichero = fichero_sin_extension + "_" + str(contador)  + ".log"
 			index = lista_log.index(siguiente_fichero)
-			ficheros_log_ordenados.append(lista_cleans[index])
+			ficheros_log_ordenados.append(lista_log[index])
 			lista_log.pop(index)
 		contador = contador + 1
 	return ficheros_log_ordenados
@@ -84,11 +104,16 @@ def ordena_index(lista_index, fichero_sin_extension):
 	numero_ficheros_index = len(lista_index)
 	while contador < numero_ficheros_index:
 		if contador < 10:
-			siguiente_fichero = fichero_sin_extension + "_0" + str(contador) + ".index"
+			siguiente_fichero = fichero_sin_extension + "_00" + str(contador) + ".index"
 			index = lista_index.index(siguiente_fichero)
 			ficheros_index_ordenados.append(lista_index[index])
 			lista_index.pop(index)
-		elif contador >= 10:
+		elif contador >= 10  and contador < 100:
+			siguiente_fichero = fichero_sin_extension + "_0" + str(contador)  + ".index"
+			index = lista_index.index(siguiente_fichero)
+			ficheros_index_ordenados.append(lista_index[index])
+			lista_index.pop(index)
+		elif contador >= 100:
 			siguiente_fichero = fichero_sin_extension + "_" + str(contador)  + ".index"
 			index = lista_index.index(siguiente_fichero)
 			ficheros_index_ordenados.append(lista_index[index])
@@ -110,11 +135,15 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 				for dir_resultado in dir_resultados:
 					if dir_resultado.name == "04A-Attacks":
 						with os.scandir(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name) as resultados_ataques:
+							ficheros_divididos = []
 							for resultado_ataque in resultados_ataques:
 								#Dentro de 04A-Attacks en los resultados
 								#Procesamos attacks
 								if resultado_ataque.name.startswith(fichero_sin_extension + "_") and not resultado_ataque.name.endswith('-info.attacks') and not resultado_ataque.name.endswith('-info-hide.attacks'):
 									ficheros_divididos.append(resultado_ataque.name)
+							#print("Esta es el num de ficheros divididos: " + str(len(ficheros_divididos)))
+							#print(ficheros_divididos)
+							#print("Esta es el de divisiones: " + os.environ["DIVISIONES"])
 							if len(ficheros_divididos) == int(os.environ["DIVISIONES"]):
 								ficheros_ataque_ordenados = ordena_attacks(ficheros_divididos, fichero_sin_extension)
 								for fichero_ataque_ordenado in ficheros_ataque_ordenados:
@@ -143,6 +172,7 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 						posicion = 0
 					elif dir_resultado.name == "04B-Clean":
 						with os.scandir(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name) as resultados_cleans:
+							ficheros_divididos = []
 							for resultado_clean in resultados_cleans:
 								#Dentro de 04B-Clean en los resultados
 								#Procesamos cleans
@@ -176,6 +206,7 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 						posicion = 0
 					elif dir_resultado.name == "02-Log":
 						with os.scandir(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name) as resultados_log:
+							ficheros_divididos = []
 							for resultado_log in resultados_log:
 								#Dentro de 02-Log en los resultados
 								#Procesamos logs
@@ -191,6 +222,7 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 									os.remove(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_log_ordenado)
 					elif dir_resultado.name == "03-Index":
 						with os.scandir(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name) as resultados_index:
+							ficheros_divididos = []
 							for resultado_index in resultados_index:
 								#Dentro de 03-index en los resultados
 								#Procesamos index
@@ -209,6 +241,7 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 
 		#Si se han recibido todos los fragmentos se reconstruye el info-attacks
 			with os.scandir(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks") as resultados_info_attacks:
+				ficheros_divididos = []
 				for resultado_info_attacks in resultados_info_attacks:
 					if resultado_info_attacks.name.startswith(fichero_sin_extension + "_") and resultado_info_attacks.name.endswith('-info.attacks'):
 						ficheros_divididos.append(resultado_info_attacks.name)

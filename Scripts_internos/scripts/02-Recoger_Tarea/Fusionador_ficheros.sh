@@ -41,16 +41,21 @@ imprimirCabecera ()
 ordena_paquetes()
 {
 	#Cogemos la columna del paquete (primera columna)
+	echo "entro de ordena_paquetes"
 	cat "$1" | awk -F"\t" '{print $1}' | cut -d' ' -f'2' > ordena_paquetes.txt
 	#Dejamos solo el número de paquete
+	echo "antes del sed"
 	sed -i -e "s/\[//g" -e "s/\]//g" ordena_paquetes.txt
+	echo "despues del sed"
 	#aplicamos algoritmo para determinar la posición de la uri en fichero original
+	echo "antes del bucle de lectura"
 	while IFS= read -r line
 	do
 		posicion_segun_fichero=$((${2}*${lineas_por_paquete}))
 		posicion_real=$((${line}+${posicion_segun_fichero}))
 		sed -i "s/^Packet \[${line}\]/Packet \[${posicion_real}\]/g" "$1"
 	done < ordena_paquetes.txt
+	echo "despues"
 }
 
 # Cargar variables de configuracion
@@ -82,6 +87,7 @@ for i in "${DIR_FICHEROS_DIVIDIR}"* ; do
 			#Comprobamos el formato
 			FORMATO_BASICO=$(sed "s/^Packet.*/fichero de tipo basico/g" "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" | grep "fichero de tipo basico")
 			if [ "${FORMATO_BASICO}" != "" ]; then
+				echo "${fichero}"
 				#Tenemos que establecer el número de paquete correctamente
 				numero_fichero=$(printf "%s" ${fichero} | sed "s/.*_//g" | sed "s/\..*//g" | sed "s/^0//g")
 				[ ${numero_fichero} -gt 0 ] && ordena_paquetes "${SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS}${SUBDIR_REMOTO_RECOGIDA}04A-Attacks/${fichero}" "${numero_fichero}"

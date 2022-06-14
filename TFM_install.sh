@@ -13,4 +13,21 @@ make
 make install
 yum install -y inotify-tools sshpass python36 byobu dialog git
 mkdir -p /opt/modsecurity-debug/var/log/
-touch /opt/modsecurity-debug/var/log/debug.log 
+touch /opt/modsecurity-debug/var/log/debug.log
+#Ruta para ModSecurity
+mv /usr/local/modsecurity/lib/* /usr/lib64/
+
+#Instalación de dependencias de nemesida y nwaf
+
+rpm -Uvh https://nemesida-security.com/repo/nw/centos/nwaf-release-centos-7-1-6.noarch.rpm
+yum install epel-release
+yum install rabbitmq-server
+rm -f /etc/machine-id
+/bin/systemd-machine-id-setup
+setenforce 0
+rpm -Uvh http://nginx.org/packages/centos/7/x86_64/RPMS/nginx-1.18.0-1.el7.ngx.x86_64.rpm
+yum install python36 python36-devel python36-setuptools python36-pip openssl librabbitmq libcurl-devel rabbitmq-server gcc libmaxminddb memcached
+yum install nwaf-dyn-1.18
+
+#IL snort y Nemesida
+ln -s /usr/lib64/libpcre.so.1.2.0 /usr/lib64/libpcre.so.3
