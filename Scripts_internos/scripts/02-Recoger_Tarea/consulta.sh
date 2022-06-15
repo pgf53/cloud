@@ -42,7 +42,7 @@ do
 			${SSH_COMANDO} "${USER_REMOTO}"@${EQUIPO} "${COMANDO_PRUEBA}" < /dev/null
 				if [ $? -eq 0 ]; then
 					#existe_proceso=$(ps ax | pgrep "${PROCESO_PARA_ESTADO}")
-					existe_proceso=$(${SSH_COMANDO} "${USER_REMOTO}"@${EQUIPO} "byobu ls | grep ${INSTANCIA}:")
+					existe_proceso=$(${SSH_COMANDO} -n "${USER_REMOTO}"@${EQUIPO} "byobu ls | grep ${INSTANCIA}:")
 					#$(byobu ls | grep "${INSTANCIA}:")
 					if [ "${existe_proceso}" = "" ]; then
 						NUEVA_LINEA=$(printf "$line" | awk -v interrumpida="${INTERRUMPIDA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$NF=interrumpida;print $0}')
