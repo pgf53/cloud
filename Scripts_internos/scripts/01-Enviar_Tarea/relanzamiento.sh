@@ -34,22 +34,22 @@ fi
 #Recogemos ficheros que se encuentren DISPONIBLES-INTERRUMPIDA
 
 equipos=$(awk -v estado_equipo="${DISPONIBLE}" -v estado_tarea="${INTERRUMPIDA}" 'BEGIN{FS=OFS="\t"} $5==estado_equipo && $NF==estado_tarea {print $1}' ${FILE_ESTADO} | cut -d':' -f'1' | cut -d' ' -f'2')
-instancias=$(awk -v estado_equipo="${DISPONIBLE}" -v estado_tarea="${INTERRUMPIDA}" 'BEGIN{FS=OFS="\t"} $5==estado_equipo && $NF==estado_tarea {print $1}' ${FILE_ESTADO} | cut -d':' -f'1' | cut -d' ' -f'3')
-
-if [ "${equipos}" != "" ]; then
-	for equipo in ${equipos}; do
-		equipo_sin_prefijo=$(printf "%s" "$equipo" | sed "s/${PREFIJO_NOMBRE_EQUIPO}//g")
-		equipos_a_recoger="${equipos_a_recoger} ${equipo_sin_prefijo}"
-	done
-	for num_instancia in ${instancias}; do
-		num_instancia=$(printf "%s" "$num_instancia" | sed "s/${NOMBRE_TAREA}//g")
-		instancia="${instancia} ${num_instancia}"
-	done
-	equipos_a_recoger=$(printf "%s" "${equipos_a_recoger}" | sed "s/^ //g")
-	export instancia=$(printf "%s" "${instancia}" | sed "s/^ //g")
-	#Recogemos de los equipos 'DISPONIBLE-INTERRUMPIDA'
-	"${SCRIPT_RECOGER}" "${equipos_a_recoger}"
-fi
+for equipo in ${equipos}; do
+	equipo_sin_prefijo=$(printf "%s" "$equipo" | sed "s/${PREFIJO_NOMBRE_EQUIPO}//g")
+	equipo_listado=$(printf "%s" "$equipos_a_recoger" | grep "$equipo_sin_prefijo")
+	if [ "${equipo_listado}" = "" ]; then
+		instancia=""
+		instancias=$(awk -v estado_equipo="${DISPONIBLE}" -v estado_tarea="${INTERRUMPIDA}" -v equipo="Equipo ${equipo}" 'BEGIN{FS=OFS="\t"} $5==estado_equipo && $NF==estado_tarea && $1 ~ equipo {print $1}' ${FILE_ESTADO} | cut -d':' -f'1' | cut -d' ' -f'3')
+		for num_instancia in ${instancias}; do
+			num_instancia=$(printf "%s" "$num_instancia" | sed "s/${NOMBRE_TAREA}//g")
+			instancia="${instancia} ${num_instancia}"
+		done
+		export instancia=$(printf "%s" "${instancia}" | sed "s/^ //g")
+		echo "Equipo $equipo: $instancia"
+		"${SCRIPT_RECOGER}" "${equipo_sin_prefijo}"
+	fi
+	equipos_a_recoger="${equipos_a_recoger} ${equipo_sin_prefijo}"
+done
 
 #Comprobamos si con los ficheros recogidos ha finalizado la tarea
 equipos_no_finalizados=$(awk -v tarea_ejecutandose="${EJECUTANDOSE}" -v tarea_interrumpida="${INTERRUMPIDA}" 'BEGIN{FS=OFS="\t"} $NF==tarea_ejecutandose || $NF==tarea_interrumpida {print $1}' ${FILE_ESTADO})
