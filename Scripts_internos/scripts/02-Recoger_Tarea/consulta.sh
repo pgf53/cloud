@@ -41,7 +41,8 @@ do
 			${SSH_COMANDO} "${USER_REMOTO}"@${EQUIPO} "${COMANDO_PRUEBA}" < /dev/null
 				if [ $? -eq 0 ]; then
 					#existe_proceso=$(ps ax | pgrep "${PROCESO_PARA_ESTADO}")
-					existe_proceso=$(byobu ls | grep "${INSTANCIA}:")
+					existe_proceso=$(${SSH_COMANDO} "${USER_REMOTO}"@${EQUIPO} "byobu ls | grep ${INSTANCIA}:")
+					#$(byobu ls | grep "${INSTANCIA}:")
 					if [ "${existe_proceso}" = "" ]; then
 						NUEVA_LINEA=$(printf "$line" | awk -v interrumpida="${INTERRUMPIDA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$NF=interrumpida;print $0}')
 						LINEA_EQUIPO=$(printf "%s" "${line}" | sed -e "s#\[#\\\[#g" -e "s#\]#\\\]#g")
@@ -49,6 +50,7 @@ do
 						sed -i "s#${LINEA_EQUIPO}#${NUEVA_LINEA}#g" "${FILE_ESTADO}"
 					fi
 				else
+					echo "No se ha podido conectar con: ${USER_REMOTO}@${EQUIPO}"
 					NUEVA_LINEA=$(printf "$line" | awk -v disponibilidad="${NO_DISPONIBLE}" -v interrumpida="${INTERRUMPIDA}" -F"\t" 'BEGIN{FS=OFS="\t"} {$5=disponibilidad;$NF=interrumpida;print $0}')
 					LINEA_EQUIPO=$(printf "%s" "${line}" | sed -e "s#\[#\\\[#g" -e "s#\]#\\\]#g")
 					NUEVA_LINEA=$(printf "%s" "${NUEVA_LINEA}" | sed -e "s#\[#\\\[#g" -e "s#\]#\\\]#g")
