@@ -29,6 +29,7 @@ add_last_update()
 
 while IFS= read -r line
 do
+	existe_proceso=""
 	LINEA_EQUIPO=$(printf "%s" "${line}" | sed "s/^Equipo ${PREFIJO_NOMBRE_EQUIPO}.*/linea_equipo/g")
 	if [ "${LINEA_EQUIPO}" = "linea_equipo" ]; then
 		EQUIPO=$(printf "%s" "${line}" | cut -d':' -f'1' | cut -d' ' -f'2')
