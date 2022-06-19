@@ -26,6 +26,16 @@ MESSAGE = MESSAGE.encode()
 
 while True:
 	sock.sendto(MESSAGE, (UDP_IP_SEND, UDP_PORT_SEND))	#Enviamos mensaje UDP
+	with open('send.log', "a+") as file_object:
+		# Move read cursor to the start of file.
+		file_object.seek(0)
+		# If file is not empty then append '\n'
+		recibido = file_object.read(100)
+		if len(recibido) > 0:
+			file_object.write("\n")
+		 # Append text at the end of file
+		file_object.write("Mensaje: " + UDP_IP_LISTEN + separador + str(UDP_PORT_LISTEN) + separador + TAREA + separador + FIN + " to: " + str(UDP_IP_SEND) + ":" + str(UDP_PORT_SEND))
+
 	#Esperamos 5 segundos ACK
 	#Si no lo recibimos, reenviamos.
 	sock.setblocking(0)
@@ -33,15 +43,48 @@ while True:
 	ready = select.select([sock], [], [], TIEMPO_ENTRE_REINTENTOS)
 	if ready[0]:	
 		data, addr = sock.recvfrom(1024)
+
 	if data == b"ACK":
 		print("ACK recibido")
+		with open('send.log', "a+") as file_object:
+			# Move read cursor to the start of file.
+			file_object.seek(0)
+			# If file is not empty then append '\n'
+			recibido = file_object.read(100)
+			if len(recibido) > 0:
+				file_object.write("\n")
+			 # Append text at the end of file
+			file_object.write("Equipo: " + UDP_IP_LISTEN + " Instancia: " + TAREA + " ACK recibido")
 		break
 	else:
 		print("ACK no recibido")
-		sock.sendto(MESSAGE, (UDP_IP_SEND, UDP_PORT_LISTEN))
+
+		with open('send.log', "a+") as file_object:
+			# Move read cursor to the start of file.
+			file_object.seek(0)
+			# If file is not empty then append '\n'
+			recibido = file_object.read(100)
+			if len(recibido) > 0:
+				file_object.write("\n")
+			 # Append text at the end of file
+			file_object.write("Equipo: " + UDP_IP_LISTEN + " Instancia: " + TAREA + " ACK NO recibido")
+
+		sock.sendto(MESSAGE, (UDP_IP_SEND, UDP_PORT_SEND))
+
 		NUM_INTENTOS = NUM_INTENTOS + 1
 		if NUM_INTENTOS == NUM_MAX_REINTENTOS:
 			print("Número máximo de intentos excedido, se descarta el mensaje")
+
+			with open('send.log', "a+") as file_object:
+				# Move read cursor to the start of file.
+				file_object.seek(0)
+				# If file is not empty then append '\n'
+				recibido = file_object.read(100)
+				if len(recibido) > 0:
+					file_object.write("\n")
+				 # Append text at the end of file
+				file_object.write("Equipo: " + UDP_IP_LISTEN + " Instancia: " + TAREA + " DESCARTADA")
+
 			break
 
 
