@@ -124,10 +124,14 @@ def ordena_index(lista_index, fichero_sin_extension):
 
 ficheros_divididos = []
 posicion = 0
+num_ficheros_dividir = len(os.listdir(os.environ["DIR_FICHEROS_DIVIDIR"])) - 1 
+progreso = 1
 
 with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 	for fichero_a_dividir in ficheros_a_dividir:
 		if fichero_a_dividir.name != ".gitkeep":
+			print(str(fichero_a_dividir.name))
+			print(str(progreso) + "/" + str(num_ficheros_dividir))
 			num_lineas_totales = sum(1 for i in open(os.environ["DIR_FICHEROS_DIVIDIR"] + fichero_a_dividir.name, 'rb'))
 			num_lineas_por_division = num_lineas_totales // int(os.environ["DIVISIONES"])
 			fichero_sin_extension = fichero_a_dividir.name.replace(os.environ["EXTENSION_ENTRADA"], "")
@@ -147,27 +151,31 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 							if len(ficheros_divididos) == int(os.environ["DIVISIONES"]):
 								ficheros_ataque_ordenados = ordena_attacks(ficheros_divididos, fichero_sin_extension)
 								for fichero_ataque_ordenado in ficheros_ataque_ordenados:
-									with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_ataque_ordenado) as f:
-										for linea in f:
-											if linea.startswith('Packet ['):
-												if posicion == 0:
+									if os.path.getsize(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_ataque_ordenado) > 0:
+										with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_ataque_ordenado) as f:
+											for linea in f:
+												if linea.startswith('Packet ['):
+													if posicion == 0:
+														fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_ATTACKS"], "a")
+														fichero_fusionado.write("%s" %linea)
+														fichero_fusionado.close()
+													else:
+														x = linea.split()
+														numero_paquete = x[1].replace('[','').replace(']','')
+														numero_paquete = num_lineas_por_division * posicion + int(numero_paquete)
+														ataque = x[0] + " " + "[" + str(numero_paquete) + "]" + "\t" + x[2] + " " + x[3]
+														fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_ATTACKS"], "a")
+														fichero_fusionado.write("%s" %ataque)
+														fichero_fusionado.write("\n")
+														fichero_fusionado.close()
+												else:
 													fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_ATTACKS"], "a")
 													fichero_fusionado.write("%s" %linea)
 													fichero_fusionado.close()
-												else:
-													x = linea.split()
-													numero_paquete = x[1].replace('[','').replace(']','')
-													numero_paquete = num_lineas_por_division * posicion + int(numero_paquete)
-													ataque = x[0] + " " + "[" + str(numero_paquete) + "]" + "\t" + x[2] + " " + x[3]
-													fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_ATTACKS"], "a")
-													fichero_fusionado.write("%s" %ataque)
-													fichero_fusionado.write("\n")
-													fichero_fusionado.close()
-											else:
-												fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_ATTACKS"], "a")
-												fichero_fusionado.write("%s" %linea)
-												fichero_fusionado.close()
-										posicion = posicion + 1
+											posicion = posicion + 1
+									else:
+										open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_sin_extension + os.environ["EXTENSION_ATTACKS"], "a").close()
+
 									os.remove(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_ataque_ordenado)
 						posicion = 0
 					elif dir_resultado.name == "04B-Clean":
@@ -248,34 +256,39 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 				if len(ficheros_divididos) == int(os.environ["DIVISIONES"]):
 					ficheros_info_attacks_ordenados = ordena_info_attacks(ficheros_divididos, fichero_sin_extension)
 					for fichero_info_attacks_ordenado in ficheros_info_attacks_ordenados:
-						with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_info_attacks_ordenado) as f:
-							longitud_cabecera = 3
-							for linea in f:
-								if longitud_cabecera > 0:
-									longitud_cabecera = longitud_cabecera - 1
-								else:
-									if linea.startswith('Packet ['):
-										if posicion == 0:
-											fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"], "a")
-											fichero_fusionado.write("%s" %linea)
-											fichero_fusionado.close()
+						num_lines_info = sum(1 for line_info in open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_info_attacks_ordenado))
+						if num_lines_info > 3:
+							with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_info_attacks_ordenado) as f:
+									longitud_cabecera = 3
+									for linea in f:
+										if longitud_cabecera > 0:
+											longitud_cabecera = longitud_cabecera - 1
 										else:
-											x = linea.rsplit('	Uri', 1)
-											y = x[0].split()
-											numero_paquete = y[1].replace('[','').replace(']','')
-											numero_paquete = num_lineas_por_division * posicion + int(numero_paquete)
-											info_attacks = y[0] + " " + "[" + str(numero_paquete) + "]" + "\t" + x[1]
-											fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"], "a")
-											fichero_fusionado.write("%s" %info_attacks)
-											fichero_fusionado.close()
-									else:
-										fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"], "a")
-										fichero_fusionado.write("%s" %linea)
-										fichero_fusionado.close()
-							posicion = posicion + 1
+											if linea.startswith('Packet ['):
+												if posicion == 0:
+													fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"], "a")
+													fichero_fusionado.write("%s" %linea)
+													fichero_fusionado.close()
+												else:
+													x = linea.rsplit('	Uri', 1)
+													y = x[0].split()
+													numero_paquete = y[1].replace('[','').replace(']','')
+													numero_paquete = num_lineas_por_division * posicion + int(numero_paquete)
+													info_attacks = y[0] + " " + "[" + str(numero_paquete) + "]" + "\t" + x[1]
+													fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"], "a")
+													fichero_fusionado.write("%s" %info_attacks)
+													fichero_fusionado.close()
+											else:
+												fichero_fusionado = open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"], "a")
+												fichero_fusionado.write("%s" %linea)
+												fichero_fusionado.close()
+									posicion = posicion + 1
+						else:
+							print("sin ataques")
+							open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"], "a").close()
+
 						os.remove(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_info_attacks_ordenado)
 				posicion = 0
-
 
 				#Escribimos cabecera
 				num_clean_totales = sum(1 for i in open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04B-Clean" + "/" + fichero_sin_extension + os.environ["EXTENSION_CLEAN"], 'rb'))
@@ -285,10 +298,20 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 				IMPRIMIR2 = "[" + str(num_lineas_totales) +"] input, " + "[" + str(num_clean_totales) + "] clean, " + "[" + str(num_attacks_totales) + "] attacks\n"
 				IMPRIMIR3 = "--------------------------- Analysis results -----------------------------\n"
 
-				fichero = os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"]
-				call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR3), str(fichero))
-				os.system(call_with_args)
-				call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR2), str(fichero))
-				os.system(call_with_args)
-				call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR1), str(fichero))
-				os.system(call_with_args)
+				if os.path.getsize(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"]) > 0:
+					fichero = os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"]
+					call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR3), str(fichero))
+					os.system(call_with_args)
+					call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR2), str(fichero))
+					os.system(call_with_args)
+					call_with_args = "sed -i '1i%s' '%s'" % (str(IMPRIMIR1), str(fichero))
+					os.system(call_with_args)
+				else:
+					fichero = os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"]
+					call_with_args = "echo '%s' >> '%s'" % (str(IMPRIMIR1), str(fichero))
+					os.system(call_with_args)
+					call_with_args = "echo '%s' >> '%s'" % (str(IMPRIMIR2), str(fichero))
+					os.system(call_with_args)
+					call_with_args = "echo '%s' >> '%s'" % (str(IMPRIMIR3), str(fichero))
+					os.system(call_with_args)
+			progreso += 1
