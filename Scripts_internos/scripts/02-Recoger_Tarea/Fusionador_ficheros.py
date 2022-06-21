@@ -284,7 +284,6 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 												fichero_fusionado.close()
 									posicion = posicion + 1
 						else:
-							print("sin ataques")
 							open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + "04A-Attacks" + "/" + fichero_sin_extension + os.environ["EXTENSION_INFO_ATTACKS"], "a").close()
 
 						os.remove(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_info_attacks_ordenado)
