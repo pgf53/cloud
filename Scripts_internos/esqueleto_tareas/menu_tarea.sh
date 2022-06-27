@@ -131,7 +131,7 @@ lanzamiento()
 	#2 Clonamos Tarea para cada equipo
 	. "${SCRIPT_CLONAR_ESTRUCTURA}"
 	#3 Dividimos ficheros presentes en directorio de división
-	 [ -z "$(ls -A ${DIR_FICHEROS_DIVIDIR})" ] && . "${SCRIPT_DIVIDIR_FICHERO}"
+	 [ ! -z "$(ls ${DIR_FICHEROS_DIVIDIR})" ] && . "${SCRIPT_DIVIDIR_FICHERO}"
 	#4 Establecemos el reparto de los ficheros
 	. "${SCRIPT_REPARTIR_MANUAL}"
 	#5 Enviamos a equipos remotos
@@ -153,7 +153,6 @@ export TIPO_ESTADO="consulta"
 #que a su vez cargará el archivo de configuración de la tarea
 . ${CLOUD_CONFIG_INTERNA}
 
-
 ######### Menu de invocacion (dialog)
 #ls
 if [ "$#" -eq 0 ]; then
@@ -166,7 +165,8 @@ if [ "$#" -eq 0 ]; then
 					4 "Matar tarea" \
 					5 "Limpiar Directorios en equipos remotos" \
 					6 "Limpiar tarea" \
-					7 "Fusionar ficheros")
+					7 "Fusionar ficheros" \
+					8 "Ejecutar o Enviar ficheros en los equipos remotos")
 
 	case ${respuesta} in
 		1)
@@ -291,7 +291,41 @@ if [ "$#" -eq 0 ]; then
 			. "${SCRIPT_LIMPIAR_TAREA}"
 		;;
 		7)
-			. "${SCRIPT_FUSIONAR_FICHERO}"
+			#Cargo variables para Fusionador
+			set -a; source "${CLOUD_CONFIG_INTERNA}"; set +a
+			python3 "${SCRIPT_FUSIONAR_FICHERO}"
+		;;
+		8)
+			respuesta=$(dialog --title "Submenú ${NOMBRE_TAREA}" \
+				--stdout \
+				--menu "Selecciona una opción:" 0 0 0 \
+				1 "Ejecutar comando en los equipos remotos" \
+				2 "Subir fichero" \
+				3 "Descargar fichero")
+
+			case ${respuesta} in
+				1)
+					respuesta2=$(dialog --title "Ejecutar comandos" \
+							--stdout \
+							--inputbox "Introduzca los equipos en los que desee Ejecutar los comandos.\n\nDejar en blanco para ejecutar en todos los equipos." 0 0)
+					preparar_lista_equipos "$respuesta2"
+					. "${SCRIPT_EJECUTAR_COMANDO}" "${EQUIPOS_LT}"
+				;;
+				2)
+					respuesta2=$(dialog --title "Subir fichero" \
+							--stdout \
+							--inputbox "Introduzca los equipos en los que desee realizar la subida.\n\nDejar en blanco para subir a todos los equipos." 0 0)
+					preparar_lista_equipos "$respuesta2"
+					. "${SCRIPT_SUBIR_FICHERO}" "${EQUIPOS_LT}"
+				;;
+				3)
+					respuesta2=$(dialog --title "Subir fichero" \
+							--stdout \
+							--inputbox "Introduzca los equipos en los que desee realizar la descarga.\n\nDejar en blanco para descargar de todos los equipos." 0 0)
+					preparar_lista_equipos "$respuesta2"
+					. "${SCRIPT_DESCARGAR_FICHERO}" "${EQUIPOS_LT}"
+				;;
+			esac
 		;;
 	esac
 else
