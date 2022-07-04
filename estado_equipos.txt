@@ -1,8 +1,0 @@
-Última actualización: Tue May 10 18:28:17 CEST 2022
-
-Equipos analizados [4]	Equipos Disponibles [1]	Equipos NO disponibles [3]
-
-Equipo lt05:	OFF	 --- 	 --- 	No disponible: apagado o sin conexión
-Equipo lt06:	ON	Linux	linux1	Disponible	Sin Certificado SSH. Disponible clave	[Carpeta Tarea con poco espacio: 2726 MB < 10000 MB]
-Equipo lt07:	OFF	 --- 	 --- 	No disponible: apagado o sin conexión
-Equipo lt08:	OFF	 --- 	 --- 	No disponible: apagado o sin conexión
