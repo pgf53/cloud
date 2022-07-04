@@ -7,7 +7,6 @@ import shlex
 import os
 import re
 
-
 UDP_IP_LISTEN = sys.argv[1]
 UDP_PORT_LISTEN = sys.argv[2]
 RUTA_TAREAS = sys.argv[3]
@@ -25,6 +24,8 @@ while True:
 	#Procesamos los datos obtenidos del mensaje  UDP
 	UDP_IP_SEND = lista[0]
 	UDP_PORT_SEND = int(lista[1])
+	#enviamos ACK
+	sock.sendto(MESSAGE, (UDP_IP_SEND, UDP_PORT_SEND))
 	TAREA = lista[2]
 
 	numero_instancia = ""
@@ -39,8 +40,6 @@ while True:
 	TAREA = TAREA.replace(numero_instancia,"")
 
 	FIN = int(lista[3])	#Indica si la  tarea ha finalizado
-	#enviamos ACK
-	sock.sendto(MESSAGE, (UDP_IP_SEND, UDP_PORT_SEND))
 	#Obtenemos el número del equipo (eliminamos prefijo)
 	prefijo = os.environ["PREFIJO_NOMBRE_EQUIPO"]
 	equipo_sin_prefijo = re.split(prefijo, UDP_IP_SEND)
@@ -48,5 +47,4 @@ while True:
 	#Invocamos a menu_tarea.sh enviándole como parámetro el número del equipo
 	cmd_script_menu_tarea = RUTA_TAREAS + TAREA + "/menu_" + TAREA + ".sh " + equipo_sin_prefijo + ' ' + numero_instancia
 	args = shlex.split(cmd_script_menu_tarea)
-	print(args)
 	p = subprocess.run(args)

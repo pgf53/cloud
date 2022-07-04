@@ -72,6 +72,7 @@ for i in ${EQUIPOS_LT}; do
 
 			# Desplegar fichero con variables configuracion internas
 			${SCP_COMANDO} "${DIR_SCRIPTS_INTERNOS}${FILE_CONFIG_INTERNA}"	  "${USER_REMOTO}"@${PREFIJO_NOMBRE_EQUIPO}$i:/${DIR_REMOTO_ENVIO} # 1>/dev/null 2>&1
+
 		fi
 		# Restaurar la carpeta de invocación
 		cd "${ACTUAL}" 

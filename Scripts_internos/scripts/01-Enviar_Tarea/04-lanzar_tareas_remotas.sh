@@ -44,4 +44,9 @@ for i in ${EQUIPOS_LT}; do
 	done
 done
 
+###Medir tiempos#####
+OUTPUT_FILE="/opt/tiempo.txt"
+printf "Última actualización: %s" "$(date)" > $OUTPUT_FILE
+####################
+
 rm -f "${VAR_MEMORIA_SALIR}"  1>/dev/null 2>&1

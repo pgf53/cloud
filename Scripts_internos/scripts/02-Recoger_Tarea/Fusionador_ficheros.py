@@ -188,7 +188,9 @@ with os.scandir(os.environ["DIR_FICHEROS_DIVIDIR"]) as ficheros_a_dividir:
 									ficheros_divididos.append(resultado_clean.name)
 							if len(ficheros_divididos) == int(os.environ["DIVISIONES"]):
 								ficheros_cleans_ordenados = ordena_cleans(ficheros_divididos, fichero_sin_extension)
+								#print(str(ficheros_cleans_ordenados) + "\n")
 								for fichero_clean_ordenado in ficheros_cleans_ordenados:
+									#print(str(fichero_clean_ordenado))
 									with open(os.environ["SUBDIR_LOCAL_RESULTADOS_DESCOMPRIMIDOS"] + os.environ["SUBDIR_REMOTO_RECOGIDA"] + dir_resultado.name + "/" + fichero_clean_ordenado) as f:
 										for linea in f:
 											if linea.startswith('Packet ['):

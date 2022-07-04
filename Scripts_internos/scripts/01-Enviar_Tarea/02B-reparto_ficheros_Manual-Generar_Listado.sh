@@ -56,6 +56,7 @@ equipos_totales=$((${equipos_totales}*${N_INSTANCIA}))
 
 #####REPARTO SECUENCIAL
 if [ "${REPARTO}" = "secuencial" ]; then
+	printf "\nIniciando reparto equilibrado por orden secuencial de los ficheros...\n"
 	#Comprobamos que el directorio contenga ficheros que repartir
 	if [ "$(ls ${DIR_FICHEROS_REPARTIR})" ]; then
 		numero_ficheros=$(ls "${DIR_FICHEROS_REPARTIR}" | wc -l)
@@ -104,6 +105,7 @@ if [ "${REPARTO}" = "secuencial" ]; then
 #####REPARTO POR TAMAÑO
 else
 	if [ "$(ls ${DIR_FICHEROS_REPARTIR})" ]; then
+		printf "\nIniciando reparto equilibrado por tamaño de los ficheros...\n"
 		contador=1
 		recuento_fichero="recuento.txt"
 		numero_ficheros=$(ls "${DIR_FICHEROS_REPARTIR}" | wc -l)
