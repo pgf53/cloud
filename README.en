@@ -6,7 +6,7 @@ The task that makes use of the 'cloud' must meet the following requirements:
 
 +It must have a structure such that it receives one/several input file(s) and generates one/several output(s) based on the analysis-processing of the input file(s).
 
-+When the task in question ends with the analysis of one or more inputs, it must write to an empty text file with the name of the input files already processed in the 'finished_entries' directory created automatically inside the root directory of the task in question.
++When the task in question ends with the analysis of one or more inputs, it must write to an empty text file with the name of the input files already processed in the 'entradas_finalizadas' directory created automatically inside the root directory of the task in question.
 
 +The results to collect will have to be stored in a directory that must be indicated in the task configuration file.
 
