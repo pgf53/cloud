@@ -1,0 +1,26 @@
+# cloud
+
+Software that allows the deployment, execution and data collection of a task on one or more remote computers.
+
+The task that makes use of the 'cloud' must meet the following requirements:
+
++It must have a structure such that it receives one/several input file(s) and generates one/several output(s) based on the analysis-processing of the input file(s).
+
++When the task in question ends with the analysis of one or more inputs, it must write to an empty text file with the name of the input files already processed in the 'finished_entries' directory created automatically inside the root directory of the task in question.
+
++The results to collect will have to be stored in a directory that must be indicated in the task configuration file.
+
+
+To create a task go to the cloud root directory and run 'menu_global.sh'. Follow the menu instructions to finish creating the task.
+
+Once the task structure is created, copy your task software to the 'Tasks/task_name/input/task_software' directory.
+
+Run 'task_menu' from 'global_menu.sh' or from the 'Tasks/task_name/task_menu.sh' directory. Follow the instructions provided by the menu depending on the action you want to perform.
+
+IMPORTANT: do not forget that for the automatic collection of files to work, you must meet the second of the specified requirements.
+
+The tool has two configuration files.
+
++Scripts_internos/scripts/cloud_config_interna.conf: internal cloud configuration file where the cloud routes are established, and some aspects of their behavior.
+
++Tareas/task_name/cloud_task_name.conf: specific file for each task with aspects related to that task only. Example: computers to which you want to deploy the task.
