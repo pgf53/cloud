@@ -13,7 +13,7 @@ La tarea que haga uso de cloud debe cumplir los siguientes requisitos:
 
 Para crear una tarea sitúese en el directorio raíz de cloud y ejecute 'menu_global.sh'. Siga las instruccione del menú para finalizar la creación de la tarea. 
 
-Una vez creada la estructura de la tarea, copie el software de su tarea en el directorio 'Tareas/nombre_tarea/entrada/software_tarea'.
+Una vez creada la estructura de la tarea, copie el software de su tarea en el directorio 'Tareas/nombre_tarea/entrada/software_tarea' e introduzca los ficheros de entrada en el directorio 'Tareas/nombre_tarea/entrada/ficheros_entrada/'.
 
 Ejecute 'menu_tarea' desde 'menu_global.sh' o desde el directorio 'Tareas/nombre_tarea/menu_tarea.sh'. Siga las instrucciones proporcionadas por el menú en función de la acción que desee realizar.
 
