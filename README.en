@@ -13,7 +13,7 @@ The task that makes use of the 'cloud' must meet the following requirements:
 
 To create a task go to the cloud root directory and run 'menu_global.sh'. Follow the menu instructions to finish creating the task.
 
-Once the task structure is created, copy your task software to the 'Tareas/task_name/software_tarea' directory.
+Once the task structure is created, copy your task software to the 'Tareas/task_name/entrada/software_tarea' directory and put the input files in the directory 'Tareas/task_name/entrada/ficheros_entrada'.
 
 Run 'menu_tarea.sh' from 'menu_global.sh' or from the 'Tareas/tarea_name/menu_tarea.sh' directory. Follow the instructions provided by the menu depending on the action you want to perform.
 
