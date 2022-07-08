@@ -127,7 +127,7 @@ lanzamiento()
 	#1 Verificiamos la disponibilidad de los equipos seleccionados
 	export INVOCACION="MENU_TAREA_LANZAMIENTO"
 	. "${SCRIPT_ESTADO_EQUIPOS}"
-	#comprueba_lanzamiento
+	comprueba_lanzamiento
 	#2 Clonamos Tarea para cada equipo
 	. "${SCRIPT_CLONAR_ESTRUCTURA}"
 	#3 Dividimos ficheros presentes en directorio de división
