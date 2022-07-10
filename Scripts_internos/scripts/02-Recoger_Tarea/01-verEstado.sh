@@ -52,8 +52,7 @@ estado()
 
 	###############RECOGIDA##########################
 	elif [ "${TIPO_ESTADO}" = "recogida" ]; then
-		echo "ESTOS SON LOS FICHEROS DETECTADOS COMO FINALIZADOS: ${procesados}"
-
+	
 		#Actualizamos 'lista_ficheros.txt'
 		progreso=0
 		for fichero_entrada in ${procesados}
