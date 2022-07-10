@@ -25,7 +25,7 @@ for i in ${EQUIPOS_LT}; do
 		estado=$(grep "${PREFIJO_NOMBRE_EQUIPO}$i ${NOMBRE_TAREA}${num_instancia}:" "${FILE_ESTADO}" | awk -F'\t' '{print $8}')
 		if [ "${estado}" != "${FINALIZADA}" ]; then
 			linea_a_sustituir=$(grep "${PREFIJO_NOMBRE_EQUIPO}$i ${NOMBRE_TAREA}${num_instancia}:" "${FILE_ESTADO}" | awk -F'\t' '{print $0}')
-			linea_nueva=$(grep "${PREFIJO_NOMBRE_EQUIPO}$i ${NOMBRE_TAREA}${num_instancia}:" "${FILE_ESTADO}" | awk -v nuevo_estado="${INTERRUMPIDA}" -F'\t' '{$8=nuevo_estado;print}')
+			linea_nueva=$(grep "${PREFIJO_NOMBRE_EQUIPO}$i ${NOMBRE_TAREA}${num_instancia}:" "${FILE_ESTADO}" | awk -v nuevo_estado="${INTERRUMPIDA}" -F'\t' 'BEGIN {OFS = FS} {$8=nuevo_estado;print}')
 			sed -i "s#${linea_a_sustituir}#${linea_nueva}#g" "${FILE_ESTADO}"
 
 			actualizacion=$(printf "Última actualización: %s" "$(date)")
