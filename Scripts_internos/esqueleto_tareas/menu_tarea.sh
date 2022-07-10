@@ -131,7 +131,7 @@ lanzamiento()
 	#2 Clonamos Tarea para cada equipo
 	. "${SCRIPT_CLONAR_ESTRUCTURA}"
 	#3 Dividimos ficheros presentes en directorio de división
-	 [ ! -z "$(ls ${DIR_FICHEROS_DIVIDIR})" ] && . "${SCRIPT_DIVIDIR_FICHERO}"
+	 [ ! -z "$(ls ${DIR_FICHEROS_DIVIDIR})" -a "${RELANZAMIENTO}" != "OK" ] && . "${SCRIPT_DIVIDIR_FICHERO}"
 	#4 Establecemos el reparto de los ficheros
 	. "${SCRIPT_REPARTIR_MANUAL}"
 	#5 Enviamos a equipos remotos
